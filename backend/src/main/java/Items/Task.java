@@ -27,9 +27,22 @@ public class Task implements CalendarItem{
   }
 
 
+  /**
+   * Converts a Task Object into an Event object to be added to the calendar
+   * @return - the new Event object
+   */
+  public Event convertToEvent(){
+
+    String eventName = this.name;
+    String eventNote = this.notes;
+    String duration
 
 
 
+    Event newEvent = new Event();
+
+    return newEvent;
+  }
   /*
   Setters and Getters
    */
@@ -87,12 +100,10 @@ public class Task implements CalendarItem{
     return this.name;
   }
 
-  @Override
   public void setDueDate(LocalDateTime date) {
     this.dueDate = date;
   }
 
-  @Override
   public LocalDateTime getDueDate() {
     return this.dueDate;
   }
