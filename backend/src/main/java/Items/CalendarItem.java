@@ -8,7 +8,7 @@ public interface CalendarItem {
   String getName(); // gets the name of the item
   void setNotes(String notes); // sets the notes of the item (comments, links, names, etc.)
   String getNotes(); // gets the notes of the item
-  Boolean getIsComplete();
-  void changeCompletion();
+//  Boolean getIsComplete();
+//  void changeCompletion();
 
 }
