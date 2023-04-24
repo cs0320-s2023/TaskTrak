@@ -1,6 +1,7 @@
 package Items;
 
 import Enums.Rating;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -9,26 +10,45 @@ public class Task implements CalendarItem{
   private String notes;
   private Rating priority; //
   private Rating dread;
-  private double hoursToComplete;
+  private Duration timeToComplete;
   private LocalDateTime dueDate; // will need to consider how to manage time
   private Boolean isComplete;
 
   // task constructor
 
   public Task(String name, String notes, Rating priority, Rating dread,
-      double hoursToComplete, LocalDateTime dueDate, Boolean isComplete) {
+      Duration timeToComplete, LocalDateTime dueDate, Boolean isComplete) {
     this.name = name;
     this.notes = notes;
     this.priority = priority;
     this.dread = dread;
-    this.hoursToComplete = hoursToComplete;
+    this.timeToComplete = timeToComplete;
     this.dueDate = dueDate;
     this.isComplete = false;
   }
 
 
+  /**
+   * Converts a Task Object into an Event object to be added to the calendar
+   * @return - the new Event object
+   */
+  public Event taskToEvent(LocalDateTime startTime, Duration duration){
+    String eventName = this.name;
+    String eventNote = this.notes;
+
+    // Created defensive copies of startTime and duration
+    LocalDateTime startTimeCopy = LocalDateTime.from(startTime);
+    Duration durationCopy = Duration.ofMillis(duration.toMillis());
+
+    Event newEvent = new Event(eventName, eventNote, durationCopy, startTimeCopy);
+
+    return newEvent;
+  }
 
 
+
+
+  //---------------------------------
 
   /*
   Setters and Getters
@@ -45,19 +65,17 @@ public class Task implements CalendarItem{
     }
   }
 
-  @Override
   public Boolean getIsComplete(){
     return this.isComplete;
   }
 
-
-  public void setHoursToComplete(double hoursToComplete) {
-    this.hoursToComplete = hoursToComplete;
+  public void setTimeToComplete(Duration timeToComplete) {
+    this.timeToComplete = timeToComplete;
   }
 
 
-  public double getHoursToComplete() {
-    return hoursToComplete;
+  public Duration getTimeToComplete() {
+    return timeToComplete;
   }
 
 
@@ -87,12 +105,10 @@ public class Task implements CalendarItem{
     return this.name;
   }
 
-  @Override
   public void setDueDate(LocalDateTime date) {
     this.dueDate = date;
   }
 
-  @Override
   public LocalDateTime getDueDate() {
     return this.dueDate;
   }

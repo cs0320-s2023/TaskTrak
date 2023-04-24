@@ -6,11 +6,9 @@ import java.util.Date;
 public interface CalendarItem {
   void setName(String name); // sets the name of the item
   String getName(); // gets the name of the item
-  void setDueDate(LocalDateTime date); // sets the Date of the item
-  LocalDateTime getDueDate(); // gets the data of the item
   void setNotes(String notes); // sets the notes of the item (comments, links, names, etc.)
   String getNotes(); // gets the notes of the item
-  Boolean getIsComplete();
-  void changeCompletion();
+//  Boolean getIsComplete();
+//  void changeCompletion();
 
 }
