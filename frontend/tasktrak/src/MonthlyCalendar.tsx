@@ -55,34 +55,7 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
     function onValueChange(){
     }
 
-    // const BasicLayout = () => {
-    //     const onCustomFieldChange = (nextValue) => {
-    //       onFieldChange({ customField: nextValue });
-    //     };
-      
-    //     return (
-    //       <AppointmentForm.BasicLayout
-    //         // {...AppointmentForm.BasicLayout.defaultProps}
-    //         // appointmentData={appointmentData}
-    //         // onFieldChange={onFieldChange}
-    //         // {...restProps}
-    //       >
-    //         <AppointmentForm.Label
-    //           text="Custom Field"
-    //           type='titleLabel'
-    //         />
-    //         <AppointmentForm.TextEditor
-    //           value={appointmentData.customField}
-    //           onValueChange={onCustomFieldChange}
-    //           placeholder="Custom field"
-    //           readOnly={false}
-    //           type='numberEditor'
-    //         />
-    //       </AppointmentForm.BasicLayout>
-    //     );
-    //   };
-
-    const customAttribute: SelectOption = {id: 5000, text: 'Custom Attribute'}
+    const customAttribute: SelectOption[] = [{id: 0, text: 'Low'}, {id: 1, text: 'Moderate'}, {id: 2, text: 'High'}]
     
     return(
         // <ResizableBox
@@ -118,27 +91,16 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
                                     onValueChange={onValueChange}
                                     label='Custom Attribute'
                                 />
-                                {/* <AppointmentForm.Select
+                                <AppointmentForm.Select
                                     {...props}
                                     onValueChange={onValueChange}
-                                    availableOptions={}
+                                    availableOptions={customAttribute}
+                                    value='Custom Attribute'
+                                    type='filledSelect'
                                     label='Custom Attribute'
-                                /> */}
+                                />
                             </AppointmentForm.BasicLayout>
                         )}
-                        // selectComponent={(props) => (
-                        //     <AppointmentForm.Select
-                        //         {...props}
-                        //         availableOptions={[...[customAttribute]]}
-                        //         readOnly={true}
-                        //     />
-                        // )}
-                        // booleanEditorComponent={(props) => (
-                        //     <AppointmentForm.BooleanEditor
-                        //         {...props}
-                        //         label='Custom Attribute'
-                        //     />
-                        // )}
                     />
                     {/* the updating on dragging and dropping is broken; it completely breaks down in the day view
                     when it's done in  */}
