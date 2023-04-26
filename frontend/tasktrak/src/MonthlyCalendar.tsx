@@ -12,8 +12,10 @@ import {
   DragDropProvider
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { ViewState, EditingState, ChangeSet, IntegratedEditing } from '@devexpress/dx-react-scheduler';
+import { Resizable, ResizableBox } from 'react-resizable';
 import React from 'react';
 import CalendarItem from './CalendarItem';
+import './MonthlyCalendar.css';
 
 interface MonthlyCalendarProps {
     currentDate: Date;
@@ -26,7 +28,6 @@ interface MonthlyCalendarProps {
 export default function MonthlyCalendar(props: MonthlyCalendarProps){
     
     function currentDateChange(currentDate: Date){
-        console.log('clicked');
         props.setCurrentDate(currentDate);
     }
 
@@ -53,25 +54,41 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
     }
     
     return(
-        <Paper className='month-view'>
-            <Scheduler data={props.calendarItems}>
-                <ViewState
-                    currentDate={props.currentDate}
-                    onCurrentDateChange={currentDateChange}
+        // <ResizableBox
+        //     width={1400}
+        //     height={1000}
+        //     // draggableOpts={{}}
+        //     minConstraints={[1000, 750]}
+        //     maxConstraints={[1400, 1000]}
+        //     className='box'
+        //     >
+            <Paper className='month-view'>
+                <Scheduler data={props.calendarItems}>
+                    <ViewState
+                        currentDate={props.currentDate}
+                        onCurrentDateChange={currentDateChange}
+                    />
+                    <EditingState onCommitChanges={commitChanges}/>
+                    <EditRecurrenceMenu/>
+                    <MonthView />
+                    <Toolbar />
+                    <DateNavigator />
+                    <TodayButton />
+                    <ConfirmationDialog />
+                    <Appointments />
+                    <AppointmentForm
+                    basicLayoutComponent={(props) => (
+                        <AppointmentForm.BasicLayout 
+                            {...props}
+                            customAttributeEditor={<input value={props.appointmentData.customAttribute} />}
+                        />
+                    )}
                 />
-                <EditingState onCommitChanges={commitChanges}/>
-                <EditRecurrenceMenu/>
-                <MonthView />
-                <Toolbar />
-                <DateNavigator />
-                <TodayButton />
-                <ConfirmationDialog />
-                <Appointments/>
-                <AppointmentForm />
-                {/* the updating on dragging and dropping is broken; it completely breaks down in the day view
-                when it's done in  */}
-                <DragDropProvider/>
-            </Scheduler>
-        </Paper>
+                    {/* the updating on dragging and dropping is broken; it completely breaks down in the day view
+                    when it's done in  */}
+                    <DragDropProvider/>
+                </Scheduler>
+            </Paper>
+        // </ResizableBox>
     )
 }

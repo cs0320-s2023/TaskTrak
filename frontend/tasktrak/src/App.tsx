@@ -11,7 +11,7 @@ import {
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import { useState } from 'react';
 import './App.css';
-import { Button } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import MonthlyCalendar from './MonthlyCalendar';
 import DailyCalendar from './DailyCalendar';
 import React from 'react';
@@ -25,20 +25,27 @@ function App() {
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems)
 
   return (
-    <div className='calendars'>
-      <MonthlyCalendar
-        currentDate={currentDate}
-        setCurrentDate={setCurrentDate}
-        calendarItems={calendarItems}
-        setCalendarItems={setCalendarItems}
-        />
-      <DailyCalendar
-        currentDate={currentDate}
-        calendarItems={calendarItems}
-        setCalendarItems={setCalendarItems}
-        />
-    </div>
-    
+    <Grid container
+      spacing={6}
+      className='calendars'
+      justifyContent="center"
+      alignItems="center">
+      <Grid item xs={6}>
+        <MonthlyCalendar
+          currentDate={currentDate}
+          setCurrentDate={setCurrentDate}
+          calendarItems={calendarItems}
+          setCalendarItems={setCalendarItems}
+          />
+      </Grid>
+      <Grid item xs={4}>
+        <DailyCalendar
+          currentDate={currentDate}
+          calendarItems={calendarItems}
+          setCalendarItems={setCalendarItems}
+          />
+      </Grid>
+    </Grid>
   );
 }
 

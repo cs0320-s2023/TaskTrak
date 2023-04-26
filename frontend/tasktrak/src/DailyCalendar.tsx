@@ -44,14 +44,21 @@ export default function DailyCalendar(props: DailyCalendarProps){
 
     return(
         <Paper className='day-view'>
-            <Scheduler data={props.calendarItems}>
+            <Scheduler data={props.calendarItems} height={690}>
                 <ViewState currentDate={props.currentDate}/>
                 <EditingState onCommitChanges={commitChanges}/>
                 <EditRecurrenceMenu/>
                 <DayView startDayHour={0} endDayHour={24}/>
                 <ConfirmationDialog />
                 <Appointments />
-                <AppointmentForm />
+                <AppointmentForm
+                    basicLayoutComponent={(props) => (
+                        <AppointmentForm.BasicLayout 
+                            {...props}
+                            customAttributeEditor={<input value={props.appointmentData.customAttribute} />}
+                        />
+                    )}
+                />
                 <DragDropProvider/>
             </Scheduler>
         </Paper>
