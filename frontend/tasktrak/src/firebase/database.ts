@@ -1,17 +1,28 @@
 import { collection, addDoc, setDoc, query, where, getDocs} from "firebase/firestore";
 import { getFirestore } from 'firebase/firestore/lite';
-import CalendarItem from '../CalendarItem'
+import { CalendarItem } from '../CalendarItem'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore();
+const auth = getAuth();
 
 async function addEvent(event : CalendarItem) {
     try {
-        const currUser =
+        let userID: string;
+        const user = auth.currentUser;
+        if (user == null) {
+            return; //NO user logged in
+        }
+        else {
+            userID = user.uid;
+        }
+        
         const userRef = collection(db,"users")
         const userQuery = query(userRef,where("id","==",userID))
         const userQuerySnapshot = await getDocs(userQuery)
+        const userDoc = userQuerySnapshot.docs[0].data();
 
-        const eventRef = collection(userDoc,"events")        
+        const eventRef = collection(db,userID + "/events")        
     } catch (e) {
 
     }
