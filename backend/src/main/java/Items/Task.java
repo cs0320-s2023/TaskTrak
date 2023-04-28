@@ -3,7 +3,9 @@ package Items;
 import Enums.Rating;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Task implements CalendarItem{
   private String name;
@@ -45,7 +47,21 @@ public class Task implements CalendarItem{
     return newEvent;
   }
 
-
+  /**
+   * This method gathers all the tasks within the task list that have a high dread rating
+   * into one list
+   * @param taskList -- The overall list of a users tasks
+   * @return -- dreadfulTasks = list of tasks with high dread
+   */
+  public List<Task> gatherDread(List<Task> taskList) {
+    List<Task> dreadfulTasks = new ArrayList<>();
+    for (Task task : taskList) {
+      if(task.getDread() == Rating.HIGH){
+        dreadfulTasks.add(task);
+      }
+    }
+    return dreadfulTasks;
+  }
 
 
   //---------------------------------
