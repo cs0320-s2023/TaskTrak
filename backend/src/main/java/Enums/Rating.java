@@ -1,11 +1,10 @@
 package Enums;
 
 public enum Rating {
-    HIGHEST(5),
-    HIGH(4),
-    MEDIUM(3),
-    LOW(2),
-    LOWEST(1);
+
+    HIGH(2),
+    MEDIUM(1),
+    LOW(0);
 
     private int value;
 
