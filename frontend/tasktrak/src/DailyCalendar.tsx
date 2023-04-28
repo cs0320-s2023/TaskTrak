@@ -28,6 +28,7 @@ export default function DailyCalendar(props: DailyCalendarProps){
                 title: 'title',
                 startDate: new Date(),
                 endDate: new Date(),
+                priority: 0,
                 ...added}])
         }
 
@@ -48,7 +49,7 @@ export default function DailyCalendar(props: DailyCalendarProps){
                 <ViewState currentDate={props.currentDate}/>
                 <EditingState onCommitChanges={commitChanges}/>
                 <EditRecurrenceMenu/>
-                <DayView startDayHour={0} endDayHour={24}/>
+                <DayView startDayHour={0} endDayHour={24} cellDuration={60} />
                 <ConfirmationDialog />
                 <Appointments />
                 <AppointmentForm
