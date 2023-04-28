@@ -5,11 +5,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Event implements CalendarItem {
+
   private String name;
   private String notes;
   private Duration duration;
   private LocalDateTime startTime; // will need to consider how to manage time
-  //private Boolean isComplete;
+  private Boolean isComplete;
 
 
   public Event(String name, String notes,
@@ -18,7 +19,7 @@ public class Event implements CalendarItem {
     this.notes = notes;
     this.duration = duration;
     this.startTime = startTime;
-    //this.isComplete = isComplete;
+    this.isComplete = false;
   }
 
 
@@ -30,6 +31,7 @@ public class Event implements CalendarItem {
       Duration timeToComplete, LocalDateTime dueDate){
 
     String taskName = this.name != null ? new String(this.name) : "";
+    // assign's empty string if the name is null
     String taskNotes = this.notes != null ? new String(this.notes) : "";
     Rating priorityCopy = priority != null ? priority : Rating.MEDIUM;
     Rating dreadCopy = dread != null ? dread : Rating.MEDIUM;
@@ -82,20 +84,20 @@ public class Event implements CalendarItem {
     return this.notes;
   }
 
-//  @Override
-//  public Boolean getIsComplete() {
-//    return this.isComplete;
-//  }
-//
-//
-//  @Override
-//  public void changeCompletion() {
-//    if (this.isComplete) { // if task is complete;
-//      this.isComplete = false; // set to incomplete
-//    } else{ // if task is incomplete
-//      this.isComplete = true; // // set to complete
-//    }
-//  }
+  @Override
+  public Boolean getIsComplete() {
+    return this.isComplete;
+  }
+
+
+  @Override
+  public void changeCompletion() {
+    if (this.isComplete) { // if task is complete;
+      this.isComplete = false; // set to incomplete
+    } else{ // if task is incomplete
+      this.isComplete = true; // // set to complete
+    }
+  }
 
 
 }
