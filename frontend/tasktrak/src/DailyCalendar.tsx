@@ -7,10 +7,12 @@ import {
   ConfirmationDialog,
   EditRecurrenceMenu,
   DragDropProvider,
+  WeekView,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import { ViewState, EditingState, ChangeSet, IntegratedEditing } from '@devexpress/dx-react-scheduler';
+import { ViewState, EditingState, ChangeSet, IntegratedEditing, ScrollingStrategy } from '@devexpress/dx-react-scheduler';
 import React from 'react';
-import CalendarItem from './CalendarItem';
+import { CalendarItem } from './CalendarItem';
+import Button from '@mui/material/Button';
 
 interface DailyCalendarProps {
     currentDate: Date;
@@ -20,6 +22,8 @@ interface DailyCalendarProps {
 }
 
 export default function DailyCalendar(props: DailyCalendarProps){
+
+
     function commitChanges({ added, changed, deleted }: ChangeSet){
         if(added){
             const startingAddedID = props.calendarItems[props.calendarItems.length-1].id + 1;
@@ -49,7 +53,19 @@ export default function DailyCalendar(props: DailyCalendarProps){
                 <ViewState currentDate={props.currentDate}/>
                 <EditingState onCommitChanges={commitChanges}/>
                 <EditRecurrenceMenu/>
-                <DayView startDayHour={0} endDayHour={24} cellDuration={60} />
+                <DayView
+                    startDayHour={0}
+                    endDayHour={24}
+                    cellDuration={60}
+                    // layoutComponent={({setScrollingStrategy, ...layout_props}) => (
+                    //     <DayView.Layout
+                    //         {...layout_props}
+                    //         setScrollingStrategy={(scrollingStrategy: ScrollingStrategy) => {
+                    //             scrollingStrategy.topBoundary=10
+                    //         }}
+                    //     />
+                    // )}
+                />
                 <ConfirmationDialog />
                 <Appointments />
                 <AppointmentForm

@@ -9,11 +9,12 @@ import {
   TodayButton,
   ConfirmationDialog,
   EditRecurrenceMenu,
-  DragDropProvider
+  DragDropProvider,
+  AllDayPanel
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { ViewState, EditingState, ChangeSet, IntegratedEditing, SelectOption } from '@devexpress/dx-react-scheduler';
 import React from 'react';
-import CalendarItem from './CalendarItem';
+import { CalendarItem } from './CalendarItem';
 import './MonthlyCalendar.css';
 import { useState } from 'react';
 
@@ -68,7 +69,7 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
     ]
     
     return(
-        <Paper className='month-view'>
+        <Paper className='month-view' >
             <Scheduler data={props.calendarItems}>
                 <ViewState
                     currentDate={props.currentDate}
@@ -88,14 +89,10 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
                             {...bl_props}
                             appointmentData={appointmentData}
                             onFieldChange={onFieldChange}
-                            // onPrioritySelectChange={(nextValue: number) =>
-                            //     onFieldChange({ prioritySelect: nextValue })
-                            // }
-                            // customAttributeEditor={<Input value={bl_props.appointmentData.customAttribute} />}
                         >
                             <AppointmentForm.Select
                                 {...props}
-                                value={appointmentData.customField}
+                                value={appointmentData.prioritySelect}
                                 onValueChange={(nextValue: string | number) => {
                                     onFieldChange({ prioritySelect: nextValue })
                                 }}
@@ -105,13 +102,14 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
                             />
                         </AppointmentForm.BasicLayout>
                     )}
-                    selectComponent={(sel_props) => (
-                        <AppointmentForm.Select {...sel_props} />
-                    )}
+                    // booleanEditorComponent={({onValueChange, ...allDay_props}) => (
+                    //     <AppointmentForm.BooleanEditor
+                    //     {...props}
+                    //     value={allDay_props.value}
+                    //     onValueChange={onValueChange}
+                    //     />
+                    // )}
                 />
-                {/* the updating on dragging and dropping is broken; it completely breaks down in the day view
-                when it's done in  */}
-                <DragDropProvider/>
             </Scheduler>
         </Paper>
     )
