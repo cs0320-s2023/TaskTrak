@@ -15,6 +15,7 @@ import { ViewState, EditingState, ChangeSet, IntegratedEditing, SelectOption } f
 import React from 'react';
 import CalendarItem from './CalendarItem';
 import './MonthlyCalendar.css';
+import { useState } from 'react';
 
 interface MonthlyCalendarProps {
     currentDate: Date;
@@ -22,6 +23,8 @@ interface MonthlyCalendarProps {
 
     calendarItems: CalendarItem[];
     setCalendarItems: (calendarItems: CalendarItem[]) => void;
+
+
 }
 
 export default function MonthlyCalendar(props: MonthlyCalendarProps){
@@ -29,6 +32,7 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
     function currentDateChange(currentDate: Date){
         props.setCurrentDate(currentDate);
     }
+    const [customAttributeValue, setCustomAttributeValue] = useState<string | number>(0);
 
     function commitChanges({ added, changed, deleted }: ChangeSet){
         if(added){
@@ -38,6 +42,7 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
                 title: 'title',
                 startDate: new Date(),
                 endDate: new Date(),
+                priority: 0, // Default priority value
                 ...added}])
         }
 
@@ -52,61 +57,62 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
         }
     }
 
-    function onValueChange(){
+    function onValueChange(nextValue: string | number){
+        setCustomAttributeValue(nextValue);
     }
 
-    const customAttribute: SelectOption[] = [{id: 0, text: 'Low'}, {id: 1, text: 'Moderate'}, {id: 2, text: 'High'}]
+    const priorityOptions: SelectOption[] = [
+        {id: 0, text: 'Low'},
+        {id: 1, text: 'Moderate'},
+        {id: 2, text: 'High'}
+    ]
     
     return(
-        // <ResizableBox
-        //     width={1400}
-        //     height={1000}
-        //     // draggableOpts={{}}
-        //     minConstraints={[1000, 750]}
-        //     maxConstraints={[1400, 1000]}
-        //     className='box'
-        //     >
-            <Paper className='month-view'>
-                <Scheduler data={props.calendarItems}>
-                    <ViewState
-                        currentDate={props.currentDate}
-                        onCurrentDateChange={currentDateChange}
-                    />
-                    <EditingState onCommitChanges={commitChanges}/>
-                    <EditRecurrenceMenu/>
-                    <MonthView />
-                    <Toolbar />
-                    <DateNavigator />
-                    <TodayButton />
-                    <ConfirmationDialog />
-                    <Appointments />
-                    <AppointmentForm
-                        basicLayoutComponent={(props) => (
-                            <AppointmentForm.BasicLayout 
+        <Paper className='month-view'>
+            <Scheduler data={props.calendarItems}>
+                <ViewState
+                    currentDate={props.currentDate}
+                    onCurrentDateChange={currentDateChange}
+                />
+                <EditingState onCommitChanges={commitChanges}/>
+                <EditRecurrenceMenu />
+                <MonthView />
+                <Toolbar />
+                <DateNavigator />
+                <TodayButton />
+                <ConfirmationDialog />
+                <Appointments />
+                <AppointmentForm
+                    basicLayoutComponent={({onFieldChange, appointmentData, ...bl_props}) => (
+                        <AppointmentForm.BasicLayout 
+                            {...bl_props}
+                            appointmentData={appointmentData}
+                            onFieldChange={onFieldChange}
+                            // onPrioritySelectChange={(nextValue: number) =>
+                            //     onFieldChange({ prioritySelect: nextValue })
+                            // }
+                            // customAttributeEditor={<Input value={bl_props.appointmentData.customAttribute} />}
+                        >
+                            <AppointmentForm.Select
                                 {...props}
-                                customAttributeEditor={<Input value={props.appointmentData.customAttribute} />}
-                            >
-                                <AppointmentForm.BooleanEditor
-                                    {...props}
-                                    onValueChange={onValueChange}
-                                    label='Custom Attribute'
-                                />
-                                <AppointmentForm.Select
-                                    {...props}
-                                    onValueChange={onValueChange}
-                                    availableOptions={customAttribute}
-                                    value='Custom Attribute'
-                                    type='filledSelect'
-                                    label='Custom Attribute'
-                                />
-                            </AppointmentForm.BasicLayout>
-                        )}
-                    />
-                    {/* the updating on dragging and dropping is broken; it completely breaks down in the day view
-                    when it's done in  */}
-                    <DragDropProvider/>
-                </Scheduler>
-            </Paper>
-        // </ResizableBox>
+                                value={appointmentData.customField}
+                                onValueChange={(nextValue: string | number) => {
+                                    onFieldChange({ prioritySelect: nextValue })
+                                }}
+                                availableOptions={priorityOptions}
+                                type='outlinedSelect'
+                                label='Custom Attribute'
+                            />
+                        </AppointmentForm.BasicLayout>
+                    )}
+                    selectComponent={(sel_props) => (
+                        <AppointmentForm.Select {...sel_props} />
+                    )}
+                />
+                {/* the updating on dragging and dropping is broken; it completely breaks down in the day view
+                when it's done in  */}
+                <DragDropProvider/>
+            </Scheduler>
+        </Paper>
     )
 }
