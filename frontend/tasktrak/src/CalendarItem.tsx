@@ -1,4 +1,4 @@
-export default interface CalendarItem {
+export interface CalendarItem {
     title: string;
     startDate: Date;
     endDate: Date;
@@ -12,4 +12,10 @@ export const sampleCalendarItems: CalendarItem[] = [{
     endDate: new Date(2023, 3, 23, 15, 15),
     id: 0,
     priority: 1
-  }]
+}]
+
+export interface Task {
+    title: string;
+    dueDate: Date;
+
+}
