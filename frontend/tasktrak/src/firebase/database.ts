@@ -6,7 +6,7 @@ const db = getFirestore();
 
 async function addEvent(event : CalendarItem) {
     try {
-        const currUser =
+        const currUser = 
         const userRef = collection(db,"users")
         const userQuery = query(userRef,where("id","==",userID))
         const userQuerySnapshot = await getDocs(userQuery)
