@@ -22,12 +22,10 @@ public class Day {
 
   /**
    * returns a list of integer arrays. Each array within the list represents a free window
-   * of time. Each array contains 4 integers.
-   * first integer= start hour, second integer = start 15-min window, third integer = end hour,
-   * fourth integer= end 15-min window
+   * of time. Each array contains  integers.
+   * first integer= start minute, second integer = end minute;
    * Example: if the only free time in a day is from 1am-3:30am and 11am-1:45pm
-   * [ [1,0,3,2], [11,0,13,3] ]
-   * @return
+   * [ [60,210], [660, 825]]
    */
 
   public List<int[]> findAvailableTimeRanges() {
@@ -80,6 +78,12 @@ public class Day {
     return availableRanges;
   }
 
+  /**
+   * Converts hours and time blocks into minutes of the day
+   * @param hour - hour of the day
+   * @param block - 15 minute block within the hour
+   * @return - integer representing the number
+   */
   public int getMinuteOfDay(int hour, int block) {
     return hour * 60 + block * 15;
   }
