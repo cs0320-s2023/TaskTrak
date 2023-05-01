@@ -2,6 +2,7 @@ package Items;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.print.attribute.IntegerSyntax;
 
@@ -9,51 +10,115 @@ public class Day {
   private boolean[][] timeSlots;
 
   public Day() {
-    this.timeSlots = new boolean[24][60 / 15]; // 24 rows down, 4 columns across
-    // Initialize all time slots as available (true)
+    this.timeSlots = new boolean[24][4]; // 24 rows down, 4 columns across
+    // Each new day is initialized with all time slots as available (true)
     for (int i = 0; i < 24; i++) {
-      for (int j = 0; j < 60 / 15; j++) {
-        timeSlots[i][j] = true;
+      for (int j = 0; j < 4; j++) {
+        timeSlots[i][j] = false; // false means the slot is not busy
       }
     }
   }
 
 
   /**
-   * This returns a list of integer arrays. Each array within the list represents a free window
-   * of time. Each array contains 4 integers.
-   * first integer= start hour, second integer = start 15-min window, third integer = end hour,
-   * fourth integer= end 15-min window
+   * returns a list of integer arrays. Each array within the list represents a free window
+   * of time. Each array contains  integers.
+   * first integer= start minute, second integer = end minute;
    * Example: if the only free time in a day is from 1am-3:30am and 11am-1:45pm
-   * [ [1,0,3,2], [11,0,13,3] ]
-   * @return
+   * [ [60,210], [660, 825]]
    */
-  public List<int[]> checkAvailability() {
-    List<int[]> availableSlots = new ArrayList<>();
-    int startHour = -1, endHour = -1, startMinute = -1, endMinute = -1;
-    for (int i = 0; i < timeSlots.length; i++) {
-      for (int j = 0; j < timeSlots[i].length; j++) {
-        if (timeSlots[i][j]) {
-          if (startHour == -1) {  // Start of a new available slot
-            startHour = i;
-            startMinute = j * 15;
+
+  public List<int[]> findAvailableTimeRanges() {
+    ArrayList<int[]> availableRanges = new ArrayList<>();
+    boolean isBusy = false;
+    int startHour = -1;
+    int startBlock = -1;
+    for (int hour = 0; hour < 24; hour++) {
+      for (int block = 0; block < 4; block++) {
+        if (timeSlots[hour][block]) {
+          // If the current hour and block is busy
+          if (!isBusy) {
+            // If we were previously not in a busy block, we just started a busy block
+            isBusy = true;
           }
-          endHour = i;
-          endMinute = j * 15 + 15;
-        } else if (startHour != -1) {  // End of an available slot
-          availableSlots.add(new int[]{startHour, startMinute, endHour, endMinute});
-          startHour = -1;
-          endHour = -1;
-          startMinute = -1;
-          endMinute = -1;
+          if (startHour != -1 && startBlock != -1) {
+            // If we were previously in an available block, we just ended it
+            int endHour = hour;
+            int endBlock = block;
+            int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour,
+                endBlock)};
+            availableRanges.add(range);
+            startHour = -1;
+            startBlock = -1;
+          }
+        } else {
+          // If the current hour and block is available
+          if (isBusy) {
+            // If we were previously in a busy block, we just ended it
+            isBusy = false;
+            startHour = hour;
+            startBlock = block;
+          }
+          if (startHour == -1 && startBlock == -1) {
+            // If we were previously not in an available block, we just started one
+            startHour = hour;
+            startBlock = block;
+          }
         }
       }
     }
-    // If the last time slot was available, add it to the list as well
-    if (startHour != -1) {
-      availableSlots.add(new int[]{startHour, startMinute, endHour, endMinute});
+    if (startHour != -1 && startBlock != -1) {
+      // If we were previously in an available block, we just ended it
+      int endHour = 23;
+      int endBlock = 3;
+      //int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour, endBlock)};
+      int[] range = {getMinuteOfDay(startHour, startBlock), 1439};
+      availableRanges.add(range);
     }
-    return availableSlots;
+    return availableRanges;
+  }
+
+  /**
+   * Converts hours and time blocks into minutes of the day
+   * @param hour - hour of the day
+   * @param block - 15 minute block within the hour
+   * @return - integer representing the number
+   */
+  public int getMinuteOfDay(int hour, int block) {
+    return hour * 60 + block * 15;
+  }
+
+
+  /**
+   * marks the time within the given range as either true or false
+   * true for booked, false for not booked
+   * To set the last window of the day, make endHourIndex = 4
+   * @param startHourIndex
+   * @param startMinuteIndex
+   * @param endHourIndex
+   * @param endMinuteIndex
+   * @param set
+   */
+  public void bookTimeRange(int startHourIndex, int startMinuteIndex, int endHourIndex,
+      int endMinuteIndex, boolean set) {
+    // Convert hour and minute indices to slot indices
+    if (endHourIndex == 4) {
+      timeSlots[23][3] = set;
+    }
+    int startIndex = (startHourIndex * 4) + startMinuteIndex;
+    int endIndex = (endHourIndex * 4) + endMinuteIndex;
+
+    // Iterate over the time slots and set the specified range
+    for (int i = startIndex; i < endIndex; i++) {
+      int row = i / 4;
+      int col = i % 4;
+      timeSlots[row][col] = set;
+    }
+  }
+
+
+  public boolean[][] getTimeSlots(){
+    return this.timeSlots;
   }
 
 
