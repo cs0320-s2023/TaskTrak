@@ -1,5 +1,6 @@
 package Items;
 
+import Algorithim.TaskManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,15 +9,47 @@ import javax.print.attribute.IntegerSyntax;
 
 public class Day {
   private boolean[][] timeSlots;
+  private TaskManager tm;
 
+
+  /**
+   * initializes all the time blocks to false (free)
+    */
   public Day() {
+    this.tm = new TaskManager();
     this.timeSlots = new boolean[24][4]; // 24 rows down, 4 columns across
-    // Each new day is initialized with all time slots as available (true)
     for (int i = 0; i < 24; i++) {
       for (int j = 0; j < 4; j++) {
         timeSlots[i][j] = false; // false means the slot is not busy
       }
     }
+  }
+
+
+
+
+  /**
+   * Determines how long a time block is
+   * @param window
+   * @return
+   */
+  public int windowDuration(int[] window){
+    if (window == null || window.length != 2) {
+      throw new IllegalArgumentException("Window array should have exactly two elements");
+    }
+    if (window[0] < 0 || window[0] >= 1440 || window[1] < 0 || window[1] >= 1440) {
+      throw new IllegalArgumentException("Window values should be between 0 and 1439 (inclusive)");
+    }
+    int duration = window[1] - window[0];
+    if (duration < 0) {
+      duration += 1440;
+    }
+    return duration;
+  }
+
+
+  public TaskManager getTm(){
+    return this.tm;
   }
 
 
@@ -77,6 +110,7 @@ public class Day {
     }
     return availableRanges;
   }
+
 
   /**
    * Converts hours and time blocks into minutes of the day

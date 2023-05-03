@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import Algorithim.TaskManager;
 import Enums.Rating;
 import Items.Task;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.Duration;
@@ -23,7 +22,7 @@ class TaskManagerTest {
     task1 = new Task("Task 1", "Notes 1", Rating.HIGH, Rating.LOW, Duration.ofHours(1), LocalDateTime.now().plusDays(1), false);
     task2 = new Task("Task 2", "Notes 2", Rating.LOW, Rating.LOW, Duration.ofMinutes(30), LocalDateTime.now().plusDays(2), false);
     //task3 = new Task("Task 3", "Notes 3", Rating.LOW, Rating.LOW, Duration.ofMinutes(30),
-        LocalDateTime.now().plusDays(2), false);
+        //LocalDateTime.now().plusDays(2), false);
   }
 
 

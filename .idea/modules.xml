@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/TaskTrak.iml" filepath="$PROJECT_DIR$/.idea/TaskTrak.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/moshi.iml" filepath="$PROJECT_DIR$/backend/moshi.iml" />
     </modules>
   </component>
 </project>

@@ -15,6 +15,7 @@ public class Task implements CalendarItem{
   private Duration timeToComplete;
   private LocalDateTime dueDate; // will need to consider how to manage time
   private Boolean isComplete;
+  private ArrayList<int[]> timeSuggestions;
 
   // task constructor
 
@@ -27,7 +28,12 @@ public class Task implements CalendarItem{
     this.timeToComplete = timeToComplete;
     this.dueDate = dueDate;
     this.isComplete = false;
+    this.timeSuggestions = new ArrayList<>();
   }
+
+
+
+
 
 
   /**
@@ -79,6 +85,20 @@ public class Task implements CalendarItem{
     } else{ // if task is incomplete
       this.isComplete = true; // // set to complete
     }
+  }
+
+
+  /**
+   * Adds a time block to the time suggestions list
+   * @param timeBlock - an integer array representing a time suggestion
+   */
+  public void setTimeSuggestion(int[] timeBlock) {
+    this.getTimeSuggestions().add(timeBlock);
+  }
+
+
+  public ArrayList<int[]> getTimeSuggestions(){
+    return this.getTimeSuggestions();
   }
 
   public Boolean getIsComplete(){
