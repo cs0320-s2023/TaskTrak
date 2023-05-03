@@ -1,6 +1,9 @@
 package Algorithim;
 
+import Items.Calendar;
+import Items.Day;
 import Items.Task;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -15,9 +18,31 @@ public class TaskManager {
   private Map<String, Task> taskMap;
 
   public TaskManager() {
-    taskMap = new HashMap<>();
+    this.taskMap = new HashMap<>();
   }
 
+
+
+
+  public void provideTimeSuggestions(Calendar calendar) {
+    // available time slots
+    LocalDate todaysDate = LocalDate.now();
+    Day todaysSchedule = calendar.getSchedule(todaysDate);
+    List<int[]> todaysFreeTime = todaysSchedule.findAvailableTimeRanges();
+
+    for (Task task : this.taskMap.values()) {
+      //length of task in minutes
+      Integer taskMinutes = (int) Math.floorDiv(task.getTimeToComplete().getSeconds(), 60);
+
+
+
+
+
+
+    }
+
+
+  }
   /**
    * Adds a task to the task list
    * @param task
@@ -27,11 +52,11 @@ public class TaskManager {
       throw new IllegalArgumentException("Task cannot be null");
     }
 
-    if (taskMap.containsKey(task.getName())) {
+    if (this.taskMap.containsKey(task.getName())) {
       throw new IllegalArgumentException("Task with name '" + task.getName() + "' already exists");
     }
 
-    taskMap.put(task.getName(), task);
+    this.taskMap.put(task.getName(), task);
   }
 
   /**
@@ -46,7 +71,7 @@ public class TaskManager {
       throw new IllegalArgumentException("Task with name '" + name + "' does not exist");
     }
 
-    taskMap.remove(name);
+    this.taskMap.remove(name);
   }
 
 
@@ -60,7 +85,7 @@ public class TaskManager {
       throw new IllegalArgumentException("Name cannot be null");
     }
 
-    Task task = taskMap.get(name);
+    Task task = this.taskMap.get(name);
     if (task == null) {
       throw new IllegalArgumentException("Task with name '" + name + "' does not exist");
     }
@@ -74,37 +99,12 @@ public class TaskManager {
    * @return
    */
   public Map<String, Task> getTaskMap() {
-    return taskMap;
+    return this.taskMap;
   }
 
 
 
-  public List<Task> sortTasks() {
-    LocalDateTime now = LocalDateTime.now();
-    List<Task> sortedTasks = new ArrayList<>(taskMap.values());
-    sortedTasks.sort((task1, task2) -> {
-      LocalDateTime dueDate1 = task1.getDueDate();
-      LocalDateTime dueDate2 = task2.getDueDate();
-      int compareByDueDate = dueDate1.compareTo(dueDate2);
-      if (compareByDueDate == 0) {
-        int compareByPriority = Integer.compare(task2.getPriority().getValue(), task1.getPriority().getValue());
-        if (compareByPriority == 0) {
-          return 0;
-        }
-        return compareByPriority;
-      }
-      else if (dueDate1.isBefore(now) && dueDate2.isAfter(now)) {
-        return 1;
-      }
-      else if (dueDate1.isAfter(now) && dueDate2.isBefore(now)) {
-        return -1;
-      }
-      else {
-        return dueDate1.compareTo(dueDate2);
-      }
-    });
-    return sortedTasks;
-  }
+
 
 
 
