@@ -1,4 +1,4 @@
-import { Paper, Input } from '@mui/material';
+import { Paper, Input, Button, Menu, MenuItem } from '@mui/material';
 import {
   Scheduler,
   MonthView,
@@ -25,7 +25,7 @@ interface MonthlyCalendarProps {
     calendarItems: CalendarItem[];
     setCalendarItems: (calendarItems: CalendarItem[]) => void;
 
-
+    calendarViewMenu: React.ReactNode[];
 }
 
 export default function MonthlyCalendar(props: MonthlyCalendarProps){
@@ -58,9 +58,9 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
         }
     }
 
-    function onValueChange(nextValue: string | number){
-        setCustomAttributeValue(nextValue);
-    }
+    // function onValueChange(nextValue: string | number){
+    //     setCustomAttributeValue(nextValue);
+    // }
 
     const priorityOptions: SelectOption[] = [
         {id: 0, text: 'Low'},
@@ -76,9 +76,15 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
                     onCurrentDateChange={currentDateChange}
                 />
                 <EditingState onCommitChanges={commitChanges}/>
-                <EditRecurrenceMenu />
-                <MonthView />
-                <Toolbar />
+                <EditRecurrenceMenu/>
+                <MonthView/>
+                <Toolbar
+                    rootComponent={(tb_props) => (
+                        <Toolbar.Root
+                            children={[tb_props.children, props.calendarViewMenu]}
+                        />
+                    )}
+                />
                 <DateNavigator />
                 <TodayButton />
                 <ConfirmationDialog />

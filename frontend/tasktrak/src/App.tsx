@@ -12,7 +12,7 @@ import {
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import { useState } from 'react';
 import './App.css';
-import { Button, Grid } from '@mui/material';
+import { Button, ButtonTypeMap, ExtendButtonBase, Grid, Menu, MenuItem } from '@mui/material';
 import MonthlyCalendar from './MonthlyCalendar';
 import DailyCalendar from './DailyCalendar';
 import WeeklyCalendar from './WeeklyCalendar'
@@ -27,9 +27,44 @@ function App() {
   // could be updated with default value of CalendarItems[] if i move it to its own file ?
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems)
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+        // console.log(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+  const calendarViewMenu: React.ReactNode[] = ([
+    <Button
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+    >
+        testing button here
+    </Button>,
+    <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+            'aria-labelledby': 'basic-button',
+        }}
+    >
+        <MenuItem onClick={handleClose}>Month View</MenuItem>
+        <MenuItem onClick={handleClose}>Week View</MenuItem>
+        <MenuItem onClick={handleClose}>Accessibility View</MenuItem>
+    </Menu>
+  ])
+
   function toggleViewMode() {
-  setViewMode(viewMode === 'month' ? 'week' : 'month');
-}
+    setViewMode(viewMode === 'month' ? 'week' : 'month');
+  }
 return (
   <Grid
     container
@@ -50,6 +85,7 @@ return (
           setCurrentDate={setCurrentDate}
           calendarItems={calendarItems}
           setCalendarItems={setCalendarItems}
+          calendarViewMenu={calendarViewMenu}
         />
       ) : (
         <WeeklyCalendar
