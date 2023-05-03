@@ -35,12 +35,59 @@
     </properties>
 
     <dependencies>
+        <!--
+           We've switched to using Moshi for serialization/deserialization of JSON.
+           https://github.com/square/moshi
+           We used to use Gson, but Gson isn't being maintained actively anymore,
+           and doesn't interact well with records. The developer who switched
+           from Gson to Moshi has added remarks (e.g., consistent exception use).
+
+           Moshi 1.13.0 was released in December, 2021
+
+           We'll also use Moshi's adapters package, which includes pre-built adapters
+           for quite a few things, including polymorphic adapters.
+
+           The adapters README.md includes a "latest.version" version; replaced with
+           latest version as of August 2022.
+       -->
+
+        <dependency>
+            <groupId>com.squareup.moshi</groupId>
+            <artifactId>moshi</artifactId>
+            <version>1.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.moshi</groupId>
+            <artifactId>moshi-adapters</artifactId>
+            <version>1.13.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.9.3</version>
+        </dependency>
+
+        
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>30.1.1-jre</version>
+        </dependency>
+
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
             <version>9.1.1</version>
         </dependency>
-     
 
 
     </dependencies>

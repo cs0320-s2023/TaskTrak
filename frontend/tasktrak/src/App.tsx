@@ -10,7 +10,7 @@ import {
   WeekView,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { ViewState } from "@devexpress/dx-react-scheduler";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import {
   Button,
@@ -26,8 +26,13 @@ import WeeklyCalendar from "./WeeklyCalendar";
 import React from "react";
 import { sampleCalendarItems } from "./CalendarItem";
 import { CalendarItem } from "./CalendarItem";
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
+import * as firebaseui from 'firebaseui';
+import 'firebaseui/dist/firebaseui.css';
+import { AuthProvider } from './firebase/provider/AuthProvider';
 
-function App() {
+function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<"month" | "week">("month");
   function toggleViewMode() {
@@ -73,43 +78,45 @@ function App() {
   ];
 
   return (
-    <Grid
-      container
-      spacing={6}
-      className="calendars"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Grid item xs={12}>
-        <Button onClick={handleClick}>Accessibility Mode</Button>
-      </Grid>
-      <Grid item xs={6}>
-        {viewMode === "month" ? (
-          <MonthlyCalendar
+    <AuthProvider>
+      <Grid
+        container
+        spacing={6}
+        className="calendars"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item xs={12}>
+          <Button onClick={handleClick}>Accessibility Mode</Button>
+        </Grid>
+        <Grid item xs={6}>
+          {viewMode === "month" ? (
+            <MonthlyCalendar
+              currentDate={currentDate}
+              setCurrentDate={setCurrentDate}
+              calendarItems={calendarItems}
+              setCalendarItems={setCalendarItems}
+              calendarViewMenu={calendarViewMenu}
+            />
+          ) : (
+            <WeeklyCalendar
+              currentDate={currentDate}
+              setCurrentDate={setCurrentDate}
+              calendarItems={calendarItems}
+              setCalendarItems={setCalendarItems}
+              calendarViewMenu={calendarViewMenu}
+            />
+          )}
+        </Grid>
+        <Grid item xs={4}>
+          <DailyCalendar
             currentDate={currentDate}
-            setCurrentDate={setCurrentDate}
             calendarItems={calendarItems}
             setCalendarItems={setCalendarItems}
-            calendarViewMenu={calendarViewMenu}
           />
-        ) : (
-          <WeeklyCalendar
-            currentDate={currentDate}
-            setCurrentDate={setCurrentDate}
-            calendarItems={calendarItems}
-            setCalendarItems={setCalendarItems}
-            calendarViewMenu={calendarViewMenu}
-          />
-        )}
+        </Grid>
       </Grid>
-      <Grid item xs={4}>
-        <DailyCalendar
-          currentDate={currentDate}
-          calendarItems={calendarItems}
-          setCalendarItems={setCalendarItems}
-        />
-      </Grid>
-    </Grid>
+    </AuthProvider>
   );
 }
 

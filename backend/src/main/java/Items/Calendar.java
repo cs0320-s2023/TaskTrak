@@ -52,6 +52,8 @@ public class Calendar {
   /**
    * If a day object does not already exist for the current day, it will create one at midnight
    * This method ensures that scheduling suggestions can always be provided
+   *
+   * potential idea -- possibly make a cache
    */
   public void createDayObjectForToday() {
       // Get the current date and time
