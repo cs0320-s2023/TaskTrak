@@ -10,7 +10,7 @@ import {
   WeekView,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { ViewState } from '@devexpress/dx-react-scheduler';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import { Button, ButtonTypeMap, ExtendButtonBase, Grid, Menu, MenuItem } from '@mui/material';
 import MonthlyCalendar from './MonthlyCalendar';
@@ -19,8 +19,14 @@ import WeeklyCalendar from './WeeklyCalendar'
 import React from 'react';
 import { sampleCalendarItems } from './CalendarItem';
 import { CalendarItem } from './CalendarItem';
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 
-function App() {
+import firebase from 'firebase/compat/app';
+import * as firebaseui from 'firebaseui';
+import 'firebaseui/dist/firebaseui.css';
+import { AuthProvider } from './firebase/provider/AuthProvider';
+
+function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<'month' | 'week'>('month');
 
@@ -62,48 +68,57 @@ function App() {
     </Menu>
   ])
 
+  function handleLogin(){
+    
+  }
+
   function toggleViewMode() {
     setViewMode(viewMode === 'month' ? 'week' : 'month');
   }
 return (
-  <Grid
-    container
-    spacing={6}
-    className="calendars"
-    justifyContent="center"
-    alignItems="center"
-  >
-    <Grid item xs={12}>
-      <Button onClick={toggleViewMode}>
-        {viewMode === 'month' ? 'Switch to Week View' : 'Switch to Month View'}
-      </Button>
-    </Grid>
-    <Grid item xs={6}>
-      {viewMode === 'month' ? (
-        <MonthlyCalendar
+  <AuthProvider>
+    <Grid
+      container
+      spacing={6}
+      className="calendars"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid item xs={11}>
+        <Button onClick={toggleViewMode}>
+          {viewMode === 'month' ? 'Switch to Week View' : 'Switch to Month View'}
+        </Button>
+      </Grid>
+      <Grid item xs={1}>
+        <Button>button</Button>
+      </Grid>
+      <Grid item xs={6}>
+        {viewMode === 'month' ? (
+          <MonthlyCalendar
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
+            calendarItems={calendarItems}
+            setCalendarItems={setCalendarItems}
+            calendarViewMenu={calendarViewMenu}
+          />
+        ) : (
+          <WeeklyCalendar
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
+            calendarItems={calendarItems}
+            setCalendarItems={setCalendarItems}
+          />
+        )}
+      </Grid>
+      <Grid item xs={4}>
+        <DailyCalendar
           currentDate={currentDate}
-          setCurrentDate={setCurrentDate}
           calendarItems={calendarItems}
           setCalendarItems={setCalendarItems}
-          calendarViewMenu={calendarViewMenu}
         />
-      ) : (
-        <WeeklyCalendar
-          currentDate={currentDate}
-          setCurrentDate={setCurrentDate}
-          calendarItems={calendarItems}
-          setCalendarItems={setCalendarItems}
-        />
-      )}
+      </Grid>
     </Grid>
-    <Grid item xs={4}>
-      <DailyCalendar
-        currentDate={currentDate}
-        calendarItems={calendarItems}
-        setCalendarItems={setCalendarItems}
-      />
-    </Grid>
-  </Grid>
+  </AuthProvider>
 );
 }
 
