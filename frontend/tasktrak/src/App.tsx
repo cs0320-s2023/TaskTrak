@@ -77,6 +77,10 @@ function App(): JSX.Element {
     </Menu>,
   ];
 
+  function handleLogin(){
+    window.location.href="login.html";
+  }
+
   return (
     <AuthProvider>
       <Grid
@@ -86,8 +90,11 @@ function App(): JSX.Element {
         justifyContent="center"
         alignItems="center"
       >
-        <Grid item xs={12}>
+        <Grid item xs={11}>
           <Button onClick={handleClick}>Accessibility Mode</Button>
+        </Grid>
+        <Grid item xs={1}>
+          <Button onClick={handleLogin}>Login</Button>
         </Grid>
         <Grid item xs={6}>
           {viewMode === "month" ? (
