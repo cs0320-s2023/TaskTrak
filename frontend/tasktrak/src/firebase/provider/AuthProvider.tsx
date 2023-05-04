@@ -59,10 +59,10 @@ import React, {
     }
     useEffect(() => {
       //function that firebase notifies you if a user is set
-      const unsubsrcibe = auth.onAuthStateChanged((user: User | null) => {
+      const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
         setUser(user)
       })
-      return unsubsrcibe
+      return unsubscribe
     }, [])
   
     const values = {
