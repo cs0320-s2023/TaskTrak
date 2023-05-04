@@ -10,7 +10,7 @@ import spark.Spark;
 public class server {
 
 
-  public class Server {
+  public static class Server {
     public static void main(String[] args) {
 
       Spark.port(3232);

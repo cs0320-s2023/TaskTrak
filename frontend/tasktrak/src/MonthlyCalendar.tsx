@@ -49,7 +49,7 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
                 notes: added.notes,
                 ...added}])
             let newEvent: CalendarItem = props.calendarItems[props.calendarItems.length-1];
-            fetch(`http://localhost:3232/createEvent?title=${newEvent.title}&startDate=${newEvent.startDate.toISOString}&endDate=${newEvent.endDate.toISOString}&id=${newEvent.id}&notes=${newEvent.notes}&isAllDay=${newEvent.allDay}&isRepeated=${newEvent.repeat}`)
+            fetch(`http://localhost:3232//createEvent?title=${newEvent.title}&startDate=${newEvent.startDate.toISOString()}&endDate=${newEvent.endDate.toISOString()}&id=${newEvent.id}&notes=${newEvent.notes}&isAllDay=${newEvent.allDay}&isRepeated=${newEvent.repeat}`)
             console.log(props.calendarItems)
         }
 
