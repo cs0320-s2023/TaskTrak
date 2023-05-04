@@ -59,7 +59,7 @@ public class eventHandler implements Route {
       System.out.println(event.getName());
 
 
-    System.out.println(Event);
+    System.out.println(event);
 
 
     } catch (DateTimeParseException e) {
