@@ -11,7 +11,7 @@ public class timeMethods {
    * @param window
    * @return
    */
-  public int windowDuration(int[] window){
+  public static int windowDuration(int[] window){
     if (window == null || window.length != 2) {
       throw new IllegalArgumentException("Window array should have exactly two elements");
     }

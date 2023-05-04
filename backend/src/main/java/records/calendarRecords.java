@@ -9,11 +9,11 @@ public class calendarRecords {
     ){}
 
     public record Date(
-        @Json(name = "year") Integer year,
-        @Json(name = "monthIndex") Integer monthIndex,
-        @Json(name = "date") Integer date,
-        @Json(name = "hours") Integer hours,
-        @Json(name = "minutes") Integer minutes
+        @Json(name = "year") int year,
+        @Json(name = "monthIndex") int monthIndex,
+        @Json(name = "date") int date,
+        @Json(name = "hours") int hours,
+        @Json(name = "minutes") int minutes
     ){}
 
 
@@ -21,6 +21,6 @@ public class calendarRecords {
       @Json(name = "title") String title,
       @Json(name = "startDate") Date startDate,
       @Json(name = "endDate") Date endDate,
-      @Json(name = "id") Integer id
+      @Json(name = "id") int id
   ){}
 }

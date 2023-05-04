@@ -14,34 +14,35 @@ public class Firebase {
     FirebaseApp app = initializeApp(options);
     Firestore db = getFirestore(app);
 
-    // def addEvent(event : CalendarItem) {
-    //     try {
-    //         let userID: string;
-    //         const user = auth.currentUser;
-    //         if (user == null) {
-    //             return; //NO user logged in
-    //         }
-    //         else {
-    //             userID = user.uid;
-    //         }
+     public static createEventFirebase(event : CalendarItem) {
+         try {
+//             let userID: string;
+//             const user = auth.currentUser;
+//             if (user == null) {
+//                 return; //NO user logged in
+//             }
+//             else {
+//                 userID = user.uid;
+//             }
+             St
             
-    //         const userRef = collection(db,"users")
-    //         const userQuery = query(userRef,where("id","==",userID))
-    //         const userQuerySnapshot = await getDocs(userQuery)
-    //         const userDoc = userQuerySnapshot.docs[0].data();
+             const userRef = collection(db,"users")
+             const userQuery = query(userRef,where("id","==",userID))
+             const userQuerySnapshot = await getDocs(userQuery)
+             const userDoc = userQuerySnapshot.docs[0].data();
     
-    //         const eventRef = collection(db,userID + "/events")        
-    //     } catch (Exception e) {
+             const eventRef = collection(db,userID + "/events")
+         } catch (Exception e) {
     
-    //     }
-    // }
+         }
+     }
     
     // async function addTask(task, userID : string) {
     
     // }
     
     //Likely need to call this when using Firebase authentication
-    def addNewUser(String userID) {
+    public addNewUser(String userID) {
         try {
             DocumentReference docRef = document(collection(db),userID);
                     

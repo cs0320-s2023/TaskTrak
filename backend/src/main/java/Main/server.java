@@ -20,15 +20,13 @@ public class server {
       });
 
 
-      // Setting up the handler for the GET /order endpoint
-      // LoadHandler loadHandler = new LoadHandler();
-      // Spark.get("load", loadHandler);
-      // Spark.get("view", new ViewHandler(loadHandler));
-      // Spark.get("search", new SearchHandler(loadHandler));
-      // Spark.get("weather", new WeatherHandler());
+
       eventHandler EV = new eventHandler();
 
-      Spark.get("event", EV);
+      // For creating an event
+
+      Spark.post("/createEvent", EV);
+      //Spark.post();
       Spark.init();
       Spark.awaitInitialization();
       System.out.println("Server started.");

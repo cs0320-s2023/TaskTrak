@@ -1,5 +1,7 @@
 package Algorithim;
 
+import static Items.timeMethods.windowDuration;
+
 import Items.Calendar;
 import Items.Day;
 import Items.Task;
@@ -13,7 +15,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import Items.timeMethods;
 public class TaskManager {
   private Map<String, Task> taskMap;
 
@@ -22,27 +24,37 @@ public class TaskManager {
   }
 
 
-
-
-  public void provideTimeSuggestions(Calendar calendar) {
+  /**
+   * Main step of the algorithim for gathering time suggestions
+   * More complexity can be added
+   * @param calendar
+   */
+  public void gatherTimeSuggestions(Calendar calendar) {
     // available time slots
     LocalDate todaysDate = LocalDate.now();
-    Day todaysSchedule = calendar.getSchedule(todaysDate);
-    List<int[]> todaysFreeTime = todaysSchedule.findAvailableTimeRanges();
+    Day todaysSchedule = calendar.getSchedule(todaysDate); // Day object for the current day
+    ArrayList<int[]> todaysFreeTime = todaysSchedule.findAvailableTimeRanges();
 
-    for (Task task : this.taskMap.values()) {
-      //length of task in minutes
-      Integer taskMinutes = (int) Math.floorDiv(task.getTimeToComplete().getSeconds(), 60);
+    for (Task task : this.taskMap.values()) { // for each user task
+      Integer taskMinutes = (int) Math.floorDiv(task.getTimeToComplete().getSeconds(),
+          60); //length of task in minutes
+      for (int[] freeBlock : todaysFreeTime) {
+        int blockDuration = windowDuration(freeBlock); // length of the time block
 
+        // if the time of the block and the task are pretty close
+        if (taskMinutes - blockDuration < 30) {
+          task.addTimeSuggestion(freeBlock);
+        }
+      }
+      if (task.getTimeSuggestions().size() < 1) { // if there are no time suggestions found
+        task.setTimeSuggestion(todaysFreeTime); // add all the available time slots to the
+        // suggestions
 
-
-
-
-
+      }
     }
-
-
   }
+
+
   /**
    * Adds a task to the task list
    * @param task

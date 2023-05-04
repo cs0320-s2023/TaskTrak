@@ -61,7 +61,7 @@ public class Day {
    * [ [60,210], [660, 825]]
    */
 
-  public List<int[]> findAvailableTimeRanges() {
+  public ArrayList<int[]> findAvailableTimeRanges() {
     ArrayList<int[]> availableRanges = new ArrayList<>();
     boolean isBusy = false;
     int startHour = -1;

@@ -8,16 +8,16 @@ public class Event implements CalendarItem {
 
   private String name;
   private String notes;
-  private Duration duration;
+  private LocalDateTime endTime;
   private LocalDateTime startTime; // will need to consider how to manage time
   private Boolean isComplete;
 
 
   public Event(String name, String notes,
-      Duration duration, LocalDateTime startTime) {
+      LocalDateTime startTime, LocalDateTime endTime) {
     this.name = name;
     this.notes = notes;
-    this.duration = duration;
+    this.endTime = endTime;
     this.startTime = startTime;
     this.isComplete = false;
   }
@@ -47,13 +47,7 @@ public class Event implements CalendarItem {
   Getters and Setters
    */
 
-  public void setDuration(int hours, int minutes) {
-    this.duration = Duration.ofHours(hours).plusMinutes(minutes);
-  }
 
-  public Duration getDuration() {
-    return this.duration;
-  }
 
   @Override
   public void setName(String name) {
@@ -72,6 +66,15 @@ public class Event implements CalendarItem {
 
   public LocalDateTime getStartTime() {
     return this.startTime;
+  }
+
+
+  public void setEndTime(LocalDateTime endTime) {
+    this.endTime = endTime;
+  }
+
+  public LocalDateTime getEndTime() {
+    return this.endTime;
   }
 
   @Override
