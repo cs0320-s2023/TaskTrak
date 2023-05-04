@@ -26,11 +26,11 @@ import WeeklyCalendar from "./WeeklyCalendar";
 import React from "react";
 import { sampleCalendarItems, sampleTasks } from "./CalendarItem";
 import { CalendarItem } from "./CalendarItem";
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import firebase from 'firebase/compat/app';
-import * as firebaseui from 'firebaseui';
-import 'firebaseui/dist/firebaseui.css';
-import { AuthProvider } from './firebase/provider/AuthProvider';
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import firebase from "firebase/compat/app";
+import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
+import { AuthProvider } from "./firebase/provider/AuthProvider";
 import { TaskMenu } from "./TaskCard";
 import TaskList from "./TaskList";
 
@@ -81,8 +81,8 @@ function App(): JSX.Element {
     </Menu>,
   ];
 
-  function handleLogin(){
-    window.location.href="index.html";
+  function handleLogin() {
+    window.location.href = "index.html";
   }
 
   return (
@@ -131,6 +131,8 @@ function App(): JSX.Element {
         </Grid>
         <Grid item xs={6}>
           <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
+        </Grid>
+          <TaskMenu tasks={tasks} />
         </Grid>
       </Grid>
     </AuthProvider>
