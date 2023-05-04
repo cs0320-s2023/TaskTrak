@@ -16,10 +16,12 @@ import Firebase.Firestore;
 public class eventHandler implements Route {
 
   private Calendar calendar;
+  private Firestore firestore;
 
 
-  public eventHandler(Calendar calendar){
+  public eventHandler(Calendar calendar, Firestore firestore){
     this.calendar = calendar;
+    this.firestore = firestore;
   }
   @Override
   public Object handle(Request request, Response response) throws Exception {
@@ -41,7 +43,7 @@ public class eventHandler implements Route {
     try {
       String decodedNotes = URLDecoder.decode(notes, "UTF-8");
 
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
           .withZone(ZoneOffset.UTC);
 
       LocalDateTime startTime = LocalDateTime.parse(startDateString, formatter);
@@ -54,6 +56,7 @@ public class eventHandler implements Route {
 
       // Creates a Day object for the event day if it doesn't
       this.calendar.addDay(startTime.toLocalDate(), new Day());
+      firestore.
 
       // We need to get the time of the event
 
@@ -67,7 +70,7 @@ public class eventHandler implements Route {
 
 
     } catch (DateTimeParseException e) {
-      String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss'Z'";
+      String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
       response.status(400);
       response.body(errorMessage);
       return response;

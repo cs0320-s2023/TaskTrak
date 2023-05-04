@@ -4,6 +4,7 @@ import static spark.Spark.after;
 
 import Items.Calendar;
 import handlers.eventHandler;
+import Firebase.Firestore;
 import spark.Spark;
 
 public class server {
@@ -20,8 +21,9 @@ public class server {
       });
 
       Calendar userCalendar = new Calendar();
+      Firestore firestore = new Firestore();
 
-      eventHandler EV = new eventHandler(userCalendar);
+      eventHandler EV = new eventHandler(userCalendar,firestore);
 
       // For creating an event
       System.out.println("test: " + EV);
