@@ -33,30 +33,45 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
     function currentDateChange(currentDate: Date){
         props.setCurrentDate(currentDate);
     }
-    const [customAttributeValue, setCustomAttributeValue] = useState<string | number>(0);
+    // const [customAttributeValue, setCustomAttributeValue] = useState<string | number>(0);
 
     function commitChanges({ added, changed, deleted }: ChangeSet){
         if(added){
             const startingAddedID = props.calendarItems[props.calendarItems.length-1].id + 1;
             props.setCalendarItems([...props.calendarItems, {
                 id: startingAddedID,
-                title: 'title',
-                startDate: new Date(),
-                endDate: new Date(),
-                priority: 0, // Default priority value
+                title: added.summary,
+                startDate: added.startDate,
+                endDate: added.endDate,
+                priority: added.priority,
+                allDay: added.allDay,
+                repeat: added.rRule,
+                notes: added.notes,
                 ...added}])
+            let newEvent: CalendarItem = props.calendarItems[props.calendarItems.length-1];
+            fetch(`http://localhost:3232/createEvent?title=${newEvent.title}&startDate=${newEvent.startDate.toISOString}&endDate=${newEvent.endDate.toISOString}&id=${newEvent.id}&notes=${newEvent.notes}&isAllDay=${newEvent.allDay}&isRepeated=${newEvent.repeat}`)
+            console.log(props.calendarItems)
         }
 
         if(changed){
             props.setCalendarItems(props.calendarItems.map(appointment => (
                 changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
             )))
+            console.log(props.calendarItems)
         }
 
         if(deleted){
             props.setCalendarItems(props.calendarItems.filter(appointment => appointment.id !== deleted))
+            console.log(props.calendarItems)
         }
     }
+
+    // function onAddEvent(addedAppointment: object){
+    //     const addedEvent: CalendarItem = {
+    //         title: addedAppointment.title,
+
+    //     }
+    // }
 
     // function onValueChange(nextValue: string | number){
     //     setCustomAttributeValue(nextValue);
@@ -75,8 +90,15 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
                     currentDate={props.currentDate}
                     onCurrentDateChange={currentDateChange}
                 />
-                <EditingState onCommitChanges={commitChanges}/>
-                <EditRecurrenceMenu/>
+                <EditingState onCommitChanges={commitChanges} />
+                <EditRecurrenceMenu
+                    // overlayComponent={({visible, ...ol_props}) => (
+                    //     <EditRecurrenceMenu.Overlay
+                    //         {...ol_props}
+                    //         visible={}
+                    //     />
+                    // )}
+                />
                 <MonthView/>
                 <Toolbar
                     rootComponent={(tb_props) => (
@@ -98,9 +120,9 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps){
                         >
                             <AppointmentForm.Select
                                 {...props}
-                                value={appointmentData.prioritySelect}
+                                value={appointmentData.priority}
                                 onValueChange={(nextValue: string | number) => {
-                                    onFieldChange({ prioritySelect: nextValue })
+                                    onFieldChange({ priority: nextValue })
                                 }}
                                 availableOptions={priorityOptions}
                                 type='outlinedSelect'

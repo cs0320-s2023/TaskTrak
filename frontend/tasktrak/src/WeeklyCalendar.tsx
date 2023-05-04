@@ -46,17 +46,16 @@ export default function WeeklyCalendar(props: WeeklyCalendarProps) {
     if (added) {
       const startingAddedID =
         props.calendarItems[props.calendarItems.length - 1].id + 1;
-      props.setCalendarItems([
-        ...props.calendarItems,
-        {
-          id: startingAddedID,
-          title: "title",
-          startDate: new Date(),
-          endDate: new Date(),
-          priority: 0, // Default priority value
-          ...added,
-        },
-      ]);
+        props.setCalendarItems([...props.calendarItems, {
+            id: startingAddedID,
+            title: added.summary,
+            startDate: added.startDate,
+            endDate: added.endDate,
+            priority: added.priority,
+            allDay: added.allDay,
+            repeat: added.rRule,
+            notes: added.notes,
+            ...added}])
     }
 
     if (changed) {

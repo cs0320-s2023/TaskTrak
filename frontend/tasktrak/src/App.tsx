@@ -78,7 +78,7 @@ function App(): JSX.Element {
   ];
 
   function handleLogin(){
-    window.location.href="login.html";
+    window.location.href="index.html";
   }
 
   return (
