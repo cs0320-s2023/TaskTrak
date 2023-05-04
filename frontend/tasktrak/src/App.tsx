@@ -23,7 +23,6 @@ import {
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
-import React from "react";
 import { sampleCalendarItems, sampleTasks } from "./CalendarItem";
 import { CalendarItem } from "./CalendarItem";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
@@ -33,6 +32,9 @@ import "firebaseui/dist/firebaseui.css";
 import { AuthProvider } from "./firebase/provider/AuthProvider";
 import { TaskMenu } from "./TaskCard";
 import TaskList from "./TaskList";
+import React from "react";
+import ReactDOM from "react-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
