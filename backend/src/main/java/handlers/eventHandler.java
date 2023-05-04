@@ -56,7 +56,7 @@ public class eventHandler implements Route {
 
       // Creates a Day object for the event day if it doesn't
       this.calendar.addDay(startTime.toLocalDate(), new Day());
-      firestore.
+      firestore.createEventFirebase(event);
 
       // We need to get the time of the event
 
