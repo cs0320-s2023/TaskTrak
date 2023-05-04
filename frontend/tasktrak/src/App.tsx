@@ -20,6 +20,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import SignUp from "./firebase/SignUp";
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
@@ -35,6 +36,7 @@ import TaskList from "./TaskList";
 import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Login from "./firebase/Login";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -43,7 +45,8 @@ function App(): JSX.Element {
     setViewMode(viewMode === "month" ? "week" : "month");
   }
 
-  // could be updated with default value of CalendarItems[] if i move it to its own file ?
+  const [loginFormOpen, setLoginFormOpen] = useState(false);
+
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems);
 
   const [tasks, setTasks] = useState(sampleTasks);
@@ -84,11 +87,11 @@ function App(): JSX.Element {
   ];
 
   function handleLogin() {
-    window.location.href = "index.html";
+    setLoginFormOpen(true);
   }
 
   return (
-    <AuthProvider>
+    // <AuthProvider>
       <Grid
         container
         spacing={6}
@@ -96,6 +99,10 @@ function App(): JSX.Element {
         justifyContent="center"
         alignItems="center"
       >
+        <Grid item xs={12}>
+          <SignUp/>
+          <Login/>
+        </Grid>
         <Grid item xs={11}>
           <Button onClick={handleClick}>Accessibility Mode</Button>
         </Grid>
@@ -134,8 +141,9 @@ function App(): JSX.Element {
         <Grid item xs={12} md={5}>
           <TaskMenu tasks={tasks} />
         </Grid>
+        
       </Grid>
-    </AuthProvider>
+    // </AuthProvider>
   );
 }
 
