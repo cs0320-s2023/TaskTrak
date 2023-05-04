@@ -7,10 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="moshi" />
+        <module name="backend" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="backend" target="18" />
-    </bytecodeTargetLevel>
   </component>
 </project>

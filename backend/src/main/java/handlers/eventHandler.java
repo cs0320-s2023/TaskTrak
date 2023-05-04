@@ -22,6 +22,7 @@ public class eventHandler implements Route {
   }
   @Override
   public Object handle(Request request, Response response) throws Exception {
+      System.out.println("handle method being run");
     String title = request.queryParams("title");
     String startDateString = request.queryParams("startDate");
     String endDateString = request.queryParams("endDate");
@@ -57,6 +58,8 @@ public class eventHandler implements Route {
 
       System.out.println(event.getName());
 
+
+    System.out.println(Event);
 
 
     } catch (DateTimeParseException e) {
