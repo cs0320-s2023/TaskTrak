@@ -25,7 +25,7 @@ export const sampleCalendarItems: CalendarItem[] = [
 export interface Task {
   name: string;
   notes: string;
-  priority: 0 | 1 | 2;
+  priority: number;
   dread: 0 | 1 | 2;
   duration: number;
   dueDate: Date;
