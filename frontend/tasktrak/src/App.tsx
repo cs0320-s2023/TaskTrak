@@ -32,6 +32,7 @@ import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 import { AuthProvider } from './firebase/provider/AuthProvider';
 import { TaskMenu } from "./TaskCard";
+import TaskList from "./TaskList";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -126,9 +127,11 @@ function App(): JSX.Element {
           />
         </Grid>
         <Grid item xs={12}>
-      <TaskMenu tasks={tasks} />
-      </Grid>
-
+          <TaskMenu tasks={tasks} />
+        </Grid>
+        <Grid item xs={6}>
+          <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
+        </Grid>
       </Grid>
     </AuthProvider>
   );

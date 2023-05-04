@@ -41,5 +41,15 @@ export const sampleTasks: Task[] = [
         dueDate: new Date(2023, 4, 10, 12, 0),
         isComplete: true,
         timeSuggestions: [3, 4, 5, 3]
+    },
+    {
+        name: 'task2',
+        notes: 'note',
+        priority: 2,
+        dread: 1,
+        duration: 3,
+        dueDate: new Date(2023, 4, 10, 12, 0),
+        isComplete: true,
+        timeSuggestions: [3, 4, 5, 3]
     }
 ]
