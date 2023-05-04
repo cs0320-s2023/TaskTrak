@@ -1,6 +1,7 @@
 package handlers;
 
 import Items.Calendar;
+import Items.Day;
 import Items.Event;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -47,13 +48,20 @@ public class eventHandler implements Route {
       LocalDateTime endTime = LocalDateTime.parse(endDateString, formatter);
 
       Boolean allDay = Boolean.parseBoolean(isAllDay);
-      Boolean repeated = Boolean.parseBoolean(isRepeated);
+      // String repeated = Boolean.parseBoolean(isRepeated);
 
-      Event Event = new Event(title, decodedNotes, startTime, endTime);
+      Event event = new Event(title, decodedNotes, startTime, endTime);
 
-      if(Event.getName() != null) {
-        System.err.println(Event.getName());
-      }
+      // Creates a Day object for the event day if it doesn't
+      this.calendar.addDay(startTime.toLocalDate(), new Day());
+
+      // We need to get the time of the event
+
+
+
+
+      System.out.println(event.getName());
+
 
     System.out.println(Event);
 

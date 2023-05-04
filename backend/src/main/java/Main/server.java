@@ -20,13 +20,13 @@ public class server {
       });
 
       Calendar userCalendar = new Calendar();
+
       eventHandler EV = new eventHandler(userCalendar);
 
       // For creating an event
       System.out.println("test: " + EV);
 
-      Spark.get("createEvent", new eventHandler(userCalendar));
-      //Spark.post();
+      Spark.post("/createEvent", EV);
       Spark.init();
       Spark.awaitInitialization();
       System.out.println("Server started.");
