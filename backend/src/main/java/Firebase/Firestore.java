@@ -39,7 +39,7 @@ public class Firestore {
     }
   }
 
-  public void createEventFirebase() {
+  public void createEventFirebase(Event event) {
     try {
 //             let userID: string;
 //             const user = auth.currentUser;
@@ -60,7 +60,10 @@ public class Firestore {
       //  const userDoc = userQuerySnapshot.docs[0].data();
 
       Map<String, Object> docData = new HashMap<>();
-      docData.put("title", "Fake Event");
+      docData.put("title", event.getName());
+      docData.put("startTime", event.getStartTime());
+      docData.put("endTime", event.getEndTime());
+      docData.put("notes",event.getNotes());
       eventRef.set(docData);
 
         //  const eventRef = collection(db,userID + "/events")
