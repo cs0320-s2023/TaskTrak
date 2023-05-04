@@ -16,7 +16,7 @@ interface TaskMenuProps {
   tasks: Task[];
 }
 
-function getPriorityColor(priority: 0 | 1 | 2): string {
+function getPriorityColor(priority: number): string {
   switch (priority) {
     case 0:
       return "green";
@@ -28,7 +28,7 @@ function getPriorityColor(priority: 0 | 1 | 2): string {
       return "gray";
   }
 }
-function getPriorityLabel(priority: 0 | 1 | 2): string {
+function getPriorityLabel(priority: number): string {
   switch (priority) {
     case 0:
       return "Low";

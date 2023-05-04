@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Task } from "./CalendarItem";
 import React, { useState } from "react";
 
@@ -29,7 +30,7 @@ export default function TaskList(props: TaskListProps) {
   const [open, setOpen] = useState(false);
 
   const [taskName, setTaskName] = useState("");
-  const [dueDate, setDueDate] = useState<Date | null>(null);
+  const [dueDate, setDueDate] = useState<Date>(new Date());
   const [priority, setPriority] = useState(0);
   const [duration, setDuration] = useState(0);
 
@@ -37,21 +38,25 @@ export default function TaskList(props: TaskListProps) {
     setOpen(true);
   }
   function handleSave() {
+    // const startingAddedID = props.tasks[props.tasks.length-1].id + 1;
     const newTask: Task = {
-      id: Math.random().toString(36).substr(2, 9), // Generate a random ID
-      name: taskName,
-      dueDate: dueDate || new Date(),
-      priority: priority,
-      duration: duration,
-      completion: 0, // Default completion value
-      notes: "",
+        // id: 
+        name: taskName,
+        dueDate: dueDate,
+        priority: priority,
+        duration: duration,
+        // completion: 0, // Default completion value
+        isComplete: false,
+        notes: "",
+        dread: 0,
+        timeSuggestions: []
     };
 
     props.setTasks([...props.tasks, newTask]);
 
     // Reset input values
     setTaskName("");
-    setDueDate(null);
+    setDueDate(new Date());
     setPriority(0);
     setDuration(0);
 
@@ -96,10 +101,14 @@ export default function TaskList(props: TaskListProps) {
           />
 
           <DialogContentText>Due Date</DialogContentText>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              value={dueDate}
-              onChange={(newValue) => setDueDate(newValue)}
+              value={new Date(2023, 4, 1)}
+              onChange={(newValue) => {
+                if(newValue){
+                    setDueDate(newValue);
+                }
+              }}
             />
           </LocalizationProvider>
           <DialogContentText>Priority</DialogContentText>
@@ -123,6 +132,7 @@ export default function TaskList(props: TaskListProps) {
             fullWidth
             variant="standard"
           />
+          <Button onClick={handleSave}>Save</Button>
         </DialogContent>
       </Dialog>
       <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
