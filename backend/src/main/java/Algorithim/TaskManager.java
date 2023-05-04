@@ -32,10 +32,10 @@ public class TaskManager {
   public void gatherTimeSuggestions(Calendar calendar) {
     // available time slots
     LocalDate todaysDate = LocalDate.now();
-    Day todaysSchedule = calendar.getSchedule(todaysDate);
+    Day todaysSchedule = calendar.getSchedule(todaysDate); // Day object for the current day
     ArrayList<int[]> todaysFreeTime = todaysSchedule.findAvailableTimeRanges();
 
-    for (Task task : this.taskMap.values()) {
+    for (Task task : this.taskMap.values()) { // for each user task
       Integer taskMinutes = (int) Math.floorDiv(task.getTimeToComplete().getSeconds(),
           60); //length of task in minutes
       for (int[] freeBlock : todaysFreeTime) {
