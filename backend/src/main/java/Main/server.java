@@ -4,7 +4,6 @@ import static spark.Spark.after;
 
 import Items.Calendar;
 import handlers.eventHandler;
-import java.beans.EventHandler;
 import spark.Spark;
 
 public class server {
@@ -20,13 +19,13 @@ public class server {
         response.header("Access-Control-Allow-Methods", "*");
       });
 
-
       Calendar userCalendar = new Calendar();
       eventHandler EV = new eventHandler(userCalendar);
 
       // For creating an event
+      System.out.println("test: " + EV);
 
-      Spark.post("/createEvent", EV);
+      Spark.get("createEvent", new eventHandler(userCalendar));
       //Spark.post();
       Spark.init();
       Spark.awaitInitialization();

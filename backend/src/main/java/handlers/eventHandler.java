@@ -10,6 +10,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import java.net.URLDecoder;
+import Firebase.Firestore;
 
 public class eventHandler implements Route {
 
@@ -21,7 +22,10 @@ public class eventHandler implements Route {
   }
   @Override
   public Object handle(Request request, Response response) throws Exception {
-      System.out.println("handle method being run");
+    System.err.println("handle method being run");
+    Firestore test = new Firestore();
+    test.createEventFirebase();
+
     String title = request.queryParams("title");
     String startDateString = request.queryParams("startDate");
     String endDateString = request.queryParams("endDate");
@@ -48,7 +52,7 @@ public class eventHandler implements Route {
       Event Event = new Event(title, decodedNotes, startTime, endTime);
 
       if(Event.getName() != null) {
-        System.out.println(Event.getName());
+        System.err.println(Event.getName());
       }
 
     System.out.println(Event);

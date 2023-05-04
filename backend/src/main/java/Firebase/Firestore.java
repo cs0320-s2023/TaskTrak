@@ -1,38 +1,45 @@
+package Firebase;
+
 import static com.google.firebase.FirebaseApp.initializeApp;
 import static com.google.firebase.cloud.FirestoreClient.getFirestore;
 
 import Items.Event;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Firebase {
-  private Firestore db;
+public class Firestore {
+  private com.google.cloud.firestore.Firestore db;
 
-  public Firebase() {
+  public Firestore() {
     try {
       InputStream serviceAccount = new FileInputStream(
-          "backend/private/tasktrak-c6e87-firebase-adminsdk-mtf84-cd7c4ba400.json");
+          "private/tasktrak-c6e87-firebase-adminsdk-mtf84-cd7c4ba400.json");
       GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
       FirebaseOptions options = new FirebaseOptions.Builder()
           .setCredentials(credentials)
           .build();
       FirebaseApp app = initializeApp(options);
       this.db = getFirestore(app);
-    } catch (IOException e) {
-      System.err.println("File not found or able to construct");
+    } catch (FileNotFoundException e) {
+      System.err.println("File not found");
+    } catch (SecurityException e) {
+      System.err.println("Security????");
+    }
+    catch (IOException e) {
+      System.err.println("Something else wrong");
     }
   }
 
-  public void createEventFirebase(Event event) {
+  public void createEventFirebase() {
     try {
 //             let userID: string;
 //             const user = auth.currentUser;
