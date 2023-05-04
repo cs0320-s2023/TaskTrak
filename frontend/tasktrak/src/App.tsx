@@ -24,13 +24,14 @@ import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
 import React from "react";
-import { sampleCalendarItems } from "./CalendarItem";
+import { sampleCalendarItems, sampleTasks } from "./CalendarItem";
 import { CalendarItem } from "./CalendarItem";
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 import { AuthProvider } from './firebase/provider/AuthProvider';
+import { TaskMenu } from "./TaskCard";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -41,6 +42,8 @@ function App(): JSX.Element {
 
   // could be updated with default value of CalendarItems[] if i move it to its own file ?
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems);
+
+  const [tasks, setTasks] = useState(sampleTasks);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -122,6 +125,10 @@ function App(): JSX.Element {
             setCalendarItems={setCalendarItems}
           />
         </Grid>
+        <Grid item xs={12}>
+      <TaskMenu tasks={tasks} />
+      </Grid>
+
       </Grid>
     </AuthProvider>
   );

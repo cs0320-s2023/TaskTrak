@@ -26,9 +26,6 @@ public class eventHandler implements Route {
   @Override
   public Object handle(Request request, Response response) throws Exception {
     System.err.println("handle method being run");
-    Firestore test = new Firestore();
-    test.createEventFirebase();
-
     String title = request.queryParams("title");
     String startDateString = request.queryParams("startDate");
     String endDateString = request.queryParams("endDate");
@@ -75,13 +72,6 @@ public class eventHandler implements Route {
       response.body(errorMessage);
       return response;
     }
-
-
     return null;
-
-
-
-
-
   }
 }
