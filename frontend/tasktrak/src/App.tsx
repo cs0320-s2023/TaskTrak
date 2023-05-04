@@ -134,8 +134,10 @@ function App(): JSX.Element {
         </Grid>
           <TaskMenu tasks={tasks} />
         </Grid>
-      </Grid>
-    </AuthProvider>
+        <Grid item xs={6}>
+          <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
+        </Grid>
+      </AuthProvider>
   );
 }
 
