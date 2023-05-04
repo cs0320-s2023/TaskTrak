@@ -37,8 +37,10 @@ public class Calendar {
    * @param day - the day schedule object we are adding
    */
     public void addDay(LocalDate date, Day day) {
-      bigCalendar.put(date, day);
-    }
+      if(!this.bigCalendar.containsKey(date)) {
+        this.bigCalendar.put(date, day);
+        }
+      }
 
 
   /**

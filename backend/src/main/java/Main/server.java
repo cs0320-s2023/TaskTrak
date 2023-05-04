@@ -10,7 +10,7 @@ import spark.Spark;
 public class server {
 
 
-  public class Server {
+  public static class Server {
     public static void main(String[] args) {
 
       Spark.port(3232);
@@ -22,12 +22,12 @@ public class server {
 
 
       Calendar userCalendar = new Calendar();
+
       eventHandler EV = new eventHandler(userCalendar);
 
       // For creating an event
 
       Spark.post("/createEvent", EV);
-      //Spark.post();
       Spark.init();
       Spark.awaitInitialization();
       System.out.println("Server started.");
