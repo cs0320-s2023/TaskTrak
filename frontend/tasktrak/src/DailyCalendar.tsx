@@ -29,10 +29,13 @@ export default function DailyCalendar(props: DailyCalendarProps){
             const startingAddedID = props.calendarItems[props.calendarItems.length-1].id + 1;
             props.setCalendarItems([...props.calendarItems, {
                 id: startingAddedID,
-                title: 'title',
-                startDate: new Date(),
-                endDate: new Date(),
-                priority: 0,
+                title: added.summary,
+                startDate: added.startDate,
+                endDate: added.endDate,
+                priority: added.priority,
+                allDay: added.allDay,
+                repeat: added.rRule,
+                notes: added.notes,
                 ...added}])
         }
 
