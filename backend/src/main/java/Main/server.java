@@ -2,6 +2,7 @@ package Main;
 
 import static spark.Spark.after;
 
+import Items.Calendar;
 import handlers.eventHandler;
 import java.beans.EventHandler;
 import spark.Spark;
@@ -20,8 +21,8 @@ public class server {
       });
 
 
-
-      eventHandler EV = new eventHandler();
+      Calendar userCalendar = new Calendar();
+      eventHandler EV = new eventHandler(userCalendar);
 
       // For creating an event
 

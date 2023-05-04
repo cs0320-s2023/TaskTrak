@@ -1,5 +1,6 @@
 package handlers;
 
+import Items.Calendar;
 import Items.Event;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -12,8 +13,11 @@ import java.net.URLDecoder;
 
 public class eventHandler implements Route {
 
+  private Calendar calendar;
 
-  public eventHandler(){
+
+  public eventHandler(Calendar calendar){
+    this.calendar = calendar;
   }
   @Override
   public Object handle(Request request, Response response) throws Exception {
@@ -41,6 +45,12 @@ public class eventHandler implements Route {
       Boolean repeated = Boolean.parseBoolean(isRepeated);
 
       Event Event = new Event(title, decodedNotes, startTime, endTime);
+
+      if(Event.getName() != null) {
+        System.out.println(Event.getName());
+      }
+
+
     } catch (DateTimeParseException e) {
       String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss'Z'";
       response.status(400);
@@ -48,6 +58,8 @@ public class eventHandler implements Route {
       return response;
     }
 
+
+    return null;
 
 
 
