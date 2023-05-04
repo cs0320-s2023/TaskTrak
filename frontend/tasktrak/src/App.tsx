@@ -126,14 +126,14 @@ function App(): JSX.Element {
             setCalendarItems={setCalendarItems}
           />
         </Grid>
-        <Grid item xs={12}>
-          <TaskMenu tasks={tasks} />
-        </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} md={7}>
           <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
         </Grid>
+        <Grid item xs={12} md={5}>
+          <TaskMenu tasks={tasks} />
         </Grid>
-      </AuthProvider>
+      </Grid>
+    </AuthProvider>
   );
 }
 
