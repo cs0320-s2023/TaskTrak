@@ -83,7 +83,7 @@ public class Task implements CalendarItem{
   }
 
 
-  public ArrayList<int[]> getTimeSuggestions(){
+  public ArrayList<Time[]> getTimeSuggestions(){
     return this.getTimeSuggestions();
   }
 

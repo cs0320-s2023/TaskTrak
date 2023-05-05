@@ -37,8 +37,9 @@ public class Day {
     if (window == null || window.length != 2) {
       throw new IllegalArgumentException("Window array should have exactly two elements");
     }
-    if (window[0] < 0 || window[0] >= 1440 || window[1] < 0 || window[1] >= 1440) {
-      throw new IllegalArgumentException("Window values should be between 0 and 1439 (inclusive)");
+    if (window[0] < 0 || window[0] >= 1440 || window[1] < 0 || window[1] >= 1440 || window[1] - window[0] >= 0) {
+      throw new IllegalArgumentException("Window values should be between 0 and 1439 (inclusive),"
+          + " and the second value should be greater than the first");
     }
     int duration = window[1] - window[0];
     if (duration < 0) {
@@ -48,9 +49,7 @@ public class Day {
   }
 
 
-  public TaskManager getTm(){
-    return this.tm;
-  }
+
 
 
   /**
@@ -60,7 +59,6 @@ public class Day {
    * Example: if the only free time in a day is from 1am-3:30am and 11am-1:45pm
    * [ [60,210], [660, 825]]
    */
-
   public ArrayList<int[]> findAvailableTimeRanges() {
     ArrayList<int[]> availableRanges = new ArrayList<>();
     boolean isBusy = false;
@@ -136,7 +134,7 @@ public class Day {
   public void bookTimeRange(int startHourIndex, int startMinuteIndex, int endHourIndex,
       int endMinuteIndex, boolean set) {
     // Convert hour and minute indices to slot indices
-    if (endHourIndex == 4) {
+    if (endHourIndex == 4) { // this is to mark off the final slot in the day
       timeSlots[23][3] = set;
     }
     int startIndex = (startHourIndex * 4) + startMinuteIndex;
@@ -154,6 +152,8 @@ public class Day {
   public boolean[][] getTimeSlots(){
     return this.timeSlots;
   }
-
+  public TaskManager getTm(){
+    return this.tm;
+  }
 
 }

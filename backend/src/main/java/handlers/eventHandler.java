@@ -55,6 +55,7 @@ public class eventHandler implements Route {
 
     try {
       String decodedNotes = URLDecoder.decode(notes, "UTF-8");
+      String decodedTitle = URLDecoder.decode(title, "UTF-8");
       System.err.println("notes");
 
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -69,7 +70,7 @@ public class eventHandler implements Route {
       // String repeated = Boolean.parseBoolean(isRepeated);
       System.err.println("test again");
 
-      Event event = new Event(title, decodedNotes, startTime, endTime, id, allDay);
+      Event event = new Event(decodedTitle, decodedNotes, startTime, endTime, id, allDay);
       firestore.createEventFirebase(event,tokenID);
 
       System.out.println(event.getName());
