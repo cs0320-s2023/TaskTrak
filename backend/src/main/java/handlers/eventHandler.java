@@ -70,7 +70,7 @@ public class eventHandler implements Route {
       System.err.println("test again");
 
       Event event = new Event(title, decodedNotes, startTime, endTime, id, allDay);
-      firestore.createEventFirebase(event);
+      firestore.createEventFirebase(event,tokenID);
 
       System.out.println(event.getName());
 

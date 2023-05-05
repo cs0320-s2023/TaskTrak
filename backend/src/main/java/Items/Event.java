@@ -108,6 +108,9 @@ public class Event implements CalendarItem {
     return this.isComplete;
   }
 
+  public Integer getId(){return this.id;}
+
+  public boolean getIsAllDay() {return this.isAllDay;}
 
   @Override
   public void changeCompletion() {

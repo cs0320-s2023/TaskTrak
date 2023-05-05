@@ -23,9 +23,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import org.checkerframework.checker.units.qual.A;
 
 public class Firestore {
   private com.google.cloud.firestore.Firestore db;
+  private String testingTokenID;
 
   public Firestore() {
     try {
@@ -37,10 +39,13 @@ public class Firestore {
           .build();
       FirebaseApp app = initializeApp(options);
       this.db = getFirestore(app);
+      this.testingTokenID = FirebaseAuth.getInstance().createCustomToken("123456789");
     } catch (FileNotFoundException e) {
       System.err.println("File not found");
     } catch (SecurityException e) {
       System.err.println("Security????");
+    } catch (FirebaseAuthException e) {
+      System.err.println("Failed to create token");
     }
     catch (IOException e) {
       System.err.println("Something else wrong");
@@ -49,7 +54,7 @@ public class Firestore {
 
   public void createEventFirebase(Event event, String tokenID) throws FirebaseAuthException{
       DocumentReference userRef = getUserRef(tokenID);
-      DocumentReference eventRef = userRef.collection("events").document("0");
+      DocumentReference eventRef = userRef.collection("events").document(event.getId().toString());
       //  const userQuery = query(userRef,where("id","==",userID)) //Will be used with token to get userID?
       //  const userQuerySnapshot = await getDocs(userQuery)
       //  const userDoc = userQuerySnapshot.docs[0].data();
@@ -60,7 +65,8 @@ public class Firestore {
       docData.put("endTime", event.getEndTime().toLocalTime().toString());
       docData.put("startDate", event.getStartTime().toLocalDate().toString());
       docData.put("endDate", event.getEndTime().toLocalDate().toString());
-      docData.put("notes",event.getNotes());
+      docData.put("notes", event.getNotes());
+      docData.put("isAllDay", event.getIsAllDay());
       ApiFuture<WriteResult> test = eventRef.set(docData); //SET FAILING FOR SOME REASON
 
         //  const eventRef = collection(db,userID + "/events")
@@ -88,6 +94,8 @@ public class Firestore {
   public ArrayList<String[]> retrieveADayTimes(LocalDateTime dateTime,String userTokenID) throws FirebaseAuthException{
     DocumentReference userRef = getUserRef(userTokenID);
     CollectionReference events = userRef.collection("events");
+//    events.whereIn()
+    return new ArrayList<>();
 
 
   }
