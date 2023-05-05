@@ -26,7 +26,6 @@ public class testDay {
     assertEquals(1, slots.size());
     assertEquals(0, slots.get(0)[0]);
     assertEquals(1439, slots.get(0)[1]);
-    assertEquals(1,2);
 
   }
 
@@ -73,7 +72,7 @@ public class testDay {
   public void testFindAvailableTimeRangesAllBooked() {
     day.bookTimeRange(0, 0, 23, 4, true);
     List<int[]> ranges = day.findAvailableTimeRanges();
-    Assertions.assertTrue(ranges.isEmpty());
+    assertTrue(ranges.isEmpty());
   }
 
   @Test

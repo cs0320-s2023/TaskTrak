@@ -56,10 +56,6 @@ public class TaskManager {
         }
       }
 
-
-      // I need to think through the logic of this
-
-
       if (tempList.size() < 1) { // if there are no time suggestions found
 
         // this will sort all the free time blocks from longest to shortest
@@ -132,6 +128,11 @@ public class TaskManager {
   }
 
 
+  /**
+   * Converts an int[] to a Time[]
+   * @param minutes
+   * @return
+   */
   public static Time[] convertToTime(int[] minutes) {
     Time start = Time.valueOf(LocalTime.ofSecondOfDay(minutes[0] * 60));
     Time end = Time.valueOf(LocalTime.ofSecondOfDay(minutes[1] * 60));

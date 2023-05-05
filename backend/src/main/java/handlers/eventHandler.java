@@ -81,8 +81,13 @@ public class eventHandler implements Route {
 
       System.out.println(event.getName());
 
+<<<<<<< HEAD
+      System.out.println(event);
+
+=======
 
     System.out.println(event);
+>>>>>>> 705c6d7c4d4e63be5d42564a16663d7f7a02738a
 
 
     } catch (DateTimeParseException e) {
