@@ -1,5 +1,4 @@
 package calendarTests;
-<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -7,17 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import Items.Day;
 import java.util.List;
-=======
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-import Items.Day;
-import java.util.List;
-import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
->>>>>>> 705c6d7c4d4e63be5d42564a16663d7f7a02738a
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,10 +25,7 @@ public class testDay {
     assertEquals(1, slots.size());
     assertEquals(0, slots.get(0)[0]);
     assertEquals(1439, slots.get(0)[1]);
-<<<<<<< HEAD
-=======
 
->>>>>>> 705c6d7c4d4e63be5d42564a16663d7f7a02738a
   }
 
 
@@ -85,11 +71,8 @@ public class testDay {
   public void testFindAvailableTimeRangesAllBooked() {
     day.bookTimeRange(0, 0, 23, 4, true);
     List<int[]> ranges = day.findAvailableTimeRanges();
-<<<<<<< HEAD
     assertTrue(ranges.isEmpty());
-=======
-    Assertions.assertTrue(ranges.isEmpty());
->>>>>>> 705c6d7c4d4e63be5d42564a16663d7f7a02738a
+    assertTrue(ranges.isEmpty());
   }
 
   @Test
