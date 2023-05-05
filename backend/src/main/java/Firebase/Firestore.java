@@ -4,9 +4,11 @@ import static com.google.firebase.FirebaseApp.initializeApp;
 import static com.google.firebase.cloud.FirestoreClient.getFirestore;
 
 import Items.Event;
+import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.DocumentReference;
 
+import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import java.io.FileInputStream;
@@ -52,23 +54,26 @@ public class Firestore {
 
 
       String userID = "testUser1";
-
+      System.err.println("idk");
       DocumentReference userRef = db.collection("users").document(userID);
       DocumentReference eventRef = userRef.collection("events").document("0");
       //  const userQuery = query(userRef,where("id","==",userID)) //Will be used with token to get userID?
       //  const userQuerySnapshot = await getDocs(userQuery)
       //  const userDoc = userQuerySnapshot.docs[0].data();
 
+      System.err.println("Failed before");
       Map<String, Object> docData = new HashMap<>();
       docData.put("title", event.getName());
-      docData.put("startTime", event.getStartTime());
-      docData.put("endTime", event.getEndTime());
+      docData.put("startTime", event.getStartTime().toString());
+      docData.put("endTime", event.getEndTime().toString());
       docData.put("notes",event.getNotes());
-      eventRef.set(docData);
+      System.err.println("docData: " + docData);
+      ApiFuture<WriteResult> test = eventRef.set(docData); //SET FAILING FOR SOME REASON
+      System.err.println("written: " + test.get());
 
         //  const eventRef = collection(db,userID + "/events")
      } catch (Exception e) {
-
+       System.err.println("FAILED: " + e);
      }
    }
 

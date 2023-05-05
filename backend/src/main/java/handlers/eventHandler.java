@@ -5,6 +5,7 @@ import Items.Day;
 import Items.Event;
 import Items.timeMethods;
 import java.time.LocalDate;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -55,6 +56,7 @@ public class eventHandler implements Route {
 
     try {
       String decodedNotes = URLDecoder.decode(notes, "UTF-8");
+      System.err.println("notes");
 
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
           .withZone(ZoneOffset.UTC);
@@ -64,11 +66,14 @@ public class eventHandler implements Route {
       LocalDate eventDate = startTime.toLocalDate();
       Boolean allDay = Boolean.parseBoolean(isAllDay);
       // String repeated = Boolean.parseBoolean(isRepeated);
+      System.err.println("test again");
 
       Event event = new Event(title, decodedNotes, startTime, endTime);
+      System.out.println(event.getName());
 
       // Creates a Day object for the event day if it doesn't
       this.calendar.addDay(startTime.toLocalDate(), new Day());
+      System.out.println("added day");
       firestore.createEventFirebase(event);
 
       int startHour = event.getStartTime().getHour();
@@ -118,14 +123,25 @@ public class eventHandler implements Route {
 
       System.out.println(event.getName());
 
+<<<<<<< HEAD
       System.out.println(event);
 
+=======
+
+    System.out.println(event);
+>>>>>>> 705c6d7c4d4e63be5d42564a16663d7f7a02738a
 
 
     } catch (DateTimeParseException e) {
       String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
       response.status(400);
       response.body(errorMessage);
+      System.err.println(e);
+      return response;
+    } catch (UnsupportedEncodingException e) {
+      System.err.println("Invalid string for notes");
+      response.status(400);
+      response.body("Invalid string for notes.");
       return response;
     }
     return null;

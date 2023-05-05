@@ -13,7 +13,7 @@ public class server {
   public static class Server {
     public static void main(String[] args) {
 
-      Spark.port(3232);
+      Spark.port(3030);
 
       after((request, response) -> {
         response.header("Access-Control-Allow-Origin", "*");
@@ -28,7 +28,7 @@ public class server {
       // For creating an event
       System.out.println("test: " + EV);
 
-      Spark.post("/createEvent", EV);
+      Spark.post("createEvent", EV);
       Spark.init();
       Spark.awaitInitialization();
       System.out.println("Server started.");
