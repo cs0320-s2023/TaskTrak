@@ -14,6 +14,7 @@ public class server {
   public static class Server {
     public static void main(String[] args) {
 
+
       Spark.port(3030);
 
       after((request, response) -> {
@@ -22,11 +23,12 @@ public class server {
       });
 
 
+
       Firestore firestore = new Firestore();
 
       Calendar userCalendar = new Calendar();
 
-      eventHandler EV = new eventHandler(userCalendar,firestore);
+      eventHandler EV = new eventHandler(userCalendar, firestore);
       deleteEventHandler deleteEvent = new deleteEventHandler();
 
       // For creating an event

@@ -1,9 +1,41 @@
 package Items;
 
+import java.time.LocalDateTime;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Calendar;
+
 public class timeMethods {
 
 
   public timeMethods(){};
+
+
+
+  public void checkDayChange() {
+    java.util.Calendar cal = Calendar.getInstance();
+    int previousDay = cal.get(Calendar.DAY_OF_MONTH);
+
+    while (true) {
+      cal = Calendar.getInstance();
+      int currentDay = cal.get(Calendar.DAY_OF_MONTH);
+
+      if (currentDay != previousDay) {
+        // call your functions here
+        System.out.println("The day has changed!");
+
+        // update previous day
+        previousDay = currentDay;
+      }
+
+      // sleep for 1 minute
+      try {
+        Thread.sleep(60 * 1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 
 
   /**

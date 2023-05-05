@@ -7,14 +7,6 @@ import java.time.LocalDateTime;
 public class Event implements CalendarItem {
 
 
-//  String title = request.queryParams("title");
-//  String startDateString = request.queryParams("startDate");
-//  String endDateString = request.queryParams("endDate");
-//  String eventID = request.queryParams("id");
-//  String notes = request.queryParams("notes");
-//  String isAllDay = request.queryParams("isAllDay");
-//  String isRepeated = request.queryParams("isRepeated");
-//  String tokenID = request.queryParams("tokenID");
   private String name;
   private String notes;
   private LocalDateTime endTime;
@@ -56,12 +48,6 @@ public class Event implements CalendarItem {
 //        timeToComplete, dueDate, false);
 //    return newTask;
 //  }
-
-
-
-  /*
-  Getters and Setters
-   */
 
 
 
