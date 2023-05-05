@@ -74,7 +74,7 @@ public class Task implements CalendarItem{
    * Adds a time block to the time suggestions list
    * @param timeBlock - an integer array representing a time suggestion
    */
-  public void addTimeSuggestion(int[] timeBlock) {
+  public void addTimeSuggestion(Time[] timeBlock) {
     this.getTimeSuggestions().add(timeBlock);
   }
 
