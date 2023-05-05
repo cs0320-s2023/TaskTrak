@@ -1,34 +1,58 @@
 import React, { useState } from 'react';
-import { TextField, Button } from "@mui/material";
-import firebaseui from 'firebaseui';
-import firebase from 'firebase/compat';
+import { auth } from './config';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { TextField, Button } from '@mui/material'
 
-export default function signUp(){
-    const uiConfig: firebaseui.auth.Config = {
-        callbacks: {
-            signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-                return true;
-            },
-            uiShown: () => {
-                const loader = document.getElementById('loader');
-                if(loader){
-                    loader.style.display = 'none';
-                }
-            }
-        },
-        signInFlow: 'popup',
-        signInSuccessUrl: 'index.html', // TEMPORARY I THINK
-        signInOptions: [
-            firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        ]
+// const auth = getAuth();
+
+const Signup = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(email);
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      console.error("Passwords don't match");
+      return;
     }
-    
-    const ui = new firebaseui.auth.AuthUI(firebase.auth());
-    
-    ui.start('#firebaseui-auth-container', uiConfig)
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    return(
-        <div id='firebaseui-auth-container'/>
-    );
-}
+  return (
+    <form onSubmit={handleSignup}>
+        <TextField
+            autoFocus
+            id="email"
+            type="email"
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+            autoFocus
+            id="password"
+            type="password"
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+        />
+        <TextField
+            autoFocus
+            id="confirm-password"
+            type="password"
+            label="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <Button type="submit">Signup</Button>
+    </form>
+  );
+};
+
+export default Signup;

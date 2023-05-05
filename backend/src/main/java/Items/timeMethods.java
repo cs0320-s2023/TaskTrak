@@ -31,7 +31,7 @@ public class timeMethods {
    * @param block - 15 minute block within the hour
    * @return - integer representing the number
    */
-  public int getMinuteOfDay(int hour, int block) {
+  public static int getMinuteOfDay(int hour, int block) {
     return hour * 60 + block * 15;
   }
 

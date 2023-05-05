@@ -27,19 +27,19 @@ public class Event implements CalendarItem {
    * Converts an Event Object into an task object to be added to the calendar
    * @return - the new Event object
    */
-  public Task eventToTask(Rating priority, Rating dread,
-      Duration timeToComplete, LocalDateTime dueDate){
-
-    String taskName = this.name != null ? new String(this.name) : "";
-    // assign's empty string if the name is null
-    String taskNotes = this.notes != null ? new String(this.notes) : "";
-    Rating priorityCopy = priority != null ? priority : Rating.MEDIUM;
-    Rating dreadCopy = dread != null ? dread : Rating.MEDIUM;
-
-    Task newTask = new Task(taskName, taskNotes, priorityCopy, dreadCopy,
-        timeToComplete, dueDate, false);
-    return newTask;
-  }
+//  public Task eventToTask(Rating priority, Rating dread,
+//      Duration timeToComplete, LocalDateTime dueDate){
+//
+//    String taskName = this.name != null ? new String(this.name) : "";
+//    // assign's empty string if the name is null
+//    String taskNotes = this.notes != null ? new String(this.notes) : "";
+//    Rating priorityCopy = priority != null ? priority : Rating.MEDIUM;
+//    Rating dreadCopy = dread != null ? dread : Rating.MEDIUM;
+//
+//    Task newTask = new Task(taskName, taskNotes, priorityCopy, dreadCopy,
+//        timeToComplete, dueDate, false);
+//    return newTask;
+//  }
 
 
 
