@@ -42,7 +42,7 @@ public class eventHandler implements Route {
    */
   @Override
   public Object handle(Request request, Response response) throws Exception {
-    System.err.println("handle method being run");
+    System.err.println("eventHandler handle method being run");
     String title = request.queryParams("title");
     String startDateString = request.queryParams("startDate");
     String endDateString = request.queryParams("endDate");
@@ -50,8 +50,7 @@ public class eventHandler implements Route {
     String notes = request.queryParams("notes");
     String isAllDay = request.queryParams("isAllDay");
     String isRepeated = request.queryParams("isRepeated");
-
-//    String tokenID = request.queryParams("tokenID"); //Used for user identification, not needed
+    String tokenID = request.queryParams("tokenID"); //Used for user identification, not needed
 //    at the moment
 
     try {
@@ -64,17 +63,22 @@ public class eventHandler implements Route {
       LocalDateTime startTime = LocalDateTime.parse(startDateString, formatter);
       LocalDateTime endTime = LocalDateTime.parse(endDateString, formatter);
       LocalDate eventDate = startTime.toLocalDate();
+
+      int id = Integer.parseInt(eventID);
       Boolean allDay = Boolean.parseBoolean(isAllDay);
       // String repeated = Boolean.parseBoolean(isRepeated);
       System.err.println("test again");
 
-      Event event = new Event(title, decodedNotes, startTime, endTime);
+      Event event = new Event(title, decodedNotes, startTime, endTime, id, allDay);
+      firestore.createEventFirebase(event);
+
       System.out.println(event.getName());
 
       // Creates a Day object for the event day if it doesn't
-      this.calendar.addDay(startTime.toLocalDate(), new Day());
+
       System.out.println("added day");
-      firestore.createEventFirebase(event);
+
+
 
       this.calendar.blockOffTime(event,allDay);
 

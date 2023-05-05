@@ -24,6 +24,13 @@ public class Calendar {
       createDayObjectForToday();
     }
 
+//
+//    public void bigUpdater(ArrayList[String[]], ) {
+//    //Joel is passing me 2 object arays of strings that are start and end time
+//      // convert these to minutes of day
+//      //
+
+
   /**
    * Returns the day object for that specific Day
    * @param date - date we want to look at
@@ -82,6 +89,8 @@ public class Calendar {
       scheduler.schedule(this::createDayObjectForToday, initialDelay, TimeUnit.SECONDS);
   }
 
+
+
   public void blockOffTime(Event event, boolean allDay) {
     int startHour = event.getStartTime().getHour();
     int endHour = event.getEndTime().getHour();
@@ -97,15 +106,19 @@ public class Calendar {
     if (!allDay) { // if the event is not all day
 
       LocalDate date = startDate; // date in the loop
+
+
+
       while (!date.isAfter(endDate)) { // within date range
+        this.addDay(date, new Day()); // adds day object to calendar if it does not exist
         dateList.add(date); // add date
         date = date.plusDays(1); // iterate by 1 date within the range
       }
       // for each day get the calendar Day Object
       for (LocalDate day : dateList) {
         int dayNum = 1;
-        this.addDay(day, new Day()); // creates day object if it doesn't exist already
-
+//        this.addDay(day, new Day()); // creates day object if it doesn't exist already
+//
         if (dateList.size() > 1) { // if event spans multiple days
           if (dayNum == 0) { // first day of multi day
             this.getSchedule(day).bookTimeRange(startHour, startMinuteBlock,

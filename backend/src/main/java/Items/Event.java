@@ -6,20 +6,36 @@ import java.time.LocalDateTime;
 
 public class Event implements CalendarItem {
 
+
+//  String title = request.queryParams("title");
+//  String startDateString = request.queryParams("startDate");
+//  String endDateString = request.queryParams("endDate");
+//  String eventID = request.queryParams("id");
+//  String notes = request.queryParams("notes");
+//  String isAllDay = request.queryParams("isAllDay");
+//  String isRepeated = request.queryParams("isRepeated");
+//  String tokenID = request.queryParams("tokenID");
   private String name;
   private String notes;
   private LocalDateTime endTime;
   private LocalDateTime startTime; // will need to consider how to manage time
   private Boolean isComplete;
+  private int id;
+  private boolean isAllDay;
+  //private boolean isRepeated;
+
+
 
 
   public Event(String name, String notes,
-      LocalDateTime startTime, LocalDateTime endTime) {
+      LocalDateTime startTime, LocalDateTime endTime, int id, boolean isAllDay) {
     this.name = name;
     this.notes = notes;
     this.endTime = endTime;
     this.startTime = startTime;
     this.isComplete = false;
+    this.id = id;
+    this.isAllDay = isAllDay;
   }
 
 
