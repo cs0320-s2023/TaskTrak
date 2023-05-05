@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import Items.Day;
 import java.util.List;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,6 +74,7 @@ public class testDay {
     List<int[]> ranges = day.findAvailableTimeRanges();
     assertTrue(ranges.isEmpty());
     assertTrue(ranges.isEmpty());
+
   }
 
   @Test

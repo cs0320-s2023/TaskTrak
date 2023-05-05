@@ -5,7 +5,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -78,7 +80,54 @@ public class Calendar {
       Duration duration = Duration.between(now, tomorrowMidnight);
       long initialDelay = duration.getSeconds();
       scheduler.schedule(this::createDayObjectForToday, initialDelay, TimeUnit.SECONDS);
+  }
+
+  public void blockOffTime(Event event, boolean allDay) {
+    int startHour = event.getStartTime().getHour();
+    int endHour = event.getEndTime().getHour();
+
+    int startMinuteBlock = event.getStartTime().getMinute() / 15;
+    int endMinuteBlock = event.getEndTime().getMinute() / 15;
+
+    LocalDate startDate = event.getStartTime().toLocalDate();
+    LocalDate endDate = event.getEndTime().toLocalDate();
+
+
+    List<LocalDate> dateList = new ArrayList<>(); // list of dates the events span
+    if (!allDay) { // if the event is not all day
+
+      LocalDate date = startDate; // date in the loop
+      while (!date.isAfter(endDate)) { // within date range
+        dateList.add(date); // add date
+        date = date.plusDays(1); // iterate by 1 date within the range
+      }
+      // for each day get the calendar Day Object
+      for (LocalDate day : dateList) {
+        int dayNum = 1;
+        this.addDay(day, new Day()); // creates day object if it doesn't exist already
+
+        if (dateList.size() > 1) { // if event spans multiple days
+          if (dayNum == 0) { // first day of multi day
+            this.getSchedule(day).bookTimeRange(startHour, startMinuteBlock,
+                23, 3, true);
+          }
+          if (dayNum < dateList.size()) { // if this is a middle day of the event, book all day
+            this.getSchedule(day).bookTimeRange(0, 0,
+                23, 3, true);
+          }
+          if (dayNum == dateList.size()) { // if this is the last day of the event
+            this.getSchedule(day).bookTimeRange(0, 0,
+                endHour, endMinuteBlock, true);
+          }
+        } else { // if the event is only on one day, block off that time
+          this.getSchedule(day).bookTimeRange(startHour, startMinuteBlock, endHour,
+              endMinuteBlock,true);
+        }
+        dayNum ++;
+      }
     }
+  }
+
 
 
 }
