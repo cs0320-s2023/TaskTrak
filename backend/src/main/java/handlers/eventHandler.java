@@ -15,14 +15,17 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import java.net.URLDecoder;
+import Firebase.Firestore;
 
 public class eventHandler implements Route {
 
   private Calendar calendar;
+  private Firestore firestore;
 
 
-  public eventHandler(Calendar calendar){
+  public eventHandler(Calendar calendar, Firestore firestore){
     this.calendar = calendar;
+    this.firestore = firestore;
   }
 
 
@@ -38,7 +41,7 @@ public class eventHandler implements Route {
    */
   @Override
   public Object handle(Request request, Response response) throws Exception {
-      System.out.println("handle method being run");
+    System.err.println("handle method being run");
     String title = request.queryParams("title");
     String startDateString = request.queryParams("startDate");
     String endDateString = request.queryParams("endDate");
@@ -53,7 +56,7 @@ public class eventHandler implements Route {
     try {
       String decodedNotes = URLDecoder.decode(notes, "UTF-8");
 
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
           .withZone(ZoneOffset.UTC);
 
       LocalDateTime startTime = LocalDateTime.parse(startDateString, formatter);
@@ -64,6 +67,12 @@ public class eventHandler implements Route {
 
       Event event = new Event(title, decodedNotes, startTime, endTime);
 
+<<<<<<< HEAD
+=======
+      // Creates a Day object for the event day if it doesn't
+      this.calendar.addDay(startTime.toLocalDate(), new Day());
+      firestore.createEventFirebase(event);
+>>>>>>> 0bbf3e6998cbdeb560bcbadf7eaee1abde815296
 
       int startHour = event.getStartTime().getHour();
       int endHour = event.getEndTime().getHour();
@@ -112,22 +121,20 @@ public class eventHandler implements Route {
 
       System.out.println(event.getName());
 
+<<<<<<< HEAD
       System.out.println(event);
+=======
+
+    System.out.println(event);
+>>>>>>> 0bbf3e6998cbdeb560bcbadf7eaee1abde815296
 
 
     } catch (DateTimeParseException e) {
-      String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss'Z'";
+      String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
       response.status(400);
       response.body(errorMessage);
       return response;
     }
-
-
     return null;
-
-
-
-
-
   }
 }

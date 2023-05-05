@@ -9,7 +9,7 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyA3ZjDAjeqIvvk48D3Bjo_2mugZXf1FLOo",
   authDomain: "tasktrak-c6e87.firebaseapp.com",
   databaseURL: "https://tasktrak-c6e87-default-rtdb.firebaseio.com",
@@ -27,11 +27,3 @@ const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
 export const auth = getAuth(app);
-
-// const db = getDatabase();
-// set(ref(db, "users/testUser1"), {
-//   calendar: { events: { event1: "TestInfo" } },
-// });
-
-// writeUserData("testUser1", { calendar: { events: { event1: "TestInfo" } } });
-//Ask about module bundling

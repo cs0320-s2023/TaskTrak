@@ -20,17 +20,23 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import SignUp from "./firebase/SignUp";
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
-import React from "react";
-import { sampleCalendarItems } from "./CalendarItem";
+import { sampleCalendarItems, sampleTasks } from "./CalendarItem";
 import { CalendarItem } from "./CalendarItem";
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import firebase from 'firebase/compat/app';
-import * as firebaseui from 'firebaseui';
-import 'firebaseui/dist/firebaseui.css';
-import { AuthProvider } from './firebase/provider/AuthProvider';
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import firebase from "firebase/compat/app";
+import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
+import { AuthProvider } from "./firebase/provider/AuthProvider";
+import { TaskMenu } from "./TaskCard";
+import TaskList from "./TaskList";
+import React from "react";
+import ReactDOM from "react-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Login from "./firebase/Login";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -39,8 +45,11 @@ function App(): JSX.Element {
     setViewMode(viewMode === "month" ? "week" : "month");
   }
 
-  // could be updated with default value of CalendarItems[] if i move it to its own file ?
+  const [loginFormOpen, setLoginFormOpen] = useState(false);
+
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems);
+
+  const [tasks, setTasks] = useState(sampleTasks);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -77,12 +86,12 @@ function App(): JSX.Element {
     </Menu>,
   ];
 
-  function handleLogin(){
-    window.location.href="index.html";
+  function handleLogin() {
+    setLoginFormOpen(true);
   }
 
   return (
-    <AuthProvider>
+    // <AuthProvider>
       <Grid
         container
         spacing={6}
@@ -90,6 +99,10 @@ function App(): JSX.Element {
         justifyContent="center"
         alignItems="center"
       >
+        <Grid item xs={12}>
+          <SignUp/>
+          <Login/>
+        </Grid>
         <Grid item xs={11}>
           <Button onClick={handleClick}>Accessibility Mode</Button>
         </Grid>
@@ -122,8 +135,15 @@ function App(): JSX.Element {
             setCalendarItems={setCalendarItems}
           />
         </Grid>
+        <Grid item xs={6} md={7}>
+          <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
+        </Grid>
+        <Grid item xs={12} md={5}>
+          <TaskMenu tasks={tasks} />
+        </Grid>
+        
       </Grid>
-    </AuthProvider>
+    // </AuthProvider>
   );
 }
 
