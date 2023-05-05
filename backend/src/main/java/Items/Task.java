@@ -1,6 +1,7 @@
 package Items;
 
 import Enums.Rating;
+import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,20 +12,18 @@ public class Task implements CalendarItem{
   private String name;
   private String notes;
   private Rating priority; //
-  private Rating dread;
-  private Duration timeToComplete;
+  private Double timeToComplete;
   private LocalDateTime dueDate; // will need to consider how to manage time
   private Boolean isComplete;
-  private ArrayList<int[]> timeSuggestions;
+  private ArrayList<Time[]> timeSuggestions;
 
   // task constructor
 
-  public Task(String name, String notes, Rating priority, Rating dread,
-      Duration timeToComplete, LocalDateTime dueDate, Boolean isComplete) {
+  public Task(String name, String notes, Rating priority,
+      Double timeToComplete, LocalDateTime dueDate, Boolean isComplete) {
     this.name = name;
     this.notes = notes;
     this.priority = priority;
-    this.dread = dread;
     this.timeToComplete = timeToComplete;
     this.dueDate = dueDate;
     this.isComplete = false;
@@ -53,21 +52,7 @@ public class Task implements CalendarItem{
 //    return newEvent;
 //  }
 
-  /**
-   * This method gathers all the tasks within the task list that have a high dread rating
-   * into one list
-   * @param taskList -- The overall list of a users tasks
-   * @return -- dreadfulTasks = list of tasks with high dread
-   */
-  public List<Task> gatherDread(List<Task> taskList) {
-    List<Task> dreadfulTasks = new ArrayList<>();
-    for (Task task : taskList) {
-      if(task.getDread() == Rating.HIGH){
-        dreadfulTasks.add(task);
-      }
-    }
-    return dreadfulTasks;
-  }
+
 
 
   //---------------------------------
@@ -96,7 +81,7 @@ public class Task implements CalendarItem{
     this.getTimeSuggestions().add(timeBlock);
   }
 
-  public void setTimeSuggestion(ArrayList<int[]> newList) {
+  public void setTimeSuggestion(ArrayList<Time[]> newList) {
     this.timeSuggestions = newList;
   }
 
@@ -109,23 +94,17 @@ public class Task implements CalendarItem{
     return this.isComplete;
   }
 
-  public void setTimeToComplete(Duration timeToComplete) {
+  public void setTimeToComplete(Double timeToComplete) {
     this.timeToComplete = timeToComplete;
   }
 
 
-  public Duration getTimeToComplete() {
+  public Double getTimeToComplete() {
     return timeToComplete;
   }
 
 
-  public void setDread(Rating dread) {
-    this.dread = dread;
-  }
 
-  public Rating getDread(){
-    return this.dread;
-  }
 
   public void setPriority(Rating priority) {
     this.priority = priority;

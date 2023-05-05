@@ -1,17 +1,18 @@
-package taskTests;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import Algorithim.TaskManager;
 import Enums.Rating;
 import Items.Task;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
-class TaskManagerTest {
+
+
+public class testTask {
   private TaskManager tm;
   private Task task1;
   private Task task2;
@@ -19,10 +20,11 @@ class TaskManagerTest {
   @BeforeEach
   public void setUp() {
     tm = new TaskManager();
-    task1 = new Task("Task 1", "Notes 1", Rating.HIGH, Rating.LOW, Duration.ofHours(1), LocalDateTime.now().plusDays(1), false);
-    task2 = new Task("Task 2", "Notes 2", Rating.LOW, Rating.LOW, Duration.ofMinutes(30), LocalDateTime.now().plusDays(2), false);
+    task1 = new Task("Task 1", "Notes 1", Rating.HIGH, 1.0,
+        LocalDateTime.now().plusDays(1), false);
+    task2 = new Task("Task 2", "Notes 2", Rating.LOW,  0.5, LocalDateTime.now().plusDays(2), false);
     //task3 = new Task("Task 3", "Notes 3", Rating.LOW, Rating.LOW, Duration.ofMinutes(30),
-        //LocalDateTime.now().plusDays(2), false);
+    //LocalDateTime.now().plusDays(2), false);
   }
 
 
@@ -40,9 +42,9 @@ class TaskManagerTest {
   @Test
   void testRemoveTask() {
     TaskManager tm = new TaskManager();
-    Task task1 = new Task("Task 1", "Notes 1", Rating.HIGH, Rating.LOW, Duration.ofHours(1),
+    Task task1 = new Task("Task 1", "Notes 1", Rating.HIGH, 1.0,
         LocalDateTime.now().plusDays(1), false);
-    Task task2 = new Task("Task 2", "Notes 2", Rating.LOW, Rating.LOW, Duration.ofMinutes(30),
+    Task task2 = new Task("Task 2", "Notes 2", Rating.LOW,0.5,
         LocalDateTime.now().plusDays(2), false);
 
     assertEquals(0, tm.getTaskMap().size());
@@ -107,3 +109,5 @@ class TaskManagerTest {
 
 
 }
+
+
