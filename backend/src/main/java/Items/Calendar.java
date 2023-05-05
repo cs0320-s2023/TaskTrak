@@ -25,22 +25,54 @@ public class Calendar {
     createDayObjectForToday();
   }
 
-//
-//    public void bigUpdater(ArrayList[String[]], ) {
-//    //Joel is passing me 2 object arays of strings that are start and end time
-//      // convert these to minutes of day
-//      //
 
 
   /**
-   * Returns the day object for that specific Day
-   *
-   * @param date - date we want to look at
-   * @return - Day object
+   * method blocks off time on one calender day if the event is occuring all today, starting today,
+   * or ending today
+   * Days that are in the middle of an event block do not get marked as busy (vacations, etc)
+   * @param event
+   * @param allDay
    */
-  public Day getSchedule(LocalDate date) {
-    return bigCalendar.get(date);
+  public void blockOffTime(Event event, boolean allDay) {
+    int startHour = event.getStartTime().getHour();
+    int endHour = event.getEndTime().getHour();
+
+    int startMinuteBlock = event.getStartTime().getMinute() / 15;
+    int endMinuteBlock = event.getEndTime().getMinute() / 15;
+
+    LocalDate startDate = event.getStartTime().toLocalDate();
+    LocalDate endDate = event.getEndTime().toLocalDate();
+
+    List<LocalDate> dateList = new ArrayList<>(); // list of dates the events span
+
+    if (!allDay) { // if the event is not all day
+      LocalDate today = LocalDate.now();
+
+      if (startDate.equals(endDate)) { // if event occurs on same day
+        if (startDate.equals(today)) {
+          this.addDay(startDate, new Day());
+          this.getSchedule(startDate).bookTimeRange(startHour, startMinuteBlock, endHour,
+              endMinuteBlock, true);
+        }
+      } else { // if event occurs over multiple days
+
+        if (startDate.equals(today)) {// if event starts today
+          this.addDay(startDate, new Day());
+          this.getSchedule(startDate).bookTimeRange(startHour, startMinuteBlock, 11,
+              4, true);
+        }
+
+        if (endDate.equals(today)) {// if event ends today
+          this.addDay(startDate, new Day());
+          this.getSchedule(startDate).bookTimeRange(0, 0, endHour,
+              endMinuteBlock, true);
+        }
+      }
+    }
   }
+
+
 
   /**
    * Adds a day to the map
@@ -94,49 +126,15 @@ public class Calendar {
   }
 
 
+
   /**
-   * method blocks off time on one calender day if the event is occuring all today, starting today,
-   * or ending today
-   * Days that are in the middle of an event block do not get marked as busy (vacations, etc)
-   * @param event
-   * @param allDay
+   * Returns the day object for that specific Day
+   *
+   * @param date - date we want to look at
+   * @return - Day object
    */
-  public void blockOffTime(Event event, boolean allDay) {
-    int startHour = event.getStartTime().getHour();
-    int endHour = event.getEndTime().getHour();
-
-    int startMinuteBlock = event.getStartTime().getMinute() / 15;
-    int endMinuteBlock = event.getEndTime().getMinute() / 15;
-
-    LocalDate startDate = event.getStartTime().toLocalDate();
-    LocalDate endDate = event.getEndTime().toLocalDate();
-
-    List<LocalDate> dateList = new ArrayList<>(); // list of dates the events span
-
-    if (!allDay) { // if the event is not all day
-      LocalDate today = LocalDate.now();
-
-      if (startDate.equals(endDate)) { // if event occurs on same day
-        if (startDate.equals(today)) {
-          this.addDay(startDate, new Day());
-          this.getSchedule(startDate).bookTimeRange(startHour, startMinuteBlock, endHour,
-              endMinuteBlock, true);
-        }
-      } else { // if event occurs over multiple days
-
-        if (startDate.equals(today)) {// if event starts today
-          this.addDay(startDate, new Day());
-          this.getSchedule(startDate).bookTimeRange(startHour, startMinuteBlock, 11,
-              4, true);
-        }
-
-        if (endDate.equals(today)) {// if event ends today
-          this.addDay(startDate, new Day());
-          this.getSchedule(startDate).bookTimeRange(0, 0, endHour,
-              endMinuteBlock, true);
-        }
-      }
-    }
+  public Day getSchedule(LocalDate date) {
+    return bigCalendar.get(date);
   }
 }
 

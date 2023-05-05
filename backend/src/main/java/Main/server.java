@@ -2,10 +2,12 @@ package Main;
 
 import static spark.Spark.after;
 
+import Algorithim.TaskManager;
 import Items.Calendar;
 import handlers.deleteEventHandler;
 import handlers.eventHandler;
 import Firebase.Firestore;
+import handlers.taskHandler;
 import spark.Spark;
 
 public class server {
@@ -27,14 +29,17 @@ public class server {
       Firestore firestore = new Firestore();
 
       Calendar userCalendar = new Calendar();
+      TaskManager userTaskManager = new TaskManager();
 
-      eventHandler EV = new eventHandler(userCalendar, firestore);
+      eventHandler EventHandler = new eventHandler(userCalendar, firestore);
       deleteEventHandler deleteEvent = new deleteEventHandler();
+      taskHandler TaskHandler = new taskHandler(userTaskManager, userCalendar);
 
       // For creating an event
-      System.out.println("test: " + EV);
+      System.out.println("test: " + EventHandler);
 
-      Spark.post("createEvent", EV);
+      Spark.post("createEvent", EventHandler);
+      Spark.post("createTask", TaskHandler);
       Spark.delete("deleteEvent", deleteEvent);
       Spark.init();
       Spark.awaitInitialization();
