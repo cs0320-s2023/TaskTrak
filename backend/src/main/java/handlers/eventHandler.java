@@ -67,12 +67,9 @@ public class eventHandler implements Route {
 
       Event event = new Event(title, decodedNotes, startTime, endTime);
 
-<<<<<<< HEAD
-=======
       // Creates a Day object for the event day if it doesn't
       this.calendar.addDay(startTime.toLocalDate(), new Day());
       firestore.createEventFirebase(event);
->>>>>>> 0bbf3e6998cbdeb560bcbadf7eaee1abde815296
 
       int startHour = event.getStartTime().getHour();
       int endHour = event.getEndTime().getHour();
@@ -121,12 +118,8 @@ public class eventHandler implements Route {
 
       System.out.println(event.getName());
 
-<<<<<<< HEAD
       System.out.println(event);
-=======
 
-    System.out.println(event);
->>>>>>> 0bbf3e6998cbdeb560bcbadf7eaee1abde815296
 
 
     } catch (DateTimeParseException e) {
