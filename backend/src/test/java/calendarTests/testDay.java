@@ -26,6 +26,7 @@ public class testDay {
     assertEquals(1, slots.size());
     assertEquals(0, slots.get(0)[0]);
     assertEquals(1439, slots.get(0)[1]);
+    assertEquals(1,2);
 
   }
 
