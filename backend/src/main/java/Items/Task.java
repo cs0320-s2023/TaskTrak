@@ -32,9 +32,6 @@ public class Task implements CalendarItem{
 
 
 
-
-
-
   /**
    * Converts a Task Object into an Event object to be added to the calendar
    * @return - the new Event object

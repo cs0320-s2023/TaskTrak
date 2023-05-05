@@ -3,6 +3,7 @@ package Main;
 import static spark.Spark.after;
 
 import Items.Calendar;
+import handlers.deleteEventHandler;
 import handlers.eventHandler;
 import Firebase.Firestore;
 import spark.Spark;
@@ -20,15 +21,19 @@ public class server {
         response.header("Access-Control-Allow-Methods", "*");
       });
 
-      Calendar userCalendar = new Calendar();
+
       Firestore firestore = new Firestore();
 
+      Calendar userCalendar = new Calendar();
+
       eventHandler EV = new eventHandler(userCalendar,firestore);
+      deleteEventHandler deleteEvent = new deleteEventHandler();
 
       // For creating an event
       System.out.println("test: " + EV);
 
       Spark.post("createEvent", EV);
+      Spark.delete("deleteEvent", deleteEvent);
       Spark.init();
       Spark.awaitInitialization();
       System.out.println("Server started.");

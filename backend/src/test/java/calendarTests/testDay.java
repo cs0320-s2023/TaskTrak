@@ -1,13 +1,13 @@
 package calendarTests;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import Items.Day;
 import java.util.List;
-import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
+
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,6 +73,8 @@ public class testDay {
     day.bookTimeRange(0, 0, 23, 4, true);
     List<int[]> ranges = day.findAvailableTimeRanges();
     assertTrue(ranges.isEmpty());
+    assertTrue(ranges.isEmpty());
+
   }
 
   @Test
