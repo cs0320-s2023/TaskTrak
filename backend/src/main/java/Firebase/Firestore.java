@@ -9,6 +9,8 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -21,9 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import org.checkerframework.checker.units.qual.A;
 
 public class Firestore {
   private com.google.cloud.firestore.Firestore db;
@@ -53,26 +56,30 @@ public class Firestore {
   }
 
   public void createEventFirebase(Event event, String tokenID) throws FirebaseAuthException{
-      DocumentReference userRef = getUserRef(tokenID);
+    try {
+      DocumentReference userRef = db.collection("users").document("testUser2");//getUserRef(tokenID);
       DocumentReference eventRef = userRef.collection("events").document(event.getId().toString());
       //  const userQuery = query(userRef,where("id","==",userID)) //Will be used with token to get userID?
       //  const userQuerySnapshot = await getDocs(userQuery)
       //  const userDoc = userQuerySnapshot.docs[0].data();
+      String startDate = event.getStartTime().toLocalDate().toString();
+      String endDate = event.getEndTime().toLocalDate().toString();
 
       Map<String, Object> docData = new HashMap<>();
       docData.put("title", event.getName());
       docData.put("startTime", event.getStartTime().toLocalTime().toString());
       docData.put("endTime", event.getEndTime().toLocalTime().toString());
-      docData.put("startDate", event.getStartTime().toLocalDate().toString());
-      docData.put("endDate", event.getEndTime().toLocalDate().toString());
+      docData.put("dateSpan",new ArrayList<String>(List.of(startDate,endDate)));
+
       docData.put("notes", event.getNotes());
       docData.put("isAllDay", event.getIsAllDay());
       ApiFuture<WriteResult> test = eventRef.set(docData); //SET FAILING FOR SOME REASON
+    }
 
         //  const eventRef = collection(db,userID + "/events")
-//     } catch (Exception e) {
-//       System.err.println("FAILED: " + e);
-//     }
+      catch (Exception e) {
+       System.err.println("FAILED: " + e);
+     }
    }
 
   //Likely need to call this when using Firebase authentication
@@ -91,16 +98,31 @@ public class Firestore {
       }
   }
 
-  public ArrayList<String[]> retrieveADayTimes(LocalDateTime dateTime,String userTokenID) throws FirebaseAuthException{
-    DocumentReference userRef = getUserRef(userTokenID);
+  public ArrayList<List<String>> retrieveADayTimes(LocalDateTime dateTime,String userTokenID) throws FirebaseAuthException{
+    DocumentReference userRef = db.collection("users").document("testUser2");//getUserRef(userTokenID);
     CollectionReference events = userRef.collection("events");
-//    events.whereIn()
-    return new ArrayList<>();
 
+
+    ApiFuture<QuerySnapshot> queryStart = events.whereIn("dateSpan",List.of(dateTime)).get();
+    try {
+      ArrayList<List<String>> times = new ArrayList<>();
+      for (DocumentSnapshot doc : queryStart.get().getDocuments()) {
+        String startDate = doc.get("startDate").toString();
+        String endDate = doc.get("endDate").toString();
+        times.add(List.of(startDate,endDate));
+      }
+      System.out.println(times);
+      return times;
+    } catch (Exception e) {
+      System.err.println("Document getting was interrupted");
+      return new ArrayList<>();
+    }
+//    events.whereIn()
 
   }
 
   private DocumentReference getUserRef(String tokenID) throws FirebaseAuthException {
+    tokenID = this.testingTokenID;
     FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenID);
     String userID = decodedToken.getUid();
     return db.collection("users").document(userID);
