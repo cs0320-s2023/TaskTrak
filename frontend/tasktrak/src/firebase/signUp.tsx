@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-// import { auth } from './firebaseConfig';
+import { auth } from './config';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { TextField, Button } from '@mui/material'
 
-const auth = getAuth();
+// const auth = getAuth();
 
 const Signup = () => {
   const [email, setEmail] = useState('');
