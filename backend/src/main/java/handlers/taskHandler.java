@@ -1,5 +1,8 @@
 package handlers;
 
+import static Response.MapResponse.constructErrorResponse;
+import static Response.MapResponse.constructSuccessResponse;
+
 import com.squareup.moshi.FromJson;
 import com.squareup.moshi.Moshi;
 
@@ -114,7 +117,7 @@ public class taskHandler implements Route {
       // Set the response type to JSON
       response.type("application/json");
 
-      return jsonTaskTimeSuggestions;
+      return constructSuccessResponse(jsonTaskTimeSuggestions);
 
 
 
@@ -122,19 +125,23 @@ public class taskHandler implements Route {
     } catch (NumberFormatException e) {
       // handle error for invalid number format
       response.status(400); // Bad Request
-      return "Invalid input format for priority or duration";
+      response.body("Invalid input format for priority or duration");
+      return constructErrorResponse(response);
     } catch (DateTimeParseException e) {
       // handle error for invalid date format
       response.status(400); // Bad Request
-      return "Invalid input format for dueDate";
+      response.body("Invalid input format for dueDate");
+      return constructErrorResponse(response);
     } catch (UnsupportedEncodingException e) {
       // handle error for unsupported encoding
       response.status(500); // Internal Server Error
-      return "Failed to decode input";
+      response.body("Failed to decode input");
+      return constructErrorResponse(response);
     } catch (Exception e) {
       // handle generic error
       response.status(500); // Internal Server Error
-      return "Error occurred while processing request" + e;
+      response.body("Error occurred while processing request" + e);
+      return constructErrorResponse(response);
     }
   }
 
