@@ -32,6 +32,8 @@ public class taskHandler implements Route {
   private Calendar userCalendar;
 
   public taskHandler(TaskManager userTaskManager, Calendar userCalendar) {
+    this.userTaskManager = userTaskManager;
+    this.userCalendar = userCalendar;
   }
 
   @Override
@@ -64,14 +66,15 @@ public class taskHandler implements Route {
           decodedDueDate, decodedIsComplete);
 
       // add Task to the task manager
-      userTaskManager.addTask(task);
+      this.userTaskManager.addTask(task);
 
       LocalDate todaysDate = LocalDate.now();
-      Day todaysSchedule = userCalendar.getSchedule(todaysDate); // Day object for the current day
+      Day todaysSchedule = this.userCalendar.getSchedule(todaysDate); // Day object for the current
+      // day
       ArrayList<int[]> todaysFreeTime = todaysSchedule.findAvailableTimeRanges();
       // this is the free slots on the calendar
 
-      userTaskManager.suggestionHelper(task, todaysFreeTime);
+      this.userTaskManager.suggestionHelper(task, todaysFreeTime);
 
       //the timeSuggestions for the just task that was added
       ArrayList<LocalTime[]> taskTimeSuggestions = task.getTimeSuggestions();
@@ -89,7 +92,7 @@ public class taskHandler implements Route {
       String jsonTaskTimeSuggestions = adapter.toJson(taskTimeSuggestions);
 
       // Set the response type to JSON
-      response.type("timeSuggestions/json");
+      response.type("application/json");
 
       return jsonTaskTimeSuggestions;
 
