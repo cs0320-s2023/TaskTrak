@@ -35,8 +35,6 @@ public class testTask {
   }
 
 
-
-
   @Test
   public void testSuggestionHelper() {
     ArrayList<int[]> freeList = new ArrayList<>();
@@ -48,8 +46,7 @@ public class testTask {
     LocalTime[] timeInterval1 = {LocalTime.of(10, 0), LocalTime.of(11, 0)};
     LocalTime[] timeInterval2 = {LocalTime.of(11, 0), LocalTime.of(12, 0)};
     timeList.add(timeInterval1);
-
-
+    timeList.add(timeInterval2);
 
     TaskManager.suggestionHelper(task1, freeList);
 
@@ -60,8 +57,9 @@ public class testTask {
       System.out.println(timeRangeString);
     }
 
-    Assertions.assertEquals(task1.getTimeSuggestions().get(0), timeInterval1);
-    Assertions.assertEquals(task1.getTimeSuggestions().get(0), timeInterval2);
+    for (int i = 0; i < timeList.size(); i++) {
+      assertArrayEquals(timeList.get(i), task1.getTimeSuggestions().get(i));
+    }
   }
 
   @Test

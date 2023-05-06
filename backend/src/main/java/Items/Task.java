@@ -81,7 +81,7 @@ public class Task implements CalendarItem{
     this.getTimeSuggestions().add(timeBlock);
   }
 
-  public int getTaskID() {
+  public Integer getTaskID() {
     return this.taskID;
   }
 

@@ -146,7 +146,8 @@ public class Firestore {
   public void createFirebaseTask(Task task, String tokenID) throws FirebaseException{
     try {
       DocumentReference userRef = getUserRef(tokenID);
-      DocumentReference taskRef = userRef.collection("tasks").document(task.getId().toString());
+      DocumentReference taskRef =
+          userRef.collection("tasks").document(task.getTaskID().toString());
 
       Map<String, Object> docData = new HashMap<>();
       docData.put("title", task.getName());
