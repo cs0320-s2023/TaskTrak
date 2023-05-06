@@ -42,7 +42,6 @@ public class eventHandler implements Route {
    */
   @Override
   public Object handle(Request request, Response response) throws Exception {
-    System.err.println("eventHandler handle method being run");
     String title = request.queryParams("title");
     String startDateString = request.queryParams("startDate");
     String endDateString = request.queryParams("endDate");
@@ -56,7 +55,6 @@ public class eventHandler implements Route {
     try {
       String decodedNotes = URLDecoder.decode(notes, "UTF-8");
       String decodedTitle = URLDecoder.decode(title, "UTF-8");
-      System.err.println("notes");
 
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
           .withZone(ZoneOffset.UTC);
@@ -68,7 +66,6 @@ public class eventHandler implements Route {
       int id = Integer.parseInt(eventID);
       Boolean allDay = Boolean.parseBoolean(isAllDay);
 //      Boolean repeated = Boolean.parseBoolean(isRepeated);
-      System.err.println("test again");
 
       Event event = new Event(decodedTitle, decodedNotes, startTime, endTime, id, allDay);
       firestore.createEventFirebase(event,tokenID);

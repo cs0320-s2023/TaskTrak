@@ -79,15 +79,16 @@ public class taskHandler implements Route {
       this.userTaskManager.suggestionHelper(task, todaysFreeTime);
 
       //the timeSuggestions for the just task that was added
-      ArrayList<LocalTime[]> taskTimeSuggestions = task.getTimeSuggestions();
+      List<List<LocalTime>> taskTimeSuggestions = task.getTimeSuggestions();
 
       Moshi moshi = new Moshi.Builder().build();
 
       // Define the type for ArrayList<LocalTime[]>
-      Type listOfLocalTimeArraysType = Types.newParameterizedType(ArrayList.class, LocalTime[].class);
+      Type listOfLocalTimeType = Types.newParameterizedType(List.class, LocalTime.class);
+      Type listOfLocalTimeArraysType = Types.newParameterizedType(List.class, listOfLocalTimeType);
 
       // Create JSON adapter for the type
-      com.squareup.moshi.JsonAdapter<List<LocalTime[]>> adapter =
+      com.squareup.moshi.JsonAdapter<List<List<LocalTime>>> adapter =
           moshi.adapter(listOfLocalTimeArraysType);
 
       // Convert taskTimeSuggestions to JSON
@@ -116,7 +117,7 @@ public class taskHandler implements Route {
     } catch (Exception e) {
       // handle generic error
       response.status(500); // Internal Server Error
-      return "Error occurred while processing request"";
+      return "Error occurred while processing request";
     }
   }
 

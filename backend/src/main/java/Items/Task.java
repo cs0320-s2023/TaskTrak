@@ -16,7 +16,7 @@ public class Task implements CalendarItem{
   private Double timeToComplete;
   private LocalDateTime dueDate; // will need to consider how to manage time
   private Boolean isComplete;
-  private ArrayList<LocalTime[]> timeSuggestions;
+  private ArrayList<List<LocalTime>> timeSuggestions;
   private int taskID;
 
   // task constructor
@@ -77,11 +77,11 @@ public class Task implements CalendarItem{
    * Adds a time block to the time suggestions list
    * @param timeBlock - an integer array representing a time suggestion
    */
-  public void addTimeSuggestion(LocalTime[] timeBlock) {
+  public void addTimeSuggestion(List<LocalTime> timeBlock) {
     this.getTimeSuggestions().add(timeBlock);
   }
 
-  public int getTaskID() {
+  public Integer getTaskID() {
     return this.taskID;
   }
 
@@ -89,12 +89,12 @@ public class Task implements CalendarItem{
     this.taskID = ID;
   }
 
-  public void setTimeSuggestion(ArrayList<LocalTime[]> newList) {
+  public void setTimeSuggestion(ArrayList<List<LocalTime>> newList) {
     this.timeSuggestions = newList;
   }
 
 
-  public ArrayList<LocalTime[]> getTimeSuggestions(){
+  public ArrayList<List<LocalTime>> getTimeSuggestions(){
     return this.timeSuggestions;
   }
 
