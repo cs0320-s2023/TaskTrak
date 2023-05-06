@@ -1,6 +1,5 @@
 Enums/Rating.class
 Algorithim/TaskManager.class
-handlers/deleteTaskHander.class
 Main/server$Server.class
 handlers/taskHandler.class
 Items/Day.class
@@ -12,6 +11,7 @@ Algorithim/eventManager.class
 handlers/deleteEventHandler.class
 records/calendarRecords.class
 Items/timeMethods.class
+handlers/deleteTaskHandler.class
 records/calendarRecords$Event.class
 Firebase/Firestore.class
 Items/Task.class

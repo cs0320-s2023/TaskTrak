@@ -51,7 +51,7 @@ public class TaskManager {
    * @param task
    * @param freeList
    */
-  public void suggestionHelper(Task task, ArrayList<int[]> freeList) {
+  public static void suggestionHelper(Task task, ArrayList<int[]> freeList) {
 
     if (task == null) {
       throw new IllegalArgumentException("Invalid task or freeList");

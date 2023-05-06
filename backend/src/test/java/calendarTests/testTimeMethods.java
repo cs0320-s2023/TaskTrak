@@ -40,7 +40,7 @@ public class testTimeMethods {
     public void testGetMinuteOfDay() {
       int hour = 7;
       int block = 2;
-      int expectedMinuteOfDay = 105;
+      int expectedMinuteOfDay = 450;
       int actualMinuteOfDay = getMinuteOfDay(hour, block);
       Assertions.assertEquals(expectedMinuteOfDay, actualMinuteOfDay);
     }

@@ -27,14 +27,42 @@ public class testTask {
   public void setUp() {
     tm = new TaskManager();
     task1 = new Task("Task 1", "Notes 1", Rating.HIGH, 1.0,
-        LocalDateTime.now().plusDays(1), false);
-    task2 = new Task("Task 2", "Notes 2", Rating.LOW,  0.5, LocalDateTime.now().plusDays(2), false);
+        LocalDateTime.now().plusDays(1), false, 0);
+    task2 = new Task("Task 2", "Notes 2", Rating.LOW,  0.5, LocalDateTime.now().plusDays(2),
+        false, 1);
     //task3 = new Task("Task 3", "Notes 3", Rating.LOW, Rating.LOW, Duration.ofMinutes(30),
     //LocalDateTime.now().plusDays(2), false);
   }
 
 
 
+
+  @Test
+  public void testSuggestionHelper() {
+    ArrayList<int[]> freeList = new ArrayList<>();
+    int[] array1 = {600, 720};
+//    int[] array2 = {30, 40};
+    freeList.add(array1);
+//    freeList.add(array2);
+    ArrayList<LocalTime[]> timeList = new ArrayList<>();
+    LocalTime[] timeInterval1 = {LocalTime.of(10, 0), LocalTime.of(11, 0)};
+    LocalTime[] timeInterval2 = {LocalTime.of(11, 0), LocalTime.of(12, 0)};
+    timeList.add(timeInterval1);
+
+
+
+    TaskManager.suggestionHelper(task1, freeList);
+
+    for (LocalTime[] time : task1.getTimeSuggestions()) {
+      String startTime = time[0].toString();
+      String endTime = time[1].toString();
+      String timeRangeString = startTime + " - " + endTime;
+      System.out.println(timeRangeString);
+    }
+
+    Assertions.assertEquals(task1.getTimeSuggestions().get(0), timeInterval1);
+    Assertions.assertEquals(task1.getTimeSuggestions().get(0), timeInterval2);
+  }
 
   @Test
   void testAddTask() {
@@ -51,9 +79,9 @@ public class testTask {
   void testRemoveTask() {
     TaskManager tm = new TaskManager();
     Task task1 = new Task("Task 1", "Notes 1", Rating.HIGH, 1.0,
-        LocalDateTime.now().plusDays(1), false);
+        LocalDateTime.now().plusDays(1), false, 0);
     Task task2 = new Task("Task 2", "Notes 2", Rating.LOW,0.5,
-        LocalDateTime.now().plusDays(2), false);
+        LocalDateTime.now().plusDays(2), false, 0);
 
     assertEquals(0, tm.getTaskMap().size());
     tm.addTask(task1);
@@ -121,7 +149,7 @@ public class testTask {
 
     // Create a sample Task object
     Task task = new Task("Sample Task", "Sample notes", Rating.HIGH,
-        2.5, LocalDateTime.now(), false);
+        2.5, LocalDateTime.now(), false, 0);
 
     // Call the addTimeSuggestion method
     task.addTimeSuggestion(timeBlock);

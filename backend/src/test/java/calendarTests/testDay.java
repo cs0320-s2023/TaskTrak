@@ -22,6 +22,15 @@ public class testDay {
   }
 
 
+
+
+  @Test
+  void timeSuggestion(){
+
+
+
+  }
+
   @Test
   void testEmptyAvailability() {
     List<int[]> slots = day.findAvailableTimeRanges();
@@ -49,7 +58,6 @@ public class testDay {
     assertTrue(day.getTimeSlots()[23][2]);
     assertFalse(day.getTimeSlots()[23][0]);
     assertFalse(day.getTimeSlots()[23][3]);
-
   }
 
 

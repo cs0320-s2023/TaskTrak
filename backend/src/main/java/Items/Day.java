@@ -67,23 +67,7 @@ public class Day {
     for (int hour = 0; hour < 24; hour++) {
       for (int block = 0; block < 4; block++) {
         if (hour >= 0 && hour < timeSlots.length && block >= 0) {
-          if (timeSlots[hour][block]) {
-            // If the current hour and block is busy
-            if (!isBusy) {
-              // If we were previously not in a busy block, we just started a busy block
-              isBusy = true;
-            }
-            if (startHour != -1 && startBlock != -1) {
-              // If we were previously in an available block, we just ended it
-              int endHour = hour;
-              int endBlock = block;
-              int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour,
-                  endBlock)};
-              availableRanges.add(range);
-              startHour = -1;
-              startBlock = -1;
-            }
-          } else {
+          if (!timeSlots[hour][block]) {
             // If the current hour and block is available
             if (isBusy) {
               // If we were previously in a busy block, we just ended it
@@ -96,6 +80,21 @@ public class Day {
               startHour = hour;
               startBlock = block;
             }
+          } else {
+            // If the current hour and block is busy
+            if (!isBusy) {
+              // If we were previously not in a busy block, we just started a busy block
+              isBusy = true;
+            }
+            if (startHour != -1 && startBlock != -1) {
+              // If we were previously in an available block, we just ended it
+              int endHour = hour;
+              int endBlock = block;
+              int[] range = { getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour, endBlock) };
+              availableRanges.add(range);
+              startHour = -1;
+              startBlock = -1;
+            }
           }
         } else {
           System.err.println("Invalid array access at hour: " + hour + ", block: " + block);
@@ -106,12 +105,13 @@ public class Day {
       // If we were previously in an available block, we just ended it
       int endHour = 23;
       int endBlock = 3;
-      //int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour, endBlock)};
-      int[] range = {getMinuteOfDay(startHour, startBlock), 1439};
+      // int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour, endBlock)};
+      int[] range = { getMinuteOfDay(startHour, startBlock), 1439 };
       availableRanges.add(range);
     }
     return availableRanges;
   }
+
 
 
   /**

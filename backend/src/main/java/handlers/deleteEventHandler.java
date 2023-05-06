@@ -7,8 +7,9 @@ import spark.Route;
 public class deleteEventHandler implements Route {
 
   @Override
-  public Object handle(Request request, Response response) throws Exception {
+  public Object handle(Request request, Response response) throws Exception
+  {
+    return null;
 
-//    String eventID
   }
 }

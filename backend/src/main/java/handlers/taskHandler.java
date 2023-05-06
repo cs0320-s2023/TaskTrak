@@ -44,6 +44,7 @@ public class taskHandler implements Route {
     String duration = request.queryParams("duration");
     String dueDate = request.queryParams("dueDate");
     String isComplete = request.queryParams("isComplete");
+    String taskID = request.queryParams("id");
 
     try {
 
@@ -55,6 +56,7 @@ public class taskHandler implements Route {
       Rating decodedPriority = Rating.fromValue(Integer.parseInt(priority));
       Double decodedDuration = Double.parseDouble(duration);
       Boolean decodedIsComplete = Boolean.parseBoolean(isComplete);
+      Integer decodedID = Integer.parseInt(taskID);
 
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
           .withZone(ZoneOffset.UTC);
@@ -63,7 +65,7 @@ public class taskHandler implements Route {
 
       // create Task object
       Task task = new Task(decodedName, decodedNotes, decodedPriority, decodedDuration,
-          decodedDueDate, decodedIsComplete);
+          decodedDueDate, decodedIsComplete, decodedID);
 
       // add Task to the task manager
       this.userTaskManager.addTask(task);

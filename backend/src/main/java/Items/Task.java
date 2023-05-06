@@ -17,11 +17,12 @@ public class Task implements CalendarItem{
   private LocalDateTime dueDate; // will need to consider how to manage time
   private Boolean isComplete;
   private ArrayList<LocalTime[]> timeSuggestions;
+  private int taskID;
 
   // task constructor
 
   public Task(String name, String notes, Rating priority,
-      Double timeToComplete, LocalDateTime dueDate, Boolean isComplete) {
+      Double timeToComplete, LocalDateTime dueDate, Boolean isComplete, int taskID) {
     this.name = name;
     this.notes = notes;
     this.priority = priority;
@@ -29,6 +30,7 @@ public class Task implements CalendarItem{
     this.dueDate = dueDate;
     this.isComplete = false;
     this.timeSuggestions = new ArrayList<>();
+    this.taskID = taskID;
   }
 
 
@@ -77,6 +79,14 @@ public class Task implements CalendarItem{
    */
   public void addTimeSuggestion(LocalTime[] timeBlock) {
     this.getTimeSuggestions().add(timeBlock);
+  }
+
+  public int getTaskID() {
+    return this.taskID;
+  }
+
+  public void setTaskID(int ID){
+    this.taskID = ID;
   }
 
   public void setTimeSuggestion(ArrayList<LocalTime[]> newList) {
