@@ -20,7 +20,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import SignUp from "./firebase/SignUp";
+import SignUp from "./firebase/signUp";
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
@@ -92,57 +92,56 @@ function App(): JSX.Element {
 
   return (
     // <AuthProvider>
-      <Grid
-        container
-        spacing={6}
-        className="calendars"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Grid item xs={12}>
-          <SignUp/>
-          <Login/>
-        </Grid>
-        <Grid item xs={11}>
-          <Button onClick={handleClick}>Accessibility Mode</Button>
-        </Grid>
-        <Grid item xs={1}>
-          <Button onClick={handleLogin}>Login</Button>
-        </Grid>
-        <Grid item xs={6}>
-          {viewMode === "month" ? (
-            <MonthlyCalendar
-              currentDate={currentDate}
-              setCurrentDate={setCurrentDate}
-              calendarItems={calendarItems}
-              setCalendarItems={setCalendarItems}
-              calendarViewMenu={calendarViewMenu}
-            />
-          ) : (
-            <WeeklyCalendar
-              currentDate={currentDate}
-              setCurrentDate={setCurrentDate}
-              calendarItems={calendarItems}
-              setCalendarItems={setCalendarItems}
-              calendarViewMenu={calendarViewMenu}
-            />
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          <DailyCalendar
+    <Grid
+      container
+      spacing={6}
+      className="calendars"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid item xs={12}>
+        <SignUp />
+        <Login />
+      </Grid>
+      <Grid item xs={11}>
+        <Button onClick={handleClick}>Accessibility Mode</Button>
+      </Grid>
+      <Grid item xs={1}>
+        <Button onClick={handleLogin}>Login</Button>
+      </Grid>
+      <Grid item xs={6}>
+        {viewMode === "month" ? (
+          <MonthlyCalendar
             currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
             calendarItems={calendarItems}
             setCalendarItems={setCalendarItems}
+            calendarViewMenu={calendarViewMenu}
           />
-        </Grid>
-        <Grid item xs={6} md={7}>
-          <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
-        </Grid>
-        <Grid item xs={12} md={5}>
-          <TaskMenu tasks={tasks} />
-        </Grid>
-        
+        ) : (
+          <WeeklyCalendar
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
+            calendarItems={calendarItems}
+            setCalendarItems={setCalendarItems}
+            calendarViewMenu={calendarViewMenu}
+          />
+        )}
       </Grid>
+      <Grid item xs={4}>
+        <DailyCalendar
+          currentDate={currentDate}
+          calendarItems={calendarItems}
+          setCalendarItems={setCalendarItems}
+        />
+      </Grid>
+      <Grid item xs={6} md={7}>
+        <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
+      </Grid>
+      <Grid item xs={12} md={5}>
+        <TaskMenu tasks={tasks} />
+      </Grid>
+    </Grid>
     // </AuthProvider>
   );
 }

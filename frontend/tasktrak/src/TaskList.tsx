@@ -16,7 +16,6 @@ import {
   Button,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Task } from "./CalendarItem";
 import React, { useState } from "react";
@@ -37,20 +36,45 @@ export default function TaskList(props: TaskListProps) {
   function handleNewTaskButton() {
     setOpen(true);
   }
-  function handleSave() {
+
+  async function handleSave() {
     // const startingAddedID = props.tasks[props.tasks.length-1].id + 1;
     const newTask: Task = {
-        // id: 
-        name: taskName,
-        dueDate: dueDate,
-        priority: priority,
-        duration: duration,
-        // completion: 0, // Default completion value
-        isComplete: false,
-        notes: "",
-        dread: 0,
-        timeSuggestions: []
+      // id:
+      name: taskName,
+      dueDate: dueDate,
+      priority: priority,
+      duration: duration,
+      // completion: 0, // Default completion value
+      isComplete: false,
+      notes: "",
+      timeSuggestions: [],
     };
+    try {
+      const response = await fetch("http://localhost:4567/api/task", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: taskName,
+          dueDate: dueDate.toISOString(),
+          priority: priority,
+          duration: duration,
+          isComplete: false,
+          notes: "",
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to save task");
+      }
+
+      const taskTimeSuggestions: number[] = await response.json();
+
+      newTask.timeSuggestions = taskTimeSuggestions;
+
+    
 
     props.setTasks([...props.tasks, newTask]);
 
@@ -105,8 +129,8 @@ export default function TaskList(props: TaskListProps) {
             <DatePicker
               value={new Date(2023, 4, 1)}
               onChange={(newValue) => {
-                if(newValue){
-                    setDueDate(newValue);
+                if (newValue) {
+                  setDueDate(newValue);
                 }
               }}
             />

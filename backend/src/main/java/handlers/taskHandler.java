@@ -74,7 +74,7 @@ public class taskHandler implements Route {
       String jsonTaskTimeSuggestions = gson.toJson(taskTimeSuggestions);
       response.type("timeSuggestions/json");
 
-      return taskTimeSuggestions;
+      return jsonTaskTimeSuggestions;
 
 
 
