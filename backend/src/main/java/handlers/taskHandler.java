@@ -30,19 +30,6 @@ import spark.Response;
 import spark.Route;
 import com.google.gson.Gson;
 
-// Custom Moshi adapter for LocalTime
-class LocalTimeAdapter {
-  @ToJson
-  String toJson(LocalTime localTime) {
-    return localTime.toString();
-  }
-
-  @FromJson
-  LocalTime fromJson(String localTime) {
-    return LocalTime.parse(localTime);
-  }
-}
-
 
 public class taskHandler implements Route {
 
@@ -99,25 +86,27 @@ public class taskHandler implements Route {
       //the timeSuggestions for the just task that was added
       List<List<LocalTime>> taskTimeSuggestions = task.getTimeSuggestions();
 
-      Moshi moshi = new Moshi.Builder()
-          .add(new LocalTimeAdapter())
-          .build();
+//      Moshi moshi = new Moshi.Builder()
+//          .add(new LocalTimeAdapter())
+//          .build();
+//
+//      // Define the type for ArrayList<LocalTime[]>
+//      Type listOfLocalTimeType = Types.newParameterizedType(List.class, LocalTime.class);
+//      Type listOfLocalTimeArraysType = Types.newParameterizedType(List.class, listOfLocalTimeType);
+//
+//      // Create JSON adapter for the type
+//      com.squareup.moshi.JsonAdapter<List<List<LocalTime>>> adapter =
+//          moshi.adapter(listOfLocalTimeArraysType);
+//
+//      // Convert taskTimeSuggestions to JSON
+//      System.out.println("DOES NOT WORK SO FAR");
+//      String jsonTaskTimeSuggestions = adapter.toJson(taskTimeSuggestions);
+//      System.out.println("WORKS SO FAR");
+//
+//      // Set the response type to JSON
+//      response.type("application/json");
 
-      // Define the type for ArrayList<LocalTime[]>
-      Type listOfLocalTimeType = Types.newParameterizedType(List.class, LocalTime.class);
-      Type listOfLocalTimeArraysType = Types.newParameterizedType(List.class, listOfLocalTimeType);
-
-      // Create JSON adapter for the type
-      com.squareup.moshi.JsonAdapter<List<List<LocalTime>>> adapter =
-          moshi.adapter(listOfLocalTimeArraysType);
-
-      // Convert taskTimeSuggestions to JSON
-      String jsonTaskTimeSuggestions = adapter.toJson(taskTimeSuggestions);
-
-      // Set the response type to JSON
-      response.type("application/json");
-
-      return constructSuccessResponse(jsonTaskTimeSuggestions);
+      return constructSuccessResponse(taskTimeSuggestions);
 
 
 

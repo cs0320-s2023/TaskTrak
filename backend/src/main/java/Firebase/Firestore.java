@@ -77,9 +77,9 @@ public class Firestore {
     }
   }
 
-   public void deleteFirebaseEvent(Integer eventID, String tokenID) throws FirebaseAuthException{
+   public void deleteFirebaseEvent(String eventID, String tokenID) throws FirebaseAuthException{
      DocumentReference userRef = getUserRef(tokenID);
-     userRef.collection("events").document(eventID.toString()).delete();
+     userRef.collection("events").document(eventID).delete();
    }
 
   //Likely need to call this when using Firebase authentication

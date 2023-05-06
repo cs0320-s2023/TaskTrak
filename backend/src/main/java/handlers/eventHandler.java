@@ -42,10 +42,9 @@ public class eventHandler implements Route {
    * @param request the incoming request object containing the parameters for creating the event
    * @param response the response object used to handle any errors
    * @return null
-   * @throws Exception if there is an error parsing the date parameters or adding the event to the calendar
    */
   @Override
-  public Object handle(Request request, Response response) throws Exception {
+  public Object handle(Request request, Response response) {
     String title = request.queryParams("title");
     String startDateString = request.queryParams("startDate");
     String endDateString = request.queryParams("endDate");
