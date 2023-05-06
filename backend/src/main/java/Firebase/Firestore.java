@@ -4,6 +4,7 @@ import static com.google.firebase.FirebaseApp.initializeApp;
 import static com.google.firebase.cloud.FirestoreClient.getFirestore;
 
 import Items.Event;
+import Items.Task;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.CollectionReference;
@@ -82,17 +83,16 @@ public class Firestore {
      }
    }
 
+   public void deleteFirebaseEvent(Integer eventID, String tokenID) throws FirebaseAuthException{
+     DocumentReference userRef = getUserRef(tokenID);
+     userRef.collection("events").document(eventID.toString()).delete();
+   }
+
   //Likely need to call this when using Firebase authentication
   public void addNewUser(String userID) {
       try {
           DocumentReference docRef = db.collection("users").document(userID);
 
-          // const docRef = await addDoc(collection(db, "users"), {
-          //     first: "Ada",
-          //     last: "Lovelace",
-          //     born: 1815,
-          // });
-          // console.log("Document written with ID: ", docRef.id);
       } catch (Exception e) {
           System.err.println("Error adding document: " + e);
       }
@@ -126,5 +126,33 @@ public class Firestore {
     FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenID);
     String userID = decodedToken.getUid();
     return db.collection("users").document(userID);
+  }
+
+  //TASK STUFF
+  public void createFirebaseTask(Task task, String tokenID) throws FirebaseAuthException{
+    try {
+      DocumentReference userRef = db.collection("users").document("testUser2");//getUserRef(tokenID);
+      DocumentReference taskRef = userRef.collection("tasks").document(task.getId().toString());
+
+      Map<String, Object> docData = new HashMap<>();
+      docData.put("title", task.getName());
+      docData.put("dueDate", task.getDueDate().toString());
+      docData.put("notes", task.getNotes());
+      docData.put("duration", task.getTimeToComplete());
+      docData.put("priority", task.getPriority().getValue());
+      docData.put("isComplete", task.getIsComplete());
+
+      ApiFuture<WriteResult> test = taskRef.set(docData); //SET FAILING FOR SOME REASON
+    }
+
+    //  const eventRef = collection(db,userID + "/events")
+    catch (Exception e) {
+      System.err.println("TASK CREATE FAILED: " + e);
+    }
+  }
+
+  public void deleteFirebaseTask(Integer taskID, String tokenID) throws FirebaseAuthException{
+    DocumentReference userRef = getUserRef(tokenID);
+    userRef.collection("events").document(taskID.toString()).delete();
   }
 }
