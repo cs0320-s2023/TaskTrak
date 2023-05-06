@@ -26,7 +26,6 @@ export interface Task {
   name: string;
   notes: string;
   priority: number;
-  dread: 0 | 1 | 2;
   duration: number;
   dueDate: Date;
   isComplete: Boolean;
@@ -38,7 +37,6 @@ export const sampleTasks: Task[] = [
     name: "task0",
     notes: "note",
     priority: 0,
-    dread: 1,
     duration: 3,
     dueDate: new Date(2023, 4, 10, 12, 0),
     isComplete: true,
@@ -48,7 +46,6 @@ export const sampleTasks: Task[] = [
     name: "task1",
     notes: "note",
     priority: 2,
-    dread: 1,
     duration: 3,
     dueDate: new Date(2023, 4, 8, 12, 0),
     isComplete: true,
@@ -58,7 +55,6 @@ export const sampleTasks: Task[] = [
     name: "task2",
     notes: "note",
     priority: 0,
-    dread: 1,
     duration: 3,
     dueDate: new Date(2023, 4, 7, 12, 0),
     isComplete: true,
@@ -68,7 +64,6 @@ export const sampleTasks: Task[] = [
     name: "task3",
     notes: "note",
     priority: 1,
-    dread: 1,
     duration: 3,
     dueDate: new Date(2023, 4, 10, 12, 0),
     isComplete: true,
