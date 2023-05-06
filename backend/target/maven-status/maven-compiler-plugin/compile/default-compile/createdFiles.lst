@@ -1,12 +1,15 @@
 Enums/Rating.class
 Algorithim/TaskManager.class
+handlers/deleteTaskHander.class
 Main/server$Server.class
 handlers/taskHandler.class
 Items/Day.class
+handlers/editEventHandler.class
 Algorithim/TaskManager$1.class
 Items/Event.class
 Items/CalendarItem.class
 Algorithim/eventManager.class
+handlers/deleteEventHandler.class
 records/calendarRecords.class
 Items/timeMethods.class
 records/calendarRecords$Event.class

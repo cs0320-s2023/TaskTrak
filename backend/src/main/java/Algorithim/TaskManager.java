@@ -71,7 +71,7 @@ public class TaskManager {
       // this will sort all the free time blocks from longest to shortest
       ArrayList<int[]> sortedFreeTime = sortArrayList(freeList);
 
-      ArrayList<Time[]> finalTimeList = new ArrayList<>();
+      ArrayList<LocalTime[]> finalTimeList = new ArrayList<>();
 
       for (int[] window : sortedFreeTime) {
         finalTimeList.add(convertToTime(window)); // converts the minutes to Time
@@ -85,7 +85,7 @@ public class TaskManager {
       ArrayList<int[]> suggestedWindows = produceSuggestions(tempList,
           (int) (task.getTimeToComplete() * 60));
 
-      ArrayList<Time[]> finalTimeList = new ArrayList<>();
+      ArrayList<LocalTime[]> finalTimeList = new ArrayList<>();
 
       for (int[] window : suggestedWindows) {
         finalTimeList.add(convertToTime(window)); // converts the minutes to Time
@@ -138,14 +138,14 @@ public class TaskManager {
 
 
   /**
-   * Converts an int[] to a Time[]
+   * Converts an int[] to a LocalTime[]
    * @param minutes
    * @return
    */
-  public static Time[] convertToTime(int[] minutes) {
-    Time start = Time.valueOf(LocalTime.ofSecondOfDay(minutes[0] * 60));
-    Time end = Time.valueOf(LocalTime.ofSecondOfDay(minutes[1] * 60));
-    return new Time[] { start, end };
+  public static LocalTime[] convertToTime(int[] minutes) {
+    LocalTime start = LocalTime.ofSecondOfDay(minutes[0] * 60);
+    LocalTime end = LocalTime.ofSecondOfDay(minutes[1] * 60);
+    return new LocalTime[] { start, end };
   }
 
   /**

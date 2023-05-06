@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import Items.Day;
+import Items.timeMethods;
 import java.util.List;
 
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -88,5 +90,6 @@ public class testDay {
     assertArrayEquals(new int[]{150, 180}, ranges.get(1));
     assertArrayEquals(new int[]{225,1439}, ranges.get(2));
   }
+
 
   }

@@ -4,6 +4,7 @@ import Enums.Rating;
 import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Task implements CalendarItem{
   private Double timeToComplete;
   private LocalDateTime dueDate; // will need to consider how to manage time
   private Boolean isComplete;
-  private ArrayList<Time[]> timeSuggestions;
+  private ArrayList<LocalTime[]> timeSuggestions;
 
   // task constructor
 
@@ -74,16 +75,16 @@ public class Task implements CalendarItem{
    * Adds a time block to the time suggestions list
    * @param timeBlock - an integer array representing a time suggestion
    */
-  public void addTimeSuggestion(Time[] timeBlock) {
+  public void addTimeSuggestion(LocalTime[] timeBlock) {
     this.getTimeSuggestions().add(timeBlock);
   }
 
-  public void setTimeSuggestion(ArrayList<Time[]> newList) {
+  public void setTimeSuggestion(ArrayList<LocalTime[]> newList) {
     this.timeSuggestions = newList;
   }
 
 
-  public ArrayList<Time[]> getTimeSuggestions(){
+  public ArrayList<LocalTime[]> getTimeSuggestions(){
     return this.getTimeSuggestions();
   }
 
