@@ -144,8 +144,9 @@ public class Firestore {
 
   //TASK STUFF
   public void createFirebaseTask(Task task, String tokenID) throws FirebaseException{
-    try {
-      DocumentReference userRef = getUserRef(tokenID);
+//    try {
+//      DocumentReference userRef = db.collection("users").document("testUser3");
+      DocumentReference userRef =getUserRef(tokenID);
       DocumentReference taskRef =
           userRef.collection("tasks").document(task.getTaskID().toString());
 
@@ -158,12 +159,13 @@ public class Firestore {
       docData.put("isComplete", task.getIsComplete());
 
       ApiFuture<WriteResult> test = taskRef.set(docData); //SET FAILING FOR SOME REASON
-    }
-    catch (FirebaseAuthException e) {
-      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Invalid user token ID.",e.getCause());
-    } catch (FirebaseException e) {
-      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Task data unable to be set. This may be due to passing the wrong types.", e.getCause());
-    }
+//    }
+//    catch (FirebaseAuthException e) {
+//      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Invalid user token ID.",e.getCause());
+//    }
+//    catch (FirebaseException e) {
+//      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Task data unable to be set. This may be due to passing the wrong types.", e.getCause());
+//    }
   }
 
   public void deleteFirebaseTask(Integer taskID, String tokenID) throws FirebaseAuthException{
