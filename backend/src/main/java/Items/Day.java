@@ -37,8 +37,9 @@ public class Day {
     if (window == null || window.length != 2) {
       throw new IllegalArgumentException("Window array should have exactly two elements");
     }
-    if (window[0] < 0 || window[0] >= 1440 || window[1] < 0 || window[1] >= 1440) {
-      throw new IllegalArgumentException("Window values should be between 0 and 1439 (inclusive)");
+    if (window[0] < 0 || window[0] >= 1440 || window[1] < 0 || window[1] >= 1440 || window[1] - window[0] >= 0) {
+      throw new IllegalArgumentException("Window values should be between 0 and 1439 (inclusive),"
+          + " and the second value should be greater than the first");
     }
     int duration = window[1] - window[0];
     if (duration < 0) {
@@ -48,9 +49,7 @@ public class Day {
   }
 
 
-  public TaskManager getTm(){
-    return this.tm;
-  }
+
 
 
   /**
@@ -60,7 +59,6 @@ public class Day {
    * Example: if the only free time in a day is from 1am-3:30am and 11am-1:45pm
    * [ [60,210], [660, 825]]
    */
-
   public ArrayList<int[]> findAvailableTimeRanges() {
     ArrayList<int[]> availableRanges = new ArrayList<>();
     boolean isBusy = false;
@@ -68,35 +66,38 @@ public class Day {
     int startBlock = -1;
     for (int hour = 0; hour < 24; hour++) {
       for (int block = 0; block < 4; block++) {
-        if (timeSlots[hour][block]) {
-          // If the current hour and block is busy
-          if (!isBusy) {
-            // If we were previously not in a busy block, we just started a busy block
-            isBusy = true;
-          }
-          if (startHour != -1 && startBlock != -1) {
-            // If we were previously in an available block, we just ended it
-            int endHour = hour;
-            int endBlock = block;
-            int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour,
-                endBlock)};
-            availableRanges.add(range);
-            startHour = -1;
-            startBlock = -1;
+        if (hour >= 0 && hour < timeSlots.length && block >= 0) {
+          if (!timeSlots[hour][block]) {
+            // If the current hour and block is available
+            if (isBusy) {
+              // If we were previously in a busy block, we just ended it
+              isBusy = false;
+              startHour = hour;
+              startBlock = block;
+            }
+            if (startHour == -1 && startBlock == -1) {
+              // If we were previously not in an available block, we just started one
+              startHour = hour;
+              startBlock = block;
+            }
+          } else {
+            // If the current hour and block is busy
+            if (!isBusy) {
+              // If we were previously not in a busy block, we just started a busy block
+              isBusy = true;
+            }
+            if (startHour != -1 && startBlock != -1) {
+              // If we were previously in an available block, we just ended it
+              int endHour = hour;
+              int endBlock = block;
+              int[] range = { getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour, endBlock) };
+              availableRanges.add(range);
+              startHour = -1;
+              startBlock = -1;
+            }
           }
         } else {
-          // If the current hour and block is available
-          if (isBusy) {
-            // If we were previously in a busy block, we just ended it
-            isBusy = false;
-            startHour = hour;
-            startBlock = block;
-          }
-          if (startHour == -1 && startBlock == -1) {
-            // If we were previously not in an available block, we just started one
-            startHour = hour;
-            startBlock = block;
-          }
+          System.err.println("Invalid array access at hour: " + hour + ", block: " + block);
         }
       }
     }
@@ -104,12 +105,13 @@ public class Day {
       // If we were previously in an available block, we just ended it
       int endHour = 23;
       int endBlock = 3;
-      //int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour, endBlock)};
-      int[] range = {getMinuteOfDay(startHour, startBlock), 1439};
+      // int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour, endBlock)};
+      int[] range = { getMinuteOfDay(startHour, startBlock), 1439 };
       availableRanges.add(range);
     }
     return availableRanges;
   }
+
 
 
   /**
@@ -136,7 +138,7 @@ public class Day {
   public void bookTimeRange(int startHourIndex, int startMinuteIndex, int endHourIndex,
       int endMinuteIndex, boolean set) {
     // Convert hour and minute indices to slot indices
-    if (endHourIndex == 4) {
+    if (endHourIndex == 4) { // this is to mark off the final slot in the day
       timeSlots[23][3] = set;
     }
     int startIndex = (startHourIndex * 4) + startMinuteIndex;
@@ -154,6 +156,8 @@ public class Day {
   public boolean[][] getTimeSlots(){
     return this.timeSlots;
   }
-
+  public TaskManager getTm(){
+    return this.tm;
+  }
 
 }

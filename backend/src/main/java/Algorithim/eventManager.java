@@ -1,96 +1,97 @@
 package Algorithim;
 
+import Items.Calendar;
+import Items.Day;
 import Items.Event;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class eventManager {
-  
-    private Map<String, Event> eventMap;
 
-    public eventManager() {
-      this.eventMap = new HashMap<>();
+  private Map<String, Event> eventMap;
+
+  public eventManager() {
+    this.eventMap = new HashMap<>();
+  }
+
+  /**
+   * Adds a Event to the Event list
+   *
+   * @param event
+   */
+  public void addEvent(Event event) {
+    if (event == null) {
+      throw new IllegalArgumentException("event cannot be null");
     }
 
-    /**
-     * Adds a Event to the Event list
-     * @param event
-     */
-    public void addEvent(Event event) {
-      if (event == null) {
-        throw new IllegalArgumentException("event cannot be null");
-      }
-
-      if (this.eventMap.containsKey(event.getName())) {
-        throw new IllegalArgumentException("event with name '" + event.getName() + "' already "
-            + "exists");
-      }
-
-      this.eventMap.put(event.getName(), event);
+    if (this.eventMap.containsKey(event.getName())) {
+      throw new IllegalArgumentException("event with name '" + event.getName() + "' already "
+          + "exists");
     }
 
-    /**
-     * removes a event to the event list
-     */
-    public void removeEvent(String name) {
-      if (name == null) {
-        throw new IllegalArgumentException("Name cannot be null");
-      }
+    this.eventMap.put(event.getName(), event);
+  }
 
-      if (!eventMap.containsKey(name)) {
-        throw new IllegalArgumentException("event with name '" + name + "' does not exist");
-      }
-
-      this.eventMap.remove(name);
+  /**
+   * removes a event to the event list
+   */
+  public void removeEvent(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Name cannot be null");
     }
 
-
-    /**
-     * Returns the specific event you are searching for by name
-     * @param name
-     * @return
-     */
-    public Event getEvent(String name) {
-      if (name == null) {
-        throw new IllegalArgumentException("Name cannot be null");
-      }
-
-      Event event = this.eventMap.get(name);
-      if (event == null) {
-        throw new IllegalArgumentException("event with name '" + name + "' does not exist");
-      }
-
-      return event;
+    if (!eventMap.containsKey(name)) {
+      throw new IllegalArgumentException("event with name '" + name + "' does not exist");
     }
 
+    this.eventMap.remove(name);
+  }
 
-    /**
-     * Returns the entire eventList
-     * @return
-     */
-    public Map<String, Event> getEventMap() {
-      return this.eventMap;
+
+  /**
+   * Returns the specific event you are searching for by name
+   *
+   * @param name
+   * @return
+   */
+  public Event getEvent(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Name cannot be null");
     }
 
-
-
-
-
-
-
-
-    /**
-     * For loop for looping through the event list -- to be modified later
-     */
-    public void eventLoop(){
-      Map<String, Event> events = this.getEventMap();
-      for (Map.Entry<String, Event> entry : events.entrySet()) {
-        String eventName = entry.getKey();
-        Event event = entry.getValue();
-        // do something with the event
-      }
+    Event event = this.eventMap.get(name);
+    if (event == null) {
+      throw new IllegalArgumentException("event with name '" + name + "' does not exist");
     }
 
+    return event;
+  }
+
+
+  /**
+   * Returns the entire eventList
+   *
+   * @return
+   */
+  public Map<String, Event> getEventMap() {
+    return this.eventMap;
+  }
+
+
+  /**
+   * For loop for looping through the event list -- to be modified later
+   */
+  public void eventLoop() {
+    Map<String, Event> events = this.getEventMap();
+    for (Map.Entry<String, Event> entry : events.entrySet()) {
+      String eventName = entry.getKey();
+      Event event = entry.getValue();
+      // do something with the event
+    }
+  }
 
   /**
    * Converts hours and time blocks into minutes of the day
@@ -98,8 +99,10 @@ public class eventManager {
    * @param block - 15 minute block within the hour
    * @return - integer representing the number
    */
-  public int getMinuteOfDay(int hour, int block) {
-    return hour * 60 + block * 15;
-  }
+//  public int getMinuteOfDay(int hour, int block) {
+//    return hour * 60 + block * 15;
+//  }
+//
+//  }
 
-  }
+}

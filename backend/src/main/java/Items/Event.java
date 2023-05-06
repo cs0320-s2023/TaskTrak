@@ -6,20 +6,28 @@ import java.time.LocalDateTime;
 
 public class Event implements CalendarItem {
 
+
   private String name;
   private String notes;
   private LocalDateTime endTime;
   private LocalDateTime startTime; // will need to consider how to manage time
   private Boolean isComplete;
+  private int id;
+  private boolean isAllDay;
+  //private boolean isRepeated;
+
+
 
 
   public Event(String name, String notes,
-      LocalDateTime startTime, LocalDateTime endTime) {
+      LocalDateTime startTime, LocalDateTime endTime, int id, boolean isAllDay) {
     this.name = name;
     this.notes = notes;
     this.endTime = endTime;
     this.startTime = startTime;
     this.isComplete = false;
+    this.id = id;
+    this.isAllDay = isAllDay;
   }
 
 
@@ -40,12 +48,6 @@ public class Event implements CalendarItem {
 //        timeToComplete, dueDate, false);
 //    return newTask;
 //  }
-
-
-
-  /*
-  Getters and Setters
-   */
 
 
 
@@ -92,6 +94,9 @@ public class Event implements CalendarItem {
     return this.isComplete;
   }
 
+  public Integer getId(){return this.id;}
+
+  public boolean getIsAllDay() {return this.isAllDay;}
 
   @Override
   public void changeCompletion() {

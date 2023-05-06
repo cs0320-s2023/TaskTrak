@@ -1,10 +1,15 @@
 package handlers;
 
+import static Response.MapResponse.constructErrorResponse;
+import static Response.MapResponse.constructSuccessResponse;
+
 import Items.Calendar;
 import Items.Day;
 import Items.Event;
 import Items.timeMethods;
+import com.google.firebase.FirebaseException;
 import java.time.LocalDate;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -37,11 +42,9 @@ public class eventHandler implements Route {
    * @param request the incoming request object containing the parameters for creating the event
    * @param response the response object used to handle any errors
    * @return null
-   * @throws Exception if there is an error parsing the date parameters or adding the event to the calendar
    */
   @Override
-  public Object handle(Request request, Response response) throws Exception {
-    System.err.println("handle method being run");
+  public Object handle(Request request, Response response) {
     String title = request.queryParams("title");
     String startDateString = request.queryParams("startDate");
     String endDateString = request.queryParams("endDate");
@@ -49,12 +52,12 @@ public class eventHandler implements Route {
     String notes = request.queryParams("notes");
     String isAllDay = request.queryParams("isAllDay");
     String isRepeated = request.queryParams("isRepeated");
-
-//    String tokenID = request.queryParams("tokenID"); //Used for user identification, not needed
+    String tokenID = request.queryParams("tokenID"); //Used for user identification, not needed
 //    at the moment
 
     try {
       String decodedNotes = URLDecoder.decode(notes, "UTF-8");
+      String decodedTitle = URLDecoder.decode(title, "UTF-8");
 
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
           .withZone(ZoneOffset.UTC);
@@ -62,79 +65,41 @@ public class eventHandler implements Route {
       LocalDateTime startTime = LocalDateTime.parse(startDateString, formatter);
       LocalDateTime endTime = LocalDateTime.parse(endDateString, formatter);
       LocalDate eventDate = startTime.toLocalDate();
+
+      int id = Integer.parseInt(eventID);
       Boolean allDay = Boolean.parseBoolean(isAllDay);
-      // String repeated = Boolean.parseBoolean(isRepeated);
+//      Boolean repeated = Boolean.parseBoolean(isRepeated);
 
-      Event event = new Event(title, decodedNotes, startTime, endTime);
-
-<<<<<<< HEAD
-=======
-      // Creates a Day object for the event day if it doesn't
-      this.calendar.addDay(startTime.toLocalDate(), new Day());
-      firestore.createEventFirebase(event);
->>>>>>> 0bbf3e6998cbdeb560bcbadf7eaee1abde815296
-
-      int startHour = event.getStartTime().getHour();
-      int endHour = event.getEndTime().getHour();
-
-      int startMinuteBlock = event.getStartTime().getMinute() / 15;
-      int endMinuteBlock = event.getEndTime().getMinute() / 15;
-
-      LocalDate startDate = event.getStartTime().toLocalDate();
-      LocalDate endDate = event.getEndTime().toLocalDate();
-
-
-      List<LocalDate> dateList = new ArrayList<>(); // list of dates the events span
-      if (!allDay.equals(true)) { // if the event is not all day
-
-        LocalDate date = startDate; // date in the loop
-        while (!date.isAfter(endDate)) { // within date range
-          dateList.add(date); // add date
-          date = date.plusDays(1); // iterate by 1 date within the range
-        }
-        // for each day get the calendar Day Object
-        for (LocalDate day : dateList) {
-          int dayNum = 1;
-          this.calendar.addDay(day, new Day()); // creates day object if it doesn't exist already
-
-          if (dateList.size() > 1) { // if event spans multiple days
-            if (dayNum == 0) { // first day of multi day
-            this.calendar.getSchedule(day).bookTimeRange(startHour, startMinuteBlock,
-                23, 3, true);
-            }
-            if (dayNum < dateList.size()) { // if this is a middle day of the event, book all day
-              this.calendar.getSchedule(day).bookTimeRange(0, 0,
-                  23, 3, true);
-            }
-            if (dayNum == dateList.size()) { // if this is the last day of the event
-              this.calendar.getSchedule(day).bookTimeRange(0, 0,
-                  endHour, endMinuteBlock, true);
-            }
-        } else { // if the event is only on one day, block off that time
-            this.calendar.getSchedule(day).bookTimeRange(startHour, startMinuteBlock, endHour,
-                endMinuteBlock,true);
-          }
-            dayNum ++;
-          }
-      }
-
+      Event event = new Event(decodedTitle, decodedNotes, startTime, endTime, id, allDay);
+      firestore.createEventFirebase(event,tokenID);
 
       System.out.println(event.getName());
+      this.calendar.blockOffTime(event,allDay);
 
-<<<<<<< HEAD
-      System.out.println(event);
-=======
-
-    System.out.println(event);
->>>>>>> 0bbf3e6998cbdeb560bcbadf7eaee1abde815296
-
+      return constructSuccessResponse("Event successfully stored!");
 
     } catch (DateTimeParseException e) {
       String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
       response.status(400);
       response.body(errorMessage);
-      return response;
+      System.err.println(e);
+      return constructErrorResponse(response);
+
+    } catch (UnsupportedEncodingException e) {
+      System.err.println("Invalid string for notes");
+      response.status(400);
+      response.body("Invalid string for notes.");
+      return constructErrorResponse(response);
+
+    } catch (NumberFormatException e) {
+      response.status(400);
+      response.body("Invalid integer for event id.");
+      return constructErrorResponse(response);
+
+    } catch (FirebaseException e) {
+      response.status(500);
+      response.body(e.getMessage());
+      return constructErrorResponse(response);
     }
-    return null;
   }
 }

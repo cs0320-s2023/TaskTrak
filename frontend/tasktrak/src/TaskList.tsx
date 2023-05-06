@@ -16,7 +16,6 @@ import {
   Button,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Task } from "./CalendarItem";
 import React, { useState } from "react";
@@ -37,33 +36,64 @@ export default function TaskList(props: TaskListProps) {
   function handleNewTaskButton() {
     setOpen(true);
   }
-  function handleSave() {
-    // const startingAddedID = props.tasks[props.tasks.length-1].id + 1;
+
+  async function handleSave() {
+    const startingAddedID = props.tasks[props.tasks.length - 1].id + 1;
     const newTask: Task = {
-        // id: 
-        name: taskName,
-        dueDate: dueDate,
-        priority: priority,
-        duration: duration,
-        // completion: 0, // Default completion value
-        isComplete: false,
-        notes: "",
-        dread: 0,
-        timeSuggestions: []
+      // id:
+      name: taskName,
+      dueDate: dueDate,
+      priority: priority,
+      duration: duration,
+      // completion: 0, // Default completion value
+      isComplete: false,
+      notes: "",
+      id: startingAddedID,
+      timeSuggestions: [],
     };
 
-    props.setTasks([...props.tasks, newTask]);
+    try {
+      const response = await fetch(
+        `http://localhost:3030/createTask?` +
+          `name=${taskName}&` +
+          `dueDate=${dueDate.toISOString()}&` +
+          `priority=${priority}&` +
+          `duration=${duration}&` +
+          `isComplete=${false}&` +
+          `id=${startingAddedID}&` +
+          `notes=dfsjddkl`,
+        {
+          mode: "no-cors",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    // Reset input values
-    setTaskName("");
-    setDueDate(new Date());
-    setPriority(0);
-    setDuration(0);
+      // if (!response.ok) {
+      //   throw new Error("Failed to save task");
+      // }
 
-    // Close the dialog
-    handleClose();
+      const taskTimeSuggestions: string[][] = await response.json();
+
+      newTask.timeSuggestions = taskTimeSuggestions;
+
+      props.setTasks([...props.tasks, newTask]);
+
+      // Reset input values
+      setTaskName("");
+      setDueDate(new Date());
+      setPriority(0);
+      setDuration(0);
+
+      // Close the dialog
+      handleClose();
+    } catch (error) {
+      console.error("Error saving the task:", error);
+      // You can handle the error here, e.g. show an error message to the user
+    }
   }
-
   function handleClose() {
     setOpen(false);
   }
@@ -105,8 +135,8 @@ export default function TaskList(props: TaskListProps) {
             <DatePicker
               value={new Date(2023, 4, 1)}
               onChange={(newValue) => {
-                if(newValue){
-                    setDueDate(newValue);
+                if (newValue) {
+                  setDueDate(newValue);
                 }
               }}
             />
@@ -156,6 +186,7 @@ export default function TaskList(props: TaskListProps) {
       </List>
       {props.tasks.map((task) => (
         <List
+          key={task.id}
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
         >
           <ListItem>

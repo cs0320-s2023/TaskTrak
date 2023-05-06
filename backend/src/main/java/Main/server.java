@@ -2,9 +2,12 @@ package Main;
 
 import static spark.Spark.after;
 
+import Algorithim.TaskManager;
 import Items.Calendar;
+import handlers.deleteEventHandler;
 import handlers.eventHandler;
 import Firebase.Firestore;
+import handlers.taskHandler;
 import spark.Spark;
 
 public class server {
@@ -13,22 +16,32 @@ public class server {
   public static class Server {
     public static void main(String[] args) {
 
-      Spark.port(3232);
+
+      Spark.port(3030);
 
       after((request, response) -> {
         response.header("Access-Control-Allow-Origin", "*");
         response.header("Access-Control-Allow-Methods", "*");
+        response.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
       });
 
-      Calendar userCalendar = new Calendar();
+
+
       Firestore firestore = new Firestore();
 
-      eventHandler EV = new eventHandler(userCalendar,firestore);
+      Calendar userCalendar = new Calendar();
+      TaskManager userTaskManager = new TaskManager();
+
+      eventHandler EventHandler = new eventHandler(userCalendar, firestore);
+      deleteEventHandler deleteEvent = new deleteEventHandler(userCalendar,firestore);
+      taskHandler TaskHandler = new taskHandler(userTaskManager, userCalendar);
 
       // For creating an event
-      System.out.println("test: " + EV);
+      System.out.println("test: " + EventHandler);
 
-      Spark.post("/createEvent", EV);
+      Spark.post("createEvent", EventHandler);
+      Spark.post("createTask", TaskHandler);
+      Spark.delete("deleteEvent", deleteEvent);
       Spark.init();
       Spark.awaitInitialization();
       System.out.println("Server started.");

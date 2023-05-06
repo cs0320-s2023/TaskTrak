@@ -37,60 +37,69 @@ public class TaskManager {
     LocalDate todaysDate = LocalDate.now();
     Day todaysSchedule = calendar.getSchedule(todaysDate); // Day object for the current day
     ArrayList<int[]> todaysFreeTime = todaysSchedule.findAvailableTimeRanges();
+    // list of the available windows for today
 
     // This for loop generates the timeSuggestions for each task
     for (Task task : this.taskMap.values()) { // for each user task
-      ArrayList<int[]> tempList = new ArrayList<>(); // list for temporary storage
-
-      Integer taskMinutes = (int) (task.getTimeToComplete() * 60); //length of task
-      // in minutes
-
-      for (int[] freeBlock : todaysFreeTime) { // iterate the free windows
-        int blockDuration = windowDuration(freeBlock); // length of the time block
-
-        // if there is a time block of greater or equal length than the task
-
-
-        if (taskMinutes - blockDuration <= 0) {
-          tempList.add(freeBlock); // adds the reasonable time blocks to the temp list
-        }
-      }
-
-
-      // I need to think through the logic of this
-
-
-      if (tempList.size() < 1) { // if there are no time suggestions found
-
-        // this will sort all the free time blocks from longest to shortest
-        ArrayList<int[]> sortedFreeTime = sortArrayList(todaysFreeTime);
-
-
-        ArrayList<Time[]> finalTimeList = new ArrayList<>();
-
-        for (int[] window : sortedFreeTime) {
-          finalTimeList.add(convertToTime(window)); // converts the minutes to Time
-
-          task.setTimeSuggestion(finalTimeList); //sets the task windows
-        }
-
-      } else { // we have reasonable time slots that work
-
-        // creates windows of the correct length
-        ArrayList<int[]> suggestedWindows = produceSuggestions(tempList,
-            (int) (task.getTimeToComplete() * 60));
-
-        ArrayList<Time[]> finalTimeList = new ArrayList<>();
-
-        for (int[] window : suggestedWindows) {
-          finalTimeList.add(convertToTime(window)); // converts the minutes to Time
-
-          task.setTimeSuggestion(finalTimeList); // sets the time windows
-        }
-      }
+      suggestionHelper(task, todaysFreeTime);
     }
   }
 
+
+  /**
+   * Algorithim helper method that performs the time suggestions for a single Task
+   * @param task
+   * @param freeList
+   */
+  public static void suggestionHelper(Task task, ArrayList<int[]> freeList) {
+
+    if (task == null) {
+      throw new IllegalArgumentException("Invalid task or freeList");
+    }
+
+    ArrayList<int[]> tempList = new ArrayList<>(); // list for temporary storage
+    Integer taskMinutes = (int) (task.getTimeToComplete() * 60); //length of task (min)
+
+    for (int[] freeBlock : freeList) { // iterate the free windows
+      int blockDuration = windowDuration(freeBlock); // length of the time block
+
+      // if there is a time block of greater or equal length than the task
+
+      if (taskMinutes - blockDuration <= 0) {
+        tempList.add(freeBlock); // adds the reasonable time blocks to the temp list
+      }
+    }
+
+    if (tempList.size() < 1) { // if there are no time suggestions found
+
+      // this will sort all the free time blocks from longest to shortest
+      ArrayList<int[]> sortedFreeTime = sortArrayList(freeList);
+
+      ArrayList<List<LocalTime>> finalTimeList = new ArrayList<>();
+
+      for (int[] window : sortedFreeTime) {
+        finalTimeList.add(convertToTime(window)); // converts the minutes to Time
+
+        task.setTimeSuggestion(finalTimeList); //sets the task windows
+      }
+
+    } else { // we have reasonable time slots that work
+
+      // creates windows of the correct length
+      ArrayList<int[]> suggestedWindows = produceSuggestions(tempList,
+          (int) (task.getTimeToComplete() * 60));
+
+      ArrayList<List<LocalTime>> finalTimeList = new ArrayList<>();
+
+      for (int[] window : suggestedWindows) {
+        finalTimeList.add(convertToTime(window)); // converts the minutes to Time
+
+        task.setTimeSuggestion(finalTimeList); // sets the time windows
+
+
+      }
+    }
+  }
 
   /**
    * Sorts the time windows in descending order based on the duration of the window
@@ -132,10 +141,15 @@ public class TaskManager {
   }
 
 
-  public static Time[] convertToTime(int[] minutes) {
-    Time start = Time.valueOf(LocalTime.ofSecondOfDay(minutes[0] * 60));
-    Time end = Time.valueOf(LocalTime.ofSecondOfDay(minutes[1] * 60));
-    return new Time[] { start, end };
+  /**
+   * Converts an int[] to a LocalTime[]
+   * @param minutes
+   * @return
+   */
+  public static List<LocalTime> convertToTime(int[] minutes) {
+    LocalTime start = LocalTime.ofSecondOfDay(minutes[0] * 60);
+    LocalTime end = LocalTime.ofSecondOfDay(minutes[1] * 60);
+    return List.of(start, end );
   }
 
   /**
@@ -199,22 +213,6 @@ public class TaskManager {
 
 
 
-
-
-
-
-
-  /**
-   * For loop for looping through the task list -- to be modified later
-   */
-  public void taskLoop(){
-    Map<String, Task> tasks = this.getTaskMap();
-    for (Map.Entry<String, Task> entry : tasks.entrySet()) {
-      String taskName = entry.getKey();
-      Task task = entry.getValue();
-      // do something with the task
-    }
-  }
 
 
 }
