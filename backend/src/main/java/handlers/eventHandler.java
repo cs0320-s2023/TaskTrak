@@ -67,7 +67,7 @@ public class eventHandler implements Route {
 
       int id = Integer.parseInt(eventID);
       Boolean allDay = Boolean.parseBoolean(isAllDay);
-      // String repeated = Boolean.parseBoolean(isRepeated);
+//      Boolean repeated = Boolean.parseBoolean(isRepeated);
       System.err.println("test again");
 
       Event event = new Event(decodedTitle, decodedNotes, startTime, endTime, id, allDay);
@@ -82,11 +82,6 @@ public class eventHandler implements Route {
 
 
       this.calendar.blockOffTime(event,allDay);
-
-
-      System.out.println(event.getName());
-
-      System.out.println(event);
 
 
 

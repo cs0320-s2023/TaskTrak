@@ -66,35 +66,39 @@ public class Day {
     int startBlock = -1;
     for (int hour = 0; hour < 24; hour++) {
       for (int block = 0; block < 4; block++) {
-        if (timeSlots[hour][block]) {
-          // If the current hour and block is busy
-          if (!isBusy) {
-            // If we were previously not in a busy block, we just started a busy block
-            isBusy = true;
-          }
-          if (startHour != -1 && startBlock != -1) {
-            // If we were previously in an available block, we just ended it
-            int endHour = hour;
-            int endBlock = block;
-            int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour,
-                endBlock)};
-            availableRanges.add(range);
-            startHour = -1;
-            startBlock = -1;
+        if (hour >= 0 && hour < timeSlots.length && block >= 0) {
+          if (timeSlots[hour][block]) {
+            // If the current hour and block is busy
+            if (!isBusy) {
+              // If we were previously not in a busy block, we just started a busy block
+              isBusy = true;
+            }
+            if (startHour != -1 && startBlock != -1) {
+              // If we were previously in an available block, we just ended it
+              int endHour = hour;
+              int endBlock = block;
+              int[] range = {getMinuteOfDay(startHour, startBlock), getMinuteOfDay(endHour,
+                  endBlock)};
+              availableRanges.add(range);
+              startHour = -1;
+              startBlock = -1;
+            }
+          } else {
+            // If the current hour and block is available
+            if (isBusy) {
+              // If we were previously in a busy block, we just ended it
+              isBusy = false;
+              startHour = hour;
+              startBlock = block;
+            }
+            if (startHour == -1 && startBlock == -1) {
+              // If we were previously not in an available block, we just started one
+              startHour = hour;
+              startBlock = block;
+            }
           }
         } else {
-          // If the current hour and block is available
-          if (isBusy) {
-            // If we were previously in a busy block, we just ended it
-            isBusy = false;
-            startHour = hour;
-            startBlock = block;
-          }
-          if (startHour == -1 && startBlock == -1) {
-            // If we were previously not in an available block, we just started one
-            startHour = hour;
-            startBlock = block;
-          }
+          System.err.println("Invalid array access at hour: " + hour + ", block: " + block);
         }
       }
     }

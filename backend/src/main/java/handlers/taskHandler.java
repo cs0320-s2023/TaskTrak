@@ -1,12 +1,15 @@
 package handlers;
 
+import com.squareup.moshi.Moshi;
 
 import Algorithim.TaskManager;
 import Enums.Rating;
 import Items.Calendar;
 import Items.Day;
 import Items.Task;
+import com.squareup.moshi.Types;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -16,6 +19,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.List;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -55,7 +59,7 @@ public class taskHandler implements Route {
 
       LocalDateTime decodedDueDate = LocalDateTime.parse(dueDate, formatter);
 
-      // creat Task object
+      // create Task object
       Task task = new Task(decodedName, decodedNotes, decodedPriority, decodedDuration,
           decodedDueDate, decodedIsComplete);
 
@@ -71,11 +75,23 @@ public class taskHandler implements Route {
 
       //the timeSuggestions for the just task that was added
       ArrayList<LocalTime[]> taskTimeSuggestions = task.getTimeSuggestions();
-      Gson gson = new Gson();
-      String jsonTaskTimeSuggestions = gson.toJson(taskTimeSuggestions);
+
+      Moshi moshi = new Moshi.Builder().build();
+
+      // Define the type for ArrayList<LocalTime[]>
+      Type listOfLocalTimeArraysType = Types.newParameterizedType(ArrayList.class, LocalTime[].class);
+
+      // Create JSON adapter for the type
+      com.squareup.moshi.JsonAdapter<List<LocalTime[]>> adapter =
+          moshi.adapter(listOfLocalTimeArraysType);
+
+      // Convert taskTimeSuggestions to JSON
+      String jsonTaskTimeSuggestions = adapter.toJson(taskTimeSuggestions);
+
+      // Set the response type to JSON
       response.type("timeSuggestions/json");
 
-      return taskTimeSuggestions;
+      return jsonTaskTimeSuggestions;
 
 
 

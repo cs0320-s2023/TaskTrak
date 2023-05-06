@@ -53,6 +53,10 @@ public class TaskManager {
    */
   public void suggestionHelper(Task task, ArrayList<int[]> freeList) {
 
+    if (task == null) {
+      throw new IllegalArgumentException("Invalid task or freeList");
+    }
+
     ArrayList<int[]> tempList = new ArrayList<>(); // list for temporary storage
     Integer taskMinutes = (int) (task.getTimeToComplete() * 60); //length of task (min)
 

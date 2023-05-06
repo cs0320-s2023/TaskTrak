@@ -35,6 +35,19 @@ public class Calendar {
    * @param allDay
    */
   public void blockOffTime(Event event, boolean allDay) {
+
+    LocalDateTime startTime = event.getStartTime();
+    LocalDateTime endTime = event.getEndTime();
+
+    if (event == null || event.getStartTime() == null || event.getEndTime() == null) {
+      throw new IllegalArgumentException("Invalid event or event time");
+    }
+
+
+    if (startTime.isAfter(endTime)) {
+      throw new IllegalArgumentException("Invalid time range: start time is after end time");
+    }
+
     int startHour = event.getStartTime().getHour();
     int endHour = event.getEndTime().getHour();
 
@@ -81,6 +94,11 @@ public class Calendar {
    * @param day  - the day schedule object we are adding
    */
   public void addDay(LocalDate date, Day day) {
+
+    if (date == null || day == null) {
+      throw new IllegalArgumentException("Invalid date or day");
+    }
+
     if (!this.bigCalendar.containsKey(date)) {
       this.bigCalendar.put(date, day);
     }
@@ -95,6 +113,8 @@ public class Calendar {
   public void removeDay(LocalDate date) {
     bigCalendar.remove(date);
   }
+
+
 
   /**
    * If a day object does not already exist for the current day, it will create one at midnight This
@@ -118,11 +138,15 @@ public class Calendar {
     }
 
     // Schedule the next call to this method at midnight tomorrow
+    try{
     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     LocalDateTime tomorrowMidnight = todayMidnight.plusDays(1);
     Duration duration = Duration.between(now, tomorrowMidnight);
     long initialDelay = duration.getSeconds();
     scheduler.schedule(this::createDayObjectForToday, initialDelay, TimeUnit.SECONDS);
+  } catch (Exception e) {
+      System.err.println("Error scheduling the next call to createDayObjectForToday: " + e.getMessage());
+    }
   }
 
 
@@ -137,6 +161,8 @@ public class Calendar {
     return bigCalendar.get(date);
   }
 }
+
+
 
 
 //      while (!date.isAfter(endDate)) { // within date range
