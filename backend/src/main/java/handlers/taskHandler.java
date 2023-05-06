@@ -11,6 +11,7 @@ import java.net.URLDecoder;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -69,7 +70,7 @@ public class taskHandler implements Route {
       userTaskManager.suggestionHelper(task, todaysFreeTime);
 
       //the timeSuggestions for the just task that was added
-      ArrayList<Time[]> taskTimeSuggestions = task.getTimeSuggestions();
+      ArrayList<LocalTime[]> taskTimeSuggestions = task.getTimeSuggestions();
       Gson gson = new Gson();
       String jsonTaskTimeSuggestions = gson.toJson(taskTimeSuggestions);
       response.type("timeSuggestions/json");
