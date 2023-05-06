@@ -1,5 +1,6 @@
 package handlers;
 
+import com.squareup.moshi.FromJson;
 import com.squareup.moshi.Moshi;
 
 import Algorithim.TaskManager;
@@ -7,6 +8,7 @@ import Enums.Rating;
 import Items.Calendar;
 import Items.Day;
 import Items.Task;
+import com.squareup.moshi.ToJson;
 import com.squareup.moshi.Types;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
@@ -24,6 +26,19 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import com.google.gson.Gson;
+
+// Custom Moshi adapter for LocalTime
+class LocalTimeAdapter {
+  @ToJson
+  String toJson(LocalTime localTime) {
+    return localTime.toString();
+  }
+
+  @FromJson
+  LocalTime fromJson(String localTime) {
+    return LocalTime.parse(localTime);
+  }
+}
 
 
 public class taskHandler implements Route {
@@ -81,7 +96,9 @@ public class taskHandler implements Route {
       //the timeSuggestions for the just task that was added
       List<List<LocalTime>> taskTimeSuggestions = task.getTimeSuggestions();
 
-      Moshi moshi = new Moshi.Builder().build();
+      Moshi moshi = new Moshi.Builder()
+          .add(new LocalTimeAdapter())
+          .build();
 
       // Define the type for ArrayList<LocalTime[]>
       Type listOfLocalTimeType = Types.newParameterizedType(List.class, LocalTime.class);
@@ -117,7 +134,7 @@ public class taskHandler implements Route {
     } catch (Exception e) {
       // handle generic error
       response.status(500); // Internal Server Error
-      return "Error occurred while processing request";
+      return "Error occurred while processing request" + e;
     }
   }
 
