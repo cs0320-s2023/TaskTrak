@@ -1,5 +1,6 @@
 package taskTests;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -7,6 +8,10 @@ import Algorithim.TaskManager;
 import Enums.Rating;
 import Items.Task;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +32,8 @@ public class testTask {
     //task3 = new Task("Task 3", "Notes 3", Rating.LOW, Rating.LOW, Duration.ofMinutes(30),
     //LocalDateTime.now().plusDays(2), false);
   }
+
+
 
 
   @Test
@@ -105,6 +112,26 @@ public class testTask {
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
         () -> tm.getTask("Task1"));
     assertEquals("Task with name 'Task1' does not exist", exception.getMessage());
+  }
+
+  @Test
+  public void testAddTimeSuggestion() {
+    // Create a sample LocalTime array
+    LocalTime[] timeBlock = {LocalTime.of(9, 0), LocalTime.of(10, 0)};
+
+    // Create a sample Task object
+    Task task = new Task("Sample Task", "Sample notes", Rating.HIGH,
+        2.5, LocalDateTime.now(), false);
+
+    // Call the addTimeSuggestion method
+    task.addTimeSuggestion(timeBlock);
+
+    // Get the time suggestions from the task object
+    ArrayList<LocalTime[]> timeSuggestions = task.getTimeSuggestions();
+
+    // Assert that the timeSuggestions list contains the added timeBlock
+    assertEquals(1, timeSuggestions.size());
+    assertArrayEquals(timeBlock, timeSuggestions.get(0));
   }
 
 

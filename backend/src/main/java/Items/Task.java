@@ -85,7 +85,7 @@ public class Task implements CalendarItem{
 
 
   public ArrayList<LocalTime[]> getTimeSuggestions(){
-    return this.getTimeSuggestions();
+    return this.timeSuggestions;
   }
 
   public Boolean getIsComplete(){

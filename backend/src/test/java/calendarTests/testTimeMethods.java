@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 public class testTimeMethods {
   @Test
 
+
+
   public void testValidWindowDuration() {
     int[] window = {500, 1000};
     int expectedDuration = 500;
