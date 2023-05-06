@@ -117,7 +117,7 @@ public class taskHandler implements Route {
     } catch (Exception e) {
       // handle generic error
       response.status(500); // Internal Server Error
-      return "Error occurred while processing request";
+      return "Error occurred while processing request: " + e;
     }
   }
 
