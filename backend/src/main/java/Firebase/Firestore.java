@@ -13,7 +13,9 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.ErrorCode;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -31,8 +33,6 @@ import java.util.Map;
 
 public class Firestore {
   private com.google.cloud.firestore.Firestore db;
-  private String testingTokenID;
-
   public Firestore() {
     try {
       InputStream serviceAccount = new FileInputStream(
@@ -43,26 +43,21 @@ public class Firestore {
           .build();
       FirebaseApp app = initializeApp(options);
       this.db = getFirestore(app);
-      this.testingTokenID = FirebaseAuth.getInstance().createCustomToken("123456789");
     } catch (FileNotFoundException e) {
       System.err.println("File not found");
     } catch (SecurityException e) {
       System.err.println("Security????");
-    } catch (FirebaseAuthException e) {
-      System.err.println("Failed to create token");
     }
     catch (IOException e) {
       System.err.println("Something else wrong");
     }
   }
 
-  public void createEventFirebase(Event event, String tokenID) throws FirebaseAuthException{
+  public void createEventFirebase(Event event, String tokenID) throws FirebaseException{
     try {
-      DocumentReference userRef = db.collection("users").document("testUser2");//getUserRef(tokenID);
+      DocumentReference userRef = getUserRef(tokenID);
       DocumentReference eventRef = userRef.collection("events").document(event.getId().toString());
-      //  const userQuery = query(userRef,where("id","==",userID)) //Will be used with token to get userID?
-      //  const userQuerySnapshot = await getDocs(userQuery)
-      //  const userDoc = userQuerySnapshot.docs[0].data();
+
       String startDate = event.getStartTime().toLocalDate().toString();
       String endDate = event.getEndTime().toLocalDate().toString();
 
@@ -75,13 +70,12 @@ public class Firestore {
       docData.put("notes", event.getNotes());
       docData.put("isAllDay", event.getIsAllDay());
       ApiFuture<WriteResult> test = eventRef.set(docData); //SET FAILING FOR SOME REASON
+    } catch (FirebaseAuthException e) {
+      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Invalid user token ID.",e.getCause());
+    } catch (FirebaseException e) {
+      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Event data unable to be set. This may be due to passing the wrong types.", e.getCause());
     }
-
-        //  const eventRef = collection(db,userID + "/events")
-      catch (Exception e) {
-       System.err.println("FAILED: " + e);
-     }
-   }
+  }
 
    public void deleteFirebaseEvent(Integer eventID, String tokenID) throws FirebaseAuthException{
      DocumentReference userRef = getUserRef(tokenID);
@@ -98,8 +92,29 @@ public class Firestore {
       }
   }
 
+  public ArrayList<List<Map<String,Object>>> retrieveCalendar(String userTokenID) throws FirebaseAuthException{
+    DocumentReference userRef = getUserRef(userTokenID);
+    ApiFuture<QuerySnapshot> eventsQuery = userRef.collection("events").get();
+    ApiFuture<QuerySnapshot> tasksQuery = userRef.collection("tasks").get();
+
+    List<Map<String, Object>> events = new ArrayList<>();
+    List<Map<String, Object>> tasks = new ArrayList<>();
+    try {
+      for (DocumentSnapshot doc : eventsQuery.get().getDocuments()) {
+        events.add(doc.getData());
+      }
+      for (DocumentSnapshot doc : tasksQuery.get().getDocuments()) {
+        tasks.add(doc.getData());
+      }
+    } catch (Exception e) {
+      System.err.println("Getting data failed for unknown reason: " + e);
+    }
+    return new ArrayList(List.of(events,tasks));
+
+  }
+
   public ArrayList<List<String>> retrieveADayTimes(LocalDateTime dateTime,String userTokenID) throws FirebaseAuthException{
-    DocumentReference userRef = db.collection("users").document("testUser2");//getUserRef(userTokenID);
+    DocumentReference userRef = getUserRef(userTokenID);
     CollectionReference events = userRef.collection("events");
 
 
@@ -122,16 +137,15 @@ public class Firestore {
   }
 
   private DocumentReference getUserRef(String tokenID) throws FirebaseAuthException {
-    tokenID = this.testingTokenID;
     FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(tokenID);
     String userID = decodedToken.getUid();
     return db.collection("users").document(userID);
   }
 
   //TASK STUFF
-  public void createFirebaseTask(Task task, String tokenID) throws FirebaseAuthException{
+  public void createFirebaseTask(Task task, String tokenID) throws FirebaseException{
     try {
-      DocumentReference userRef = db.collection("users").document("testUser2");//getUserRef(tokenID);
+      DocumentReference userRef = getUserRef(tokenID);
       DocumentReference taskRef = userRef.collection("tasks").document(task.getId().toString());
 
       Map<String, Object> docData = new HashMap<>();
@@ -144,10 +158,10 @@ public class Firestore {
 
       ApiFuture<WriteResult> test = taskRef.set(docData); //SET FAILING FOR SOME REASON
     }
-
-    //  const eventRef = collection(db,userID + "/events")
-    catch (Exception e) {
-      System.err.println("TASK CREATE FAILED: " + e);
+    catch (FirebaseAuthException e) {
+      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Invalid user token ID.",e.getCause());
+    } catch (FirebaseException e) {
+      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Task data unable to be set. This may be due to passing the wrong types.", e.getCause());
     }
   }
 
