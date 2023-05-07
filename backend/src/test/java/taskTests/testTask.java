@@ -83,15 +83,15 @@ public class testTask {
     Task task1 = new Task("Task 1", "Notes 1", Rating.HIGH, 1.0,
         LocalDateTime.now().plusDays(1), false, 0);
     Task task2 = new Task("Task 2", "Notes 2", Rating.LOW,0.5,
-        LocalDateTime.now().plusDays(2), false, 0);
+        LocalDateTime.now().plusDays(2), false, 1);
 
     assertEquals(0, tm.getTaskMap().size());
     tm.addTask(task1);
     tm.addTask(task2);
     assertEquals(2, tm.getTaskMap().size());
-    tm.removeTask("Task 1");
+    tm.removeTask(0);
     assertEquals(1, tm.getTaskMap().size());
-    tm.removeTask("Task 2");
+    tm.removeTask(1);
     assertEquals(0, tm.getTaskMap().size());
   }
 

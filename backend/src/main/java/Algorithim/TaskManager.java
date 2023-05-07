@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import Items.timeMethods;
 public class TaskManager {
-  private Map<String, Task> taskMap;
+  private Map<Integer, Task> taskMap;
 
   public TaskManager() {
     this.taskMap = new HashMap<>();
@@ -41,6 +41,7 @@ public class TaskManager {
 
     // This for loop generates the timeSuggestions for each task
     for (Task task : this.taskMap.values()) { // for each user task
+
       suggestionHelper(task, todaysFreeTime);
     }
   }
@@ -55,6 +56,11 @@ public class TaskManager {
 
     if (task == null) {
       throw new IllegalArgumentException("Invalid task or freeList");
+    }
+
+    if (task.getTimeToComplete().equals(0)){
+      task.setTimeSuggestion(new ArrayList<>());
+      return;
     }
 
     ArrayList<int[]> tempList = new ArrayList<>(); // list for temporary storage
@@ -165,22 +171,20 @@ public class TaskManager {
       throw new IllegalArgumentException("Task with name '" + task.getName() + "' already exists");
     }
 
-    this.taskMap.put(task.getName(), task);
+    this.taskMap.put(task.getTaskID(), task);
   }
 
   /**
    * removes a task to the task list
    */
-  public void removeTask(String name) {
-    if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null");
+  public void removeTask(int taskID) {
+
+
+    if (!taskMap.containsKey(taskID)) {
+      throw new IllegalArgumentException("Task with ID '" + taskID + "' does not exist");
     }
 
-    if (!taskMap.containsKey(name)) {
-      throw new IllegalArgumentException("Task with name '" + name + "' does not exist");
-    }
-
-    this.taskMap.remove(name);
+    this.taskMap.remove(taskID);
   }
 
 
@@ -207,7 +211,7 @@ public class TaskManager {
    * Returns the entire taskList
    * @return
    */
-  public Map<String, Task> getTaskMap() {
+  public Map<Integer, Task> getTaskMap() {
     return this.taskMap;
   }
 
