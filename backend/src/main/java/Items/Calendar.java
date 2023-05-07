@@ -34,28 +34,28 @@ public class Calendar {
    * @param event
    * @param allDay
    */
-  public void blockOffTime(Event event, boolean allDay) {
+  public void blockOffTime(LocalDateTime start, LocalDateTime end, boolean allDay,
+      boolean isAdding) {
 
-    LocalDateTime startTime = event.getStartTime();
-    LocalDateTime endTime = event.getEndTime();
 
-    if (event == null || event.getStartTime() == null || event.getEndTime() == null) {
-      throw new IllegalArgumentException("Invalid event or event time");
+
+    if (start == null || end == null) {
+      throw new IllegalArgumentException("Invalid event time");
     }
 
 
-    if (startTime.isAfter(endTime)) {
+    if (start.isAfter(end)) {
       throw new IllegalArgumentException("Invalid time range: start time is after end time");
     }
 
-    int startHour = event.getStartTime().getHour();
-    int endHour = event.getEndTime().getHour();
+    int startHour = start.getHour();
+    int endHour = end.getHour();
 
-    int startMinuteBlock = event.getStartTime().getMinute() / 15;
-    int endMinuteBlock = event.getEndTime().getMinute() / 15;
+    int startMinuteBlock = start.getMinute() / 15;
+    int endMinuteBlock = end.getMinute() / 15;
 
-    LocalDate startDate = event.getStartTime().toLocalDate();
-    LocalDate endDate = event.getEndTime().toLocalDate();
+    LocalDate startDate = start.toLocalDate();
+    LocalDate endDate = end.toLocalDate();
 
     List<LocalDate> dateList = new ArrayList<>(); // list of dates the events span
 
@@ -66,20 +66,20 @@ public class Calendar {
         if (startDate.equals(today)) {
           this.addDay(startDate, new Day());
           this.getSchedule(startDate).bookTimeRange(startHour, startMinuteBlock, endHour,
-              endMinuteBlock, true);
+              endMinuteBlock, isAdding);
         }
       } else { // if event occurs over multiple days
 
         if (startDate.equals(today)) {// if event starts today
           this.addDay(startDate, new Day());
           this.getSchedule(startDate).bookTimeRange(startHour, startMinuteBlock, 11,
-              4, true);
+              4, isAdding);
         }
 
         if (endDate.equals(today)) {// if event ends today
           this.addDay(startDate, new Day());
           this.getSchedule(startDate).bookTimeRange(0, 0, endHour,
-              endMinuteBlock, true);
+              endMinuteBlock, isAdding);
         }
       }
     }

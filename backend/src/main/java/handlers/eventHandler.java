@@ -74,7 +74,7 @@ public class eventHandler implements Route {
       firestore.createEventFirebase(event,tokenID);
 
       System.out.println(event.getName());
-      this.calendar.blockOffTime(event,allDay);
+      this.calendar.blockOffTime(startTime, endTime, allDay, true);
 
       return constructSuccessResponse("Event successfully stored!");
 
