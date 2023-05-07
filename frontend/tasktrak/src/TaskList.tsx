@@ -40,7 +40,7 @@ export default function TaskList(props: TaskListProps) {
   }
 
   async function handleSave() {
-    const startingAddedID = props.tasks[props.tasks.length - 1].id + 1;
+    const startingAddedID = props.tasks.length == 0 ? 0 : props.tasks[props.tasks.length - 1].id + 1;
     const newTask: Task = {
       // id:
       name: taskName,

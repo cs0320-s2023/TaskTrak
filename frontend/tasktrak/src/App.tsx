@@ -37,6 +37,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./firebase/Login";
+import UserAccount from "./firebase/UserAccount";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -116,8 +117,7 @@ function App(): JSX.Element {
           alignItems="center"
         >
           <Grid item xs={12}>
-            <SignUp />
-            <Login />
+            <UserAccount></UserAccount>
           </Grid>
           <Grid item xs={11}>
             <Button onClick={handleClick}>Accessibility Mode</Button>
