@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { auth } from "./config";
-import { onAuthStateChanged, signInWithEmailAndPassword, User } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { TextField, Button } from "@mui/material";
 
 const Login = () => {
@@ -8,39 +8,23 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
-      if (user) {
-        setLoggedIn(true);
-      } else {
-        setLoggedIn(false);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      // Clear input fields
       setEmail("");
       setPassword("");
+      // Set success message and clear any error message
       setSuccessMessage("Login successful!");
       setErrorMessage("");
     } catch (error) {
+      // Display error message and clear any success message
       setErrorMessage("Login failed. Please check your credentials and try again.");
       setSuccessMessage("");
     }
   };
-
-  if (loggedIn) {
-    return null;
-  }
 
   return (
     <>
