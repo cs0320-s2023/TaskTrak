@@ -43,21 +43,21 @@ public class testDay {
 
   @Test
   void testBookTimeRange(){
-    assertFalse(day.getTimeSlots()[0][0]);
-    assertFalse(day.getTimeSlots()[23][3]);
+    assertEquals(0 , day.getTimeSlots()[0][0]);
+    assertEquals(0, day.getTimeSlots()[23][3]);
     day.bookTimeRange(0,0, 1, 0, true);
-    assertTrue( day.getTimeSlots()[0][0]);
-    assertTrue(day.getTimeSlots()[0][1]);
-    assertTrue(day.getTimeSlots()[0][2]);
-    assertTrue(day.getTimeSlots()[0][3]);
-    assertFalse(day.getTimeSlots()[1][0]);
+    assertEquals(1, day.getTimeSlots()[0][0]);
+    assertEquals(1, day.getTimeSlots()[0][1]);
+    assertEquals(1, day.getTimeSlots()[0][2]);
+    assertEquals(1,day.getTimeSlots()[0][3]);
+    assertEquals(0, day.getTimeSlots()[1][0]);
     day.bookTimeRange(0,0, 0, 1, true);
-    assertTrue(day.getTimeSlots()[0][0]);
+    assertEquals(2, day.getTimeSlots()[0][0]);
     day.bookTimeRange(23,1, 23, 3, true);
-    assertTrue(day.getTimeSlots()[23][1]);
-    assertTrue(day.getTimeSlots()[23][2]);
-    assertFalse(day.getTimeSlots()[23][0]);
-    assertFalse(day.getTimeSlots()[23][3]);
+    assertEquals(1, day.getTimeSlots()[23][1]);
+    assertEquals(1, day.getTimeSlots()[23][2]);
+    assertEquals(0, day.getTimeSlots()[23][0]);
+    assertEquals(0, day.getTimeSlots()[23][3]);
   }
 
 

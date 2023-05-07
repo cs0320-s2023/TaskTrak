@@ -8,7 +8,7 @@ import java.util.List;
 import javax.print.attribute.IntegerSyntax;
 
 public class Day {
-  private boolean[][] timeSlots;
+  private int[][] timeSlots;
   private TaskManager tm;
 
 
@@ -17,10 +17,10 @@ public class Day {
     */
   public Day() {
     this.tm = new TaskManager();
-    this.timeSlots = new boolean[24][4]; // 24 rows down, 4 columns across
+    this.timeSlots = new int[24][4]; // 24 rows down, 4 columns across
     for (int i = 0; i < 24; i++) {
       for (int j = 0; j < 4; j++) {
-        timeSlots[i][j] = false; // false means the slot is not busy
+        timeSlots[i][j] = 0; // false means the slot is not busy
       }
     }
   }
@@ -67,7 +67,7 @@ public class Day {
     for (int hour = 0; hour < 24; hour++) {
       for (int block = 0; block < 4; block++) {
         if (hour >= 0 && hour < timeSlots.length && block >= 0) {
-          if (!timeSlots[hour][block]) {
+          if (timeSlots[hour][block] == 0) {
             // If the current hour and block is available
             if (isBusy) {
               // If we were previously in a busy block, we just ended it
@@ -138,8 +138,13 @@ public class Day {
   public void bookTimeRange(int startHourIndex, int startMinuteIndex, int endHourIndex,
       int endMinuteIndex, boolean set) {
     // Convert hour and minute indices to slot indices
-    if (endHourIndex == 4) { // this is to mark off the final slot in the day
-      timeSlots[23][3] = set;
+    // this is to mark off the final slot in the day
+    if (endHourIndex == 4) {
+      if (set) { // if are marking the block as busy, iterate number up
+        timeSlots[23][3] ++;
+      } else {
+        timeSlots[23][3] --; // if are marking the block as free, iterate number down
+      }
     }
     int startIndex = (startHourIndex * 4) + startMinuteIndex;
     int endIndex = (endHourIndex * 4) + endMinuteIndex;
@@ -148,14 +153,19 @@ public class Day {
     for (int i = startIndex; i < endIndex; i++) {
       int row = i / 4;
       int col = i % 4;
-      timeSlots[row][col] = set;
+      if (set) { // if are marking the block as busy, iterate number up
+        timeSlots[row][col] ++;
+      } else {
+        timeSlots[row][col] --; // if are marking the block as free, iterate number down
+      }
     }
   }
 
 
-  public boolean[][] getTimeSlots(){
+  public int[][] getTimeSlots(){
     return this.timeSlots;
   }
+
   public TaskManager getTm(){
     return this.tm;
   }
