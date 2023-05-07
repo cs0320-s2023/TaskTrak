@@ -22,10 +22,9 @@ import java.util.List;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.Route;
 
 public class editTaskHandler implements Route{
-public class editTaskHandler implements Route {
+
   private TaskManager userTaskManager;
   private Calendar userCalendar;
   private Firestore firestore;
