@@ -1,9 +1,15 @@
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import React from "react";
 import SignUp from './SignUp';
 import Login from './Login';
 
 export default function UserAccount(){
+    function handleLogin(){
+        return(
+            <Login/>
+        )
+    }
+
     return(
         <Grid container
             direction="column"
@@ -11,10 +17,12 @@ export default function UserAccount(){
             alignItems="center"
         >
             <Grid item xs={6}>
-                <SignUp/>
+                {/* <SignUp/> */}
+                <Button>Login to existing account</Button>
             </Grid>
             <Grid item xs={6}>
-                <Login/>
+                {/* <Login/> */}
+                <Button>Create new account</Button>
             </Grid>
         </Grid>
     )
