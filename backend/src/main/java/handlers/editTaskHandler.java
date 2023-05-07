@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import spark.Request;
 import spark.Response;
+import spark.Route;
 
-public class editTaskHandler {
+public class editTaskHandler implements Route{
   private TaskManager userTaskManager;
   private Calendar userCalendar;
   private Firestore firestore;
@@ -54,7 +55,7 @@ public class editTaskHandler {
       Rating decodedPriority = Rating.fromValue(Integer.parseInt(priority));
       Double decodedNewDuration = Double.parseDouble(newDuration);
       Boolean decodedIsComplete = Boolean.parseBoolean(isComplete);
-      Integer decodedID = Integer.parseInt(taskID);
+      int decodedID = Integer.parseInt(taskID);
 
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
           .withZone(ZoneOffset.UTC);

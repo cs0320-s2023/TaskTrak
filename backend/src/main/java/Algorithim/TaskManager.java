@@ -190,17 +190,16 @@ public class TaskManager {
 
   /**
    * Returns the specific task you are searching for by name
-   * @param name
+   * @param id
    * @return
    */
-  public Task getTask(String name) {
-    if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null");
-    }
+  public Task getTask(int id) {
 
-    Task task = this.taskMap.get(name);
+
+    Task task = this.taskMap.get(id);
     if (task == null) {
-      throw new IllegalArgumentException("Task with name '" + name + "' does not exist");
+      throw new IllegalArgumentException("Task with id '" + String.valueOf(id) + "' does not "
+          + "exist");
     }
 
     return task;
