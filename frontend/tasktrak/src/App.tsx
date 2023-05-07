@@ -20,7 +20,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import SignUp from "./firebase/signUp";
+// import SignUp from "./firebase/signUp";
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
@@ -95,7 +95,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       setUser(user);
     });
 
