@@ -20,7 +20,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import SignUp from "./firebase/SignUp";
+import SignUp from "./firebase/signUp";
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";

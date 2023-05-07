@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import React from "react";
-import SignUp from './SignUp';
+import SignUp from './signUp';
 import Login from './Login';
 
 export default function UserAccount(){
