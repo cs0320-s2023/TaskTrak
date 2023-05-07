@@ -95,7 +95,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       setUser(user);
     });
 
