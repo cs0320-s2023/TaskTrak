@@ -140,14 +140,12 @@ export default function TaskList(props: TaskListProps) {
           <DialogContentText>Due Date</DialogContentText>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-                          value={new Date(2023, 4, 1)}
-                          onChange={(newValue) => {
-                              if (newValue) {
-                                  setDueDate(newValue);
-                              }
-                          } } renderInput={function (props: TextFieldProps): React.ReactElement<any, string | React.JSXElementConstructor<any>> {
-                              throw new Error("Function not implemented.");
-                          } }            />
+                value={dueDate}
+                onChange={(newValue) => {
+                    if (newValue) { setDueDate(newValue); }
+                }}
+                renderInput={props => <TextField {...props}/>}
+                />
           </LocalizationProvider>
           <DialogContentText>Priority</DialogContentText>
           <Slider
