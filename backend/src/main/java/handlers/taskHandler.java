@@ -3,6 +3,7 @@ package handlers;
 import static Response.MapResponse.constructErrorResponse;
 import static Response.MapResponse.constructSuccessResponse;
 
+import Firebase.Firestore;
 import com.squareup.moshi.FromJson;
 import com.squareup.moshi.Moshi;
 
@@ -35,10 +36,12 @@ public class taskHandler implements Route {
 
   private TaskManager userTaskManager;
   private Calendar userCalendar;
+  private Firestore firestore;
 
-  public taskHandler(TaskManager userTaskManager, Calendar userCalendar) {
+  public taskHandler(TaskManager userTaskManager, Calendar userCalendar, Firestore firestore) {
     this.userTaskManager = userTaskManager;
     this.userCalendar = userCalendar;
+    this.firestore = firestore;
   }
 
   @Override
@@ -50,6 +53,7 @@ public class taskHandler implements Route {
     String dueDate = request.queryParams("dueDate");
     String isComplete = request.queryParams("isComplete");
     String taskID = request.queryParams("id");
+    String tokenID = request.queryParams("tokenID");
 
     try {
 
@@ -105,6 +109,7 @@ public class taskHandler implements Route {
 //
 //      // Set the response type to JSON
 //      response.type("application/json");
+      firestore.createFirebaseTask(task,tokenID);
 
       return constructSuccessResponse(taskTimeSuggestions);
 

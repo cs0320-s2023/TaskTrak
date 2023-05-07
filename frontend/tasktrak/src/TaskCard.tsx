@@ -91,7 +91,7 @@ export const TaskMenu: React.FC<TaskMenuProps> = ({ tasks }) => {
                 Duration: {task.duration} minutes
               </Typography>
               <Grid container spacing={1} justifyContent="center">
-                {task.timeSuggestions.slice(0, 4).map((timePair, idx) => (
+                {typeof task.timeSuggestions == "object" && task.timeSuggestions.slice(0, 4).map((timePair, idx) => (
                   <Grid item key={idx}>
                     <Fab variant="extended" color="primary" size="small">
                       {timePair[0]} - {timePair[1]}

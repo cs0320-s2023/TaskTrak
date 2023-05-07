@@ -14,11 +14,13 @@ import {
   CircularProgress,
   Divider,
   Button,
+  TextFieldProps,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Task } from "./CalendarItem";
 import React, { useState } from "react";
+import { getAuth } from "firebase/auth";
 
 interface TaskListProps {
   tasks: Task[];
@@ -38,7 +40,7 @@ export default function TaskList(props: TaskListProps) {
   }
 
   async function handleSave() {
-    const startingAddedID = props.tasks[props.tasks.length - 1].id + 1;
+    const startingAddedID = props.tasks.length == 0 ? 0 : props.tasks[props.tasks.length - 1].id + 1;
     const newTask: Task = {
       // id:
       name: taskName,
@@ -53,6 +55,7 @@ export default function TaskList(props: TaskListProps) {
     };
 
     try {
+      const userTokenID = await getAuth().currentUser?.getIdToken(true);
       const response = await fetch(
         `http://localhost:3030/createTask?` +
           `name=${taskName}&` +
@@ -61,13 +64,14 @@ export default function TaskList(props: TaskListProps) {
           `duration=${duration}&` +
           `isComplete=${false}&` +
           `id=${startingAddedID}&` +
-          `notes=dfsjddkl`,
+          `notes=dfsjddkl&` +
+          `tokenid=${userTokenID}`,
         {
-          mode: "no-cors",
+          // mode: "no-cors",
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          // headers: {
+          //   "Content-Type": "application/json",
+          // },
         }
       );
 
@@ -75,9 +79,12 @@ export default function TaskList(props: TaskListProps) {
       //   throw new Error("Failed to save task");
       // }
 
-      const taskTimeSuggestions: string[][] = await response.json();
+      const taskTimeSuggestions = await response.json();
 
-      newTask.timeSuggestions = taskTimeSuggestions;
+      const success: string[][] = taskTimeSuggestions["cause"];
+      console.log("Response:", success);
+
+      newTask.timeSuggestions = success;
 
       props.setTasks([...props.tasks, newTask]);
 
@@ -133,13 +140,12 @@ export default function TaskList(props: TaskListProps) {
           <DialogContentText>Due Date</DialogContentText>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              value={new Date(2023, 4, 1)}
-              onChange={(newValue) => {
-                if (newValue) {
-                  setDueDate(newValue);
-                }
-              }}
-            />
+                value={dueDate}
+                onChange={(newValue) => {
+                    if (newValue) { setDueDate(newValue); }
+                }}
+                renderInput={props => <TextField {...props}/>}
+                />
           </LocalizationProvider>
           <DialogContentText>Priority</DialogContentText>
           <Slider

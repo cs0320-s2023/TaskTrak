@@ -20,7 +20,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import SignUp from "./firebase/signUp";
+import SignUp from "./firebase/SignUp";
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
@@ -37,10 +37,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./firebase/Login";
+import UserAccount from "./firebase/UserAccount";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<"month" | "week">("month");
+  const [user, setUser] = useState<User | null>(null);
+
   function toggleViewMode() {
     setViewMode(viewMode === "month" ? "week" : "month");
   }
@@ -90,59 +93,73 @@ function App(): JSX.Element {
     setLoginFormOpen(true);
   }
 
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   return (
     // <AuthProvider>
-    <Grid
-      container
-      spacing={6}
-      className="calendars"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Grid item xs={12}>
-        <SignUp />
-        <Login />
-      </Grid>
-      <Grid item xs={11}>
-        <Button onClick={handleClick}>Accessibility Mode</Button>
-      </Grid>
-      <Grid item xs={1}>
-        <Button onClick={handleLogin}>Login</Button>
-      </Grid>
-      <Grid item xs={6}>
-        {viewMode === "month" ? (
-          <MonthlyCalendar
-            currentDate={currentDate}
-            setCurrentDate={setCurrentDate}
-            calendarItems={calendarItems}
-            setCalendarItems={setCalendarItems}
-            calendarViewMenu={calendarViewMenu}
-          />
-        ) : (
-          <WeeklyCalendar
-            currentDate={currentDate}
-            setCurrentDate={setCurrentDate}
-            calendarItems={calendarItems}
-            setCalendarItems={setCalendarItems}
-            calendarViewMenu={calendarViewMenu}
-          />
-        )}
-      </Grid>
-      <Grid item xs={4}>
-        <DailyCalendar
-          currentDate={currentDate}
-          calendarItems={calendarItems}
-          setCalendarItems={setCalendarItems}
-        />
-      </Grid>
-      <Grid item xs={6} md={7}>
-        <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
-      </Grid>
-      <Grid item xs={12} md={5}>
-        <TaskMenu tasks={tasks} />
-      </Grid>
-    </Grid>
-    // </AuthProvider>
+    <>
+      {!user && <AuthProvider />}
+      {user && (
+        <Grid
+          container
+          spacing={6}
+          className="calendars"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item xs={12}>
+            <UserAccount></UserAccount>
+          </Grid>
+          <Grid item xs={11}>
+            <Button onClick={handleClick}>Accessibility Mode</Button>
+          </Grid>
+          <Grid item xs={1}>
+            <Button onClick={handleLogin}>Login</Button>
+          </Grid>
+          <Grid item xs={6}>
+            {viewMode === "month" ? (
+              <MonthlyCalendar
+                currentDate={currentDate}
+                setCurrentDate={setCurrentDate}
+                calendarItems={calendarItems}
+                setCalendarItems={setCalendarItems}
+                calendarViewMenu={calendarViewMenu}
+              />
+            ) : (
+              <WeeklyCalendar
+                currentDate={currentDate}
+                setCurrentDate={setCurrentDate}
+                calendarItems={calendarItems}
+                setCalendarItems={setCalendarItems}
+                calendarViewMenu={calendarViewMenu}
+              />
+            )}
+          </Grid>
+          <Grid item xs={4}>
+            <DailyCalendar
+              currentDate={currentDate}
+              calendarItems={calendarItems}
+              setCalendarItems={setCalendarItems}
+            />
+          </Grid>
+          <Grid item xs={6} md={7}>
+            <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
+          </Grid>
+          <Grid item xs={12} md={5}>
+            <TaskMenu tasks={tasks} />
+          </Grid>
+        </Grid>
+      )}
+    </>
   );
 }
 
