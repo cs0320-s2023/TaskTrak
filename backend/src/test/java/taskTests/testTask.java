@@ -46,7 +46,7 @@ public class testTask {
     LocalTime[] timeInterval1 = {LocalTime.of(10, 0), LocalTime.of(11, 0)};
     LocalTime[] timeInterval2 = {LocalTime.of(11, 0), LocalTime.of(12, 0)};
     timeList.add(timeInterval1);
-    timeList.add(timeInterval2);
+    timeList.add(timeInterval2); 
 
     TaskManager.suggestionHelper(task1, freeList);
 
