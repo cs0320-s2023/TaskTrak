@@ -8,6 +8,7 @@ import com.squareup.moshi.Moshi;
 
 import Algorithim.TaskManager;
 import Enums.Rating;
+import Firebase.Firestore;
 import Items.Calendar;
 import Items.Day;
 import Items.Task;
@@ -35,10 +36,12 @@ public class taskHandler implements Route {
 
   private TaskManager userTaskManager;
   private Calendar userCalendar;
+  private Firestore firestore;
 
-  public taskHandler(TaskManager userTaskManager, Calendar userCalendar) {
+  public taskHandler(TaskManager userTaskManager, Calendar userCalendar, Firestore firestore) {
     this.userTaskManager = userTaskManager;
     this.userCalendar = userCalendar;
+    this.firestore = firestore;
   }
 
   @Override
@@ -105,6 +108,7 @@ public class taskHandler implements Route {
 //
 //      // Set the response type to JSON
 //      response.type("application/json");
+      firestore.createFirebaseTask(task,"test");
 
       return constructSuccessResponse(taskTimeSuggestions);
 

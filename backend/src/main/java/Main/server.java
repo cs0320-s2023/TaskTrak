@@ -34,7 +34,7 @@ public class server {
 
       eventHandler EventHandler = new eventHandler(userCalendar, firestore);
       deleteEventHandler deleteEvent = new deleteEventHandler(userCalendar,firestore);
-      taskHandler TaskHandler = new taskHandler(userTaskManager, userCalendar);
+      taskHandler TaskHandler = new taskHandler(userTaskManager, userCalendar,firestore);
 
       // For creating an event
       System.out.println("test: " + EventHandler);
