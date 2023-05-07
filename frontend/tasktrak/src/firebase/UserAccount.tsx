@@ -17,12 +17,12 @@ export default function UserAccount(){
             alignItems="center"
         >
             <Grid item xs={6}>
-                {/* <SignUp/> */}
-                <Button>Login to existing account</Button>
+                <SignUp/>
+                {/* <Button>Login to existing account</Button> */}
             </Grid>
             <Grid item xs={6}>
-                {/* <Login/> */}
-                <Button>Create new account</Button>
+                <Login/>
+                {/* <Button>Create new account</Button> */}
             </Grid>
         </Grid>
     )
