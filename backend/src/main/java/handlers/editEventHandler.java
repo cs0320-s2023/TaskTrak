@@ -7,7 +7,7 @@ import spark.Route;
 public class editEventHandler implements Route {
 
 
-  // We need to decide how to handle delete an event:
+  // We need to decide how to handle edit an event:
 
   // Are we removing the event and creating a new one OR
   // editing the same object and updating the fields OR
