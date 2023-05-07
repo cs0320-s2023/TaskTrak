@@ -114,34 +114,34 @@ public class testTask {
   }
 
 
-  @Test
-  public void testRemoveTask_NullName() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-        () -> tm.removeTask(null));
-    assertEquals("Name cannot be null", exception.getMessage());
-  }
+//  @Test
+//  public void testRemoveTask_NullName() {
+//    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+//        () -> tm.removeTask(4));
+//    assertEquals("Name cannot be null", exception.getMessage());
+//  }
 
 
   @Test
   public void testRemoveTask_NonExistingTask() {
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-        () -> tm.removeTask("Task 1"));
-    assertEquals("Task with name 'Task 1' does not exist", exception.getMessage());
+        () -> tm.removeTask(4));
+    assertEquals("Task with id 4 does not exist", exception.getMessage());
   }
 
 
-  @Test
-  public void testGetTask_NullName() {
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-        () -> tm.getTask(null));
-    assertEquals("Name cannot be null", exception.getMessage());
-  }
+//  @Test
+//  public void testGetTask_NullName() {
+//    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+//        () -> tm.getTask());
+//    assertEquals("Name cannot be null", exception.getMessage());
+//  }
 
   @Test
   public void testGetTask_NonExistingTask() {
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-        () -> tm.getTask("Task1"));
-    assertEquals("Task with name 'Task1' does not exist", exception.getMessage());
+        () -> tm.getTask(4));
+    assertEquals("Task with name id 4 does not exist", exception.getMessage());
   }
 
   @Test

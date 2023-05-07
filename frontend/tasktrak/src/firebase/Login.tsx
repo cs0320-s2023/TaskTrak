@@ -21,7 +21,9 @@ const Login = () => {
       setErrorMessage("");
     } catch (error) {
       // Display error message and clear any success message
-      setErrorMessage("Login failed. Please check your credentials and try again.");
+      setErrorMessage(
+        "Login failed. Please check your credentials and try again."
+      );
       setSuccessMessage("");
     }
   };
