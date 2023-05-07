@@ -4,6 +4,7 @@ Main/server$Server.class
 handlers/taskHandler.class
 Items/Day.class
 handlers/editEventHandler.class
+Response/LocalTimeAdapter.class
 Algorithim/TaskManager$1.class
 Items/Event.class
 Items/CalendarItem.class
@@ -14,6 +15,7 @@ Items/timeMethods.class
 handlers/deleteTaskHandler.class
 records/calendarRecords$Event.class
 Firebase/Firestore.class
+Response/MapResponse.class
 Items/Task.class
 Items/Calendar.class
 records/calendarRecords$Date.class

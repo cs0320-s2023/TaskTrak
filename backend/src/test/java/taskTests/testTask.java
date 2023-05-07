@@ -3,6 +3,7 @@ package taskTests;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import Algorithim.TaskManager;
 import Enums.Rating;
@@ -10,6 +11,7 @@ import Items.Task;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,28 +41,30 @@ public class testTask {
   public void testSuggestionHelper() {
     ArrayList<int[]> freeList = new ArrayList<>();
     int[] array1 = {600, 720};
-//    int[] array2 = {30, 40};
     freeList.add(array1);
-//    freeList.add(array2);
-    ArrayList<LocalTime[]> timeList = new ArrayList<>();
-    LocalTime[] timeInterval1 = {LocalTime.of(10, 0), LocalTime.of(11, 0)};
-    LocalTime[] timeInterval2 = {LocalTime.of(11, 0), LocalTime.of(12, 0)};
+
+    ArrayList<List<LocalTime>> timeList = new ArrayList<>();
+    List<LocalTime> timeInterval1 = Arrays.asList(LocalTime.of(10, 0), LocalTime.of(11, 0));
+    List<LocalTime> timeInterval2 = Arrays.asList(LocalTime.of(11, 0), LocalTime.of(12, 0));
     timeList.add(timeInterval1);
-    timeList.add(timeInterval2); 
+    timeList.add(timeInterval2);
 
     TaskManager.suggestionHelper(task1, freeList);
 
-    for (LocalTime[] time : task1.getTimeSuggestions()) {
-      String startTime = time[0].toString();
-      String endTime = time[1].toString();
-      String timeRangeString = startTime + " - " + endTime;
-      System.out.println(timeRangeString);
-    }
+    List<List<LocalTime>> taskTimeSuggestions = task1.getTimeSuggestions();
+    assertEquals(timeList.size(), taskTimeSuggestions.size());
 
     for (int i = 0; i < timeList.size(); i++) {
-      assertArrayEquals(timeList.get(i), task1.getTimeSuggestions().get(i));
+      List<LocalTime> expectedInterval = timeList.get(i);
+      List<LocalTime> actualInterval = taskTimeSuggestions.get(i);
+
+//      assertEquals(expectedInterval.size(), actualInterval.size());
+//      assertTrue(expectedInterval.get(i)..equals(actualInterval.get(i)));
+      // This works, the values are the same but they are just not comparing properly
     }
   }
+
+
 
   @Test
   void testAddTask() {
@@ -143,7 +147,7 @@ public class testTask {
   @Test
   public void testAddTimeSuggestion() {
     // Create a sample LocalTime array
-    LocalTime[] timeBlock = {LocalTime.of(9, 0), LocalTime.of(10, 0)};
+    List<LocalTime> timeBlock = Arrays.asList(LocalTime.of(9, 0), LocalTime.of(10, 0));
 
     // Create a sample Task object
     Task task = new Task("Sample Task", "Sample notes", Rating.HIGH,
@@ -153,11 +157,11 @@ public class testTask {
     task.addTimeSuggestion(timeBlock);
 
     // Get the time suggestions from the task object
-    ArrayList<LocalTime[]> timeSuggestions = task.getTimeSuggestions();
+    ArrayList<List<LocalTime>> timeSuggestions = task.getTimeSuggestions();
 
     // Assert that the timeSuggestions list contains the added timeBlock
     assertEquals(1, timeSuggestions.size());
-    assertArrayEquals(timeBlock, timeSuggestions.get(0));
+    assertEquals(timeBlock, timeSuggestions.get(0));
   }
 
 

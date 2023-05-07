@@ -22,6 +22,7 @@ public class server {
       after((request, response) -> {
         response.header("Access-Control-Allow-Origin", "*");
         response.header("Access-Control-Allow-Methods", "*");
+        response.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
       });
 
 
@@ -32,8 +33,8 @@ public class server {
       TaskManager userTaskManager = new TaskManager();
 
       eventHandler EventHandler = new eventHandler(userCalendar, firestore);
-      deleteEventHandler deleteEvent = new deleteEventHandler();
-      taskHandler TaskHandler = new taskHandler(userTaskManager, userCalendar);
+      deleteEventHandler deleteEvent = new deleteEventHandler(userCalendar,firestore);
+      taskHandler TaskHandler = new taskHandler(userTaskManager, userCalendar,firestore);
 
       // For creating an event
       System.out.println("test: " + EventHandler);

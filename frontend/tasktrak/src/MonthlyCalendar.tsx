@@ -23,7 +23,8 @@ import React from "react";
 import { CalendarItem } from "./CalendarItem";
 import "./MonthlyCalendar.css";
 import { useState } from "react";
-import { getAuth } from "firebase/auth";
+// import { getAuth } from "firebase/auth";
+import { auth } from "./firebase/config";
 
 interface MonthlyCalendarProps {
   currentDate: Date;
@@ -69,11 +70,11 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
       ]);
       let newEvent: CalendarItem =
         props.calendarItems[props.calendarItems.length - 1];
-      const userTokenID = getAuth()
+      const userTokenID = auth
         .currentUser?.getIdToken(true)
         .then((userTokenID) =>
           fetch(
-            `http://localhost:3232/createEvent?` +
+            `http://localhost:3030/createEvent?` +
               `title=${newEvent.title}&` +
               `startDate=${newEvent.startDate.toISOString()}&` +
               `endDate=${newEvent.endDate.toISOString()}&` +
