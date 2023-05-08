@@ -2,6 +2,7 @@ package calendarTests;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import Items.Day;
@@ -24,12 +25,25 @@ public class testDay {
 
 
 
+
+  @Test
+  void testSizeOfDay() {
+    int[][] timeSlots = this.day.getTimeSlots();
+    assertEquals(24, timeSlots.length);
+    for (int i = 0; i < 24; i++) {
+      for (int j = 0; j < 4; j++) {
+        assertEquals(4, timeSlots[i].length, "The number of columns should be 4 for row " + i);
+        assertEquals(0, timeSlots[i][j]);
+      }
+    }
+  }
+
+
   @Test
   void timeSuggestion(){
-
-
-
+// need to do this once algorithim is finished
   }
+
 
   @Test
   void testEmptyAvailability() {
@@ -37,7 +51,6 @@ public class testDay {
     assertEquals(1, slots.size());
     assertEquals(0, slots.get(0)[0]);
     assertEquals(1439, slots.get(0)[1]);
-
   }
 
 
@@ -97,6 +110,42 @@ public class testDay {
     assertArrayEquals(new int[]{30,60}, ranges.get(0));
     assertArrayEquals(new int[]{150, 180}, ranges.get(1));
     assertArrayEquals(new int[]{225,1439}, ranges.get(2));
+  }
+
+
+  @Test
+  public void testInvalidStartHourIndex() {
+
+    assertThrows(IllegalArgumentException.class, () ->
+        day.bookTimeRange(-1, 0, 10, 0, true));
+  }
+
+  @Test
+  public void testInvalidStartMinuteIndex() {
+
+    assertThrows(IllegalArgumentException.class, () ->
+        day.bookTimeRange(0, 5, 10, 0, true));
+  }
+
+  @Test
+  public void testInvalidEndHourIndex() {
+
+    assertThrows(IllegalArgumentException.class, () ->
+        day.bookTimeRange(10, 0, 25, 0, true));
+  }
+
+  @Test
+  public void testInvalidEndMinuteIndex() {
+
+    assertThrows(IllegalArgumentException.class, () ->
+        day.bookTimeRange(10, 0, 20, 5, true));
+  }
+
+  @Test
+  public void testInvalidTimeRange() {
+
+    assertThrows(IllegalArgumentException.class, () ->
+        day.bookTimeRange(12, 0, 10, 0, true));
   }
 
 

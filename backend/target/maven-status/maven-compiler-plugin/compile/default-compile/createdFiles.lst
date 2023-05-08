@@ -1,5 +1,7 @@
 Enums/Rating.class
 Algorithim/TaskManager.class
+handlers/editTaskHandler.class
+handlers/workingHoursHandler.class
 Items/Day.class
 handlers/loginHandler.class
 Response/LocalTimeAdapter.class

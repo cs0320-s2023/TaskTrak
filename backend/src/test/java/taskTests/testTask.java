@@ -73,8 +73,8 @@ public class testTask {
     tm.addTask(task2);
 
     assertEquals(2, tm.getTaskMap().size());
-    assertEquals(task1, tm.getTaskMap().get("Task 1"));
-    assertEquals(task2, tm.getTaskMap().get("Task 2"));
+    assertEquals(task1, tm.getTaskMap().get(0));
+    assertEquals(task2, tm.getTaskMap().get(1));
   }
 
   @Test
@@ -110,7 +110,7 @@ public class testTask {
     tm.addTask(task1);
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
         () -> tm.addTask(task1));
-    assertEquals("Task with name 'Task 1' already exists", exception.getMessage());
+    assertEquals("Task with ID '0' already exists", exception.getMessage());
   }
 
 
@@ -126,7 +126,7 @@ public class testTask {
   public void testRemoveTask_NonExistingTask() {
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
         () -> tm.removeTask(4));
-    assertEquals("Task with id 4 does not exist", exception.getMessage());
+    assertEquals("Task with ID '4' does not exist", exception.getMessage());
   }
 
 
@@ -141,7 +141,7 @@ public class testTask {
   public void testGetTask_NonExistingTask() {
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
         () -> tm.getTask(4));
-    assertEquals("Task with name id 4 does not exist", exception.getMessage());
+    assertEquals("Task with id '4' does not exist", exception.getMessage());
   }
 
   @Test

@@ -55,7 +55,7 @@ public class TaskManager {
   public static void suggestionHelper(Task task, ArrayList<int[]> freeList) {
 
     if (task == null) {
-      throw new IllegalArgumentException("Invalid task or freeList");
+      throw new IllegalArgumentException("Invalid task object");
     }
 
     if (task.getTimeToComplete().equals(0)){
@@ -70,8 +70,7 @@ public class TaskManager {
       int blockDuration = windowDuration(freeBlock); // length of the time block
 
       // if there is a time block of greater or equal length than the task
-
-      if (taskMinutes - blockDuration <= 0) {
+      if (taskMinutes - blockDuration <= -15) {
         tempList.add(freeBlock); // adds the reasonable time blocks to the temp list
       }
     }
@@ -84,12 +83,13 @@ public class TaskManager {
       ArrayList<List<LocalTime>> finalTimeList = new ArrayList<>();
 
       for (int[] window : sortedFreeTime) {
+
         finalTimeList.add(convertToTime(window)); // converts the minutes to Time
 
         task.setTimeSuggestion(finalTimeList); //sets the task windows
       }
 
-    } else { // we have reasonable time slots that work
+    } else { // we have > 1 time slots that work
 
       // creates windows of the correct length
       ArrayList<int[]> suggestedWindows = produceSuggestions(tempList,
@@ -159,7 +159,7 @@ public class TaskManager {
   }
 
   /**
-   * Adds a task to the task list
+   * Adds a task to the task list, checks if task already exists
    * @param task
    */
   public void addTask(Task task) {
@@ -167,8 +167,8 @@ public class TaskManager {
       throw new IllegalArgumentException("Task cannot be null");
     }
 
-    if (this.taskMap.containsKey(task.getName())) {
-      throw new IllegalArgumentException("Task with name '" + task.getName() + "' already exists");
+    if (this.taskMap.containsKey(task.getTaskID())) {
+      throw new IllegalArgumentException("Task with ID '" + task.getTaskID() + "' already exists");
     }
 
     this.taskMap.put(task.getTaskID(), task);

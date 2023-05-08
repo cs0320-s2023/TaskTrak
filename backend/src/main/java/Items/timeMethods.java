@@ -39,7 +39,7 @@ public class timeMethods {
 
 
   /**
-   * Determines how long a time block is
+   * Determines how long a time block is (in minutes)
    * @param window
    * @return
    */
@@ -57,6 +57,8 @@ public class timeMethods {
     return duration;
   }
 
+
+
   /**
    * Converts hours and time blocks into minutes of the day
    * @param hour - hour of the day
@@ -64,7 +66,19 @@ public class timeMethods {
    * @return - integer representing the number
    */
   public static int getMinuteOfDay(int hour, int block) {
+    if(hour < 0 || hour > 24) {
+      throw new IllegalArgumentException("Invalid hour value. It should be between 0 and 23"
+          + ".");
+    }
+
+    if(block > 4) {
+      throw new IllegalArgumentException("Invalid minuteBlock value. It should be between 0 and 4"
+          + ".");
+    }
+
     return hour * 60 + block * 15;
   }
+
+
 
 }
