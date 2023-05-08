@@ -48,7 +48,8 @@ function App(): JSX.Element {
   }
 
   function isLoggedIn(): boolean{
-    if(typeof auth.currentUser != null) { return true; }
+    console.log(auth.currentUser)
+    if(auth.currentUser) { return true; }
     else { return false; }
   }
 
@@ -95,7 +96,7 @@ function App(): JSX.Element {
     // const auth = getAuth();
     const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
       setUser(user);
-      console.log(`user set to ${auth.currentUser?.email}`)
+      console.log(`user set to ${user?.email}`)
     });
 
     return () => {

@@ -22,6 +22,7 @@ const Login = () => {
       // Set success message and clear any error message
       setSuccessMessage("Login successful!");
       setErrorMessage("");
+    //   console.log(`logged in ${auth.currentUser?.email}`)
       navigate("/calendar");
     } catch (error) {
       // Display error message and clear any success message
