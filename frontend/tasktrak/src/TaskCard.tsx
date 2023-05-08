@@ -82,22 +82,26 @@ export const TaskMenu: React.FC<TaskMenuProps> = ({ tasks }) => {
               )}`}
               action={
                 <>
-                  <CircularProgress variant="determinate" value={100} />
+                  <CircularProgress
+                    variant="determinate"
+                    value={task.progress}
+                  />
                 </>
               }
             />
             <CardContent>
               <Typography variant="body2" color="text.secondary">
-                Duration: {task.duration} minutes
+                Duration: {task.duration} hours
               </Typography>
               <Grid container spacing={1} justifyContent="center">
-                {typeof task.timeSuggestions == "object" && task.timeSuggestions.slice(0, 4).map((timePair, idx) => (
-                  <Grid item key={idx}>
-                    <Fab variant="extended" color="primary" size="small">
-                      {timePair[0]} - {timePair[1]}
-                    </Fab>
-                  </Grid>
-                ))}
+                {typeof task.timeSuggestions == "object" &&
+                  task.timeSuggestions.slice(0, 4).map((timePair, idx) => (
+                    <Grid item key={idx}>
+                      <Fab variant="extended" color="primary" size="small">
+                        {timePair[0]} - {timePair[1]}
+                      </Fab>
+                    </Grid>
+                  ))}
               </Grid>
             </CardContent>
           </Card>

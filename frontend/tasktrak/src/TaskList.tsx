@@ -34,13 +34,72 @@ export default function TaskList(props: TaskListProps) {
   const [dueDate, setDueDate] = useState<Date>(new Date());
   const [priority, setPriority] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [notes, setNotes] = useState("");
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   function handleNewTaskButton() {
     setOpen(true);
   }
 
+  function handleEditButtonClick(task: Task) {
+    setSelectedTask(task);
+    setTaskName(task.name);
+    setDueDate(new Date(task.dueDate));
+    setPriority(task.priority);
+    setDuration(task.duration);
+    setNotes(task.notes);
+    setOpen(true);
+  }
+
+  async function handleEditSave() {
+    if (selectedTask != null) {
+      try {
+        selectedTask.name = taskName;
+        selectedTask.dueDate = dueDate;
+        selectedTask.priority = priority;
+        selectedTask.duration = duration;
+        selectedTask.isComplete = false;
+        selectedTask.notes = notes;
+        const userTokenID = await getAuth().currentUser?.getIdToken(true);
+        const response = await fetch(
+          `http://localhost:3030/editTask?` +
+            `name=${taskName}&` +
+            `dueDate=${dueDate.toISOString()}&` +
+            `priority=${priority}&` +
+            `duration=${duration}&` +
+            `isComplete=${false}&` +
+            `id=${selectedTask.id}&` +
+            `notes=${notes}&` +
+            `tokenid=${userTokenID}`,
+          {
+            // mode: "no-cors",
+            method: "POST",
+            // headers: {
+            //   "Content-Type": "application/json",
+            // },
+          }
+        );
+
+        // Update the task in the local state
+        // const updatedTasks = props.tasks.map((task) =>
+        //   task.id === selectedTask.id
+        //     ? { ...task, name: taskName, dueDate, priority, duration, notes }
+        //     : task
+        // );
+        // props.setTasks(updatedTasks);
+
+        // Close the dialog and reset the state
+        handleClose();
+        setSelectedTask(null);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
   async function handleSave() {
-    const startingAddedID = props.tasks.length == 0 ? 0 : props.tasks[props.tasks.length - 1].id + 1;
+    const startingAddedID =
+      props.tasks.length == 0 ? 0 : props.tasks[props.tasks.length - 1].id + 1;
     const newTask: Task = {
       // id:
       name: taskName,
@@ -49,9 +108,10 @@ export default function TaskList(props: TaskListProps) {
       duration: duration,
       // completion: 0, // Default completion value
       isComplete: false,
-      notes: "",
+      notes: notes,
       id: startingAddedID,
       timeSuggestions: [],
+      progress: 0,
     };
 
     try {
@@ -64,7 +124,7 @@ export default function TaskList(props: TaskListProps) {
           `duration=${duration}&` +
           `isComplete=${false}&` +
           `id=${startingAddedID}&` +
-          `notes=dfsjddkl&` +
+          `notes=${notes}&` +
           `tokenid=${userTokenID}`,
         {
           // mode: "no-cors",
@@ -140,12 +200,14 @@ export default function TaskList(props: TaskListProps) {
           <DialogContentText>Due Date</DialogContentText>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-                value={dueDate}
-                onChange={(newValue) => {
-                    if (newValue) { setDueDate(newValue); }
-                }}
-                renderInput={props => <TextField {...props}/>}
-                />
+              value={dueDate}
+              onChange={(newValue) => {
+                if (newValue) {
+                  setDueDate(newValue);
+                }
+              }}
+              renderInput={(props) => <TextField {...props} />}
+            />
           </LocalizationProvider>
           <DialogContentText>Priority</DialogContentText>
           <Slider
@@ -168,7 +230,21 @@ export default function TaskList(props: TaskListProps) {
             fullWidth
             variant="standard"
           />
-          <Button onClick={handleSave}>Save</Button>
+          <DialogContentText></DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="notes"
+            type="string"
+            label="notes"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            fullWidth
+            variant="standard"
+          />
+          <Button onClick={selectedTask != null ? handleEditSave : handleSave}>
+            Save
+          </Button>
         </DialogContent>
       </Dialog>
       <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
@@ -213,7 +289,10 @@ export default function TaskList(props: TaskListProps) {
               <ListItemText primary={task.priority} />
             </ListItemButton>
             <ListItemButton>
-              <CircularProgress variant="determinate" value={50} />
+              <CircularProgress variant="determinate" value={0} />
+              <ListItemButton onClick={() => handleEditButtonClick(task)}>
+                Edit
+              </ListItemButton>
             </ListItemButton>
           </ListItem>
         </List>

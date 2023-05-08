@@ -43,11 +43,7 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
   // const [customAttributeValue, setCustomAttributeValue] = useState<string | number>(0);
 
   const requestOptions = {
-    method: "POST",
-    // headers: {
-    //   "Content-Type": "application/json"
-    // },
-    // body: JSON.stringify(props.calendarItems[props.calendarItems])
+    method: "POST"
   };
 
   function commitChanges({ added, changed, deleted }: ChangeSet) {

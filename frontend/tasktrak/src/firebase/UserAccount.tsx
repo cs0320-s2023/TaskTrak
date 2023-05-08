@@ -1,29 +1,30 @@
-import { Button, Grid } from '@mui/material';
+import { Box, Button, Card, Grid, Paper } from '@mui/material';
 import React from "react";
 import SignUp from './signUp';
 import Login from './Login';
 
 export default function UserAccount(){
-    function handleLogin(){
-        return(
-            <Login/>
-        )
-    }
+    
 
     return(
-        <Grid container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-        >
-            <Grid item xs={6}>
-                <SignUp/>
-                {/* <Button>Login to existing account</Button> */}
+        // <Paper
+        //     elevation={3}
+        //     sx={{ width: '25%' }}
+        // >
+            <Grid container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                marginTop={10}
+            >
+                <h1>Login</h1>
+                <Grid item xs={6}>
+                    <Login/>
+                </Grid>
+                <Grid item xs={6}>
+                    <SignUp/>
+                </Grid>
             </Grid>
-            <Grid item xs={6}>
-                <Login/>
-                {/* <Button>Create new account</Button> */}
-            </Grid>
-        </Grid>
+        // </Paper>
     )
 }

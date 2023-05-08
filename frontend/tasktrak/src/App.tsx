@@ -26,7 +26,7 @@ import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
 import { sampleCalendarItems, sampleTasks } from "./CalendarItem";
 import { CalendarItem } from "./CalendarItem";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User } from "firebase/auth";
 import firebase from "firebase/compat/app";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
@@ -35,9 +35,8 @@ import { TaskMenu } from "./TaskCard";
 import TaskList from "./TaskList";
 import React from "react";
 import ReactDOM from "react-dom";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./firebase/Login";
-import UserAccount from "./firebase/UserAccount";
+import { Link as RouterLink } from "react-router-dom";
+import { auth } from "./firebase/config";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -48,7 +47,11 @@ function App(): JSX.Element {
     setViewMode(viewMode === "month" ? "week" : "month");
   }
 
-  const [loginFormOpen, setLoginFormOpen] = useState(false);
+  function isLoggedIn(): boolean{
+    console.log(auth.currentUser)
+    if(auth.currentUser) { return true; }
+    else { return false; }
+  }
 
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems);
 
@@ -89,23 +92,20 @@ function App(): JSX.Element {
     </Menu>,
   ];
 
-  function handleLogin() {
-    setLoginFormOpen(true);
-  }
-
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+    // const auth = getAuth();
+    const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
       setUser(user);
+      console.log(`user set to ${user?.email}`)
     });
 
     return () => {
       unsubscribe();
+      console.log("unsub")
     };
   }, []);
 
   return (
-    // <AuthProvider>
     <>
       {!user && <AuthProvider />}
       {user && (
@@ -116,14 +116,11 @@ function App(): JSX.Element {
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item xs={12}>
-            <UserAccount></UserAccount>
-          </Grid>
           <Grid item xs={11}>
             <Button onClick={handleClick}>Accessibility Mode</Button>
           </Grid>
           <Grid item xs={1}>
-            <Button onClick={handleLogin}>Login</Button>
+            <Button component={RouterLink} to="/signin">{isLoggedIn() ? "Sign In" : "Log Out"}</Button>
           </Grid>
           <Grid item xs={6}>
             {viewMode === "month" ? (
