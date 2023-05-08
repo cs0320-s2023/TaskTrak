@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { auth } from "./config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { TextField, Button, Grid, Box, Card, Paper } from "@mui/material";
+import { redirect, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,6 +22,7 @@ const Login = () => {
       // Set success message and clear any error message
       setSuccessMessage("Login successful!");
       setErrorMessage("");
+      navigate("/calendar");
     } catch (error) {
       // Display error message and clear any success message
       setErrorMessage(
@@ -29,10 +33,6 @@ const Login = () => {
   };
 
   return (
-    // <Paper
-    //     elevation={3}
-    //     sx={{ width: '200%'}}
-    // >
     <>
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -69,7 +69,6 @@ const Login = () => {
             </Grid>
         </form>
       )}
-    {/*</Paper> */}
     </>
   );
 };

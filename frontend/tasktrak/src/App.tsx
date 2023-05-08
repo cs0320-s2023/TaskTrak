@@ -26,7 +26,7 @@ import DailyCalendar from "./DailyCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
 import { sampleCalendarItems, sampleTasks } from "./CalendarItem";
 import { CalendarItem } from "./CalendarItem";
-import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User } from "firebase/auth";
 import firebase from "firebase/compat/app";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
@@ -36,6 +36,7 @@ import TaskList from "./TaskList";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Link as RouterLink } from "react-router-dom";
+import { auth } from "./firebase/config";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -44,6 +45,11 @@ function App(): JSX.Element {
 
   function toggleViewMode() {
     setViewMode(viewMode === "month" ? "week" : "month");
+  }
+
+  function isLoggedIn(): boolean{
+    if(typeof auth.currentUser != null) { return true; }
+    else { return false; }
   }
 
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems);
@@ -86,13 +92,15 @@ function App(): JSX.Element {
   ];
 
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+    // const auth = getAuth();
+    const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
       setUser(user);
+      console.log(`user set to ${auth.currentUser?.email}`)
     });
 
     return () => {
       unsubscribe();
+      console.log("unsub")
     };
   }, []);
 
@@ -111,7 +119,7 @@ function App(): JSX.Element {
             <Button onClick={handleClick}>Accessibility Mode</Button>
           </Grid>
           <Grid item xs={1}>
-            <Button component={RouterLink} to="/signin">Sign in</Button>
+            <Button component={RouterLink} to="/signin">{isLoggedIn() ? "Sign In" : "Log Out"}</Button>
           </Grid>
           <Grid item xs={6}>
             {viewMode === "month" ? (
