@@ -24,6 +24,9 @@ public class deleteTaskHandler implements Route {
   public Object handle(Request request, Response response){
     String taskID = request.queryParams("id");
     String tokenID = request.queryParams("tokenID");
+
+
+
     try {
       firestore.deleteFirebaseEvent(taskID,tokenID);
       return constructSuccessResponse("Event successfully deleted.");

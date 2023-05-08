@@ -109,6 +109,8 @@ public class taskHandler implements Route {
 //
 //      // Set the response type to JSON
 //      response.type("application/json");
+
+
       firestore.createFirebaseTask(task,tokenID);
 
       return constructSuccessResponse(taskTimeSuggestions);

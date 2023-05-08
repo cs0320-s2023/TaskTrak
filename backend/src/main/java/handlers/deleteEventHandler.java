@@ -34,7 +34,7 @@ public class deleteEventHandler implements Route {
 
       Boolean allDay = Boolean.parseBoolean(isAllDay);
 
-      firestore.deleteFirebaseEvent(eventID,tokenID);
+      firestore.deleteFirebaseEvent(eventID, tokenID);
       calendar.blockOffTime(startTime,endTime,allDay,false);
       return constructSuccessResponse("Event successfully deleted.");
 
