@@ -7,10 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class testTimeMethods {
+
+
   @Test
-
-
-
   public void testValidWindowDuration() {
     int[] window = {500, 1000};
     int expectedDuration = 500;
@@ -36,13 +35,24 @@ public class testTimeMethods {
   }
 
 
-    @Test
-    public void testGetMinuteOfDay() {
-      int hour = 7;
-      int block = 2;
-      int expectedMinuteOfDay = 450;
-      int actualMinuteOfDay = getMinuteOfDay(hour, block);
-      Assertions.assertEquals(expectedMinuteOfDay, actualMinuteOfDay);
-    }
-
+  @Test
+  public void testGetMinuteOfDay() {
+    int hour = 7;
+    int block = 2;
+    int expectedMinuteOfDay = 450;
+    int actualMinuteOfDay = getMinuteOfDay(hour, block);
+    Assertions.assertEquals(expectedMinuteOfDay, actualMinuteOfDay);
   }
+
+  @Test
+  public void invalidGetMinuteOfDay() {
+
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      timeMethods.getMinuteOfDay(-1, 4);
+    });
+
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      timeMethods.getMinuteOfDay(3, 6);
+    });
+  }
+}

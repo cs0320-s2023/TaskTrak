@@ -13,7 +13,7 @@ public class Day {
 
 
   /**
-   * initializes all the time blocks to false (free)
+   * initializes all the time blocks to 0 (free)
     */
   public Day() {
     this.tm = new TaskManager();
@@ -28,25 +28,7 @@ public class Day {
 
 
 
-  /**
-   * Determines how long a time block is
-   * @param window
-   * @return
-   */
-  public int windowDuration(int[] window){
-    if (window == null || window.length != 2) {
-      throw new IllegalArgumentException("Window array should have exactly two elements");
-    }
-    if (window[0] < 0 || window[0] >= 1440 || window[1] < 0 || window[1] >= 1440 || window[1] - window[0] >= 0) {
-      throw new IllegalArgumentException("Window values should be between 0 and 1439 (inclusive),"
-          + " and the second value should be greater than the first");
-    }
-    int duration = window[1] - window[0];
-    if (duration < 0) {
-      duration += 1440;
-    }
-    return duration;
-  }
+
 
 
 
@@ -121,13 +103,23 @@ public class Day {
    * @return - integer representing the number
    */
   public int getMinuteOfDay(int hour, int block) {
+    if (hour < 0 || hour > 23) {
+      throw new IllegalArgumentException("Invalid hour value. Hour should be between 0 and 23.");
+    }
+
+    if (block < 0 || block > 3) {
+      throw new IllegalArgumentException("Invalid block value. Block should be between 0 and 3.");
+    }
+
     return hour * 60 + block * 15;
   }
 
 
   /**
-   * marks the time within the given range as either true or false
-   * true for booked, false for not booked
+   * Sets the time blocks over a given range
+   * 'set' is the determination of whether we are making the block free or busy
+   * true if making busy, false if making free
+   * This will iterate the time block integer value either up or down 1.
    * To set the last window of the day, make endHourIndex = 4
    * @param startHourIndex
    * @param startMinuteIndex
@@ -139,29 +131,62 @@ public class Day {
       int endMinuteIndex, boolean set) {
     // Convert hour and minute indices to slot indices
     // this is to mark off the final slot in the day
-    if (endHourIndex == 4) {
-      if (set) { // if are marking the block as busy, iterate number up
-        timeSlots[23][3] ++;
-      } else {
-        timeSlots[23][3] --; // if are marking the block as free, iterate number down
-      }
+    if (startHourIndex < 0 || startHourIndex > 23) {
+      throw new IllegalArgumentException("Invalid startIndex value. It should be between 0 and 23"
+          + ".");
     }
-    int startIndex = (startHourIndex * 4) + startMinuteIndex;
-    int endIndex = (endHourIndex * 4) + endMinuteIndex;
 
-    // Iterate over the time slots and set the specified range
-    for (int i = startIndex; i < endIndex; i++) {
-      int row = i / 4;
-      int col = i % 4;
-      if (set) { // if are marking the block as busy, iterate number up
-        timeSlots[row][col] ++;
-      } else {
-        timeSlots[row][col] --; // if are marking the block as free, iterate number down
-      }
+    if (startMinuteIndex < 0 || startMinuteIndex > 4) {
+      throw new IllegalArgumentException("Invalid startIndex value. It should be between 0 and 3."
+          + "4 is valid trying to fill the 11:45 to 11:59 range for the day");
     }
+
+
+    // Validate endHourIndex and endMinuteIndex
+    if (endHourIndex < 0 || endHourIndex > 23) {
+      throw new IllegalArgumentException(
+          "Invalid endHourIndex value. It should be between 0 and 23.");
+    }
+
+    if (endMinuteIndex < 0 || endMinuteIndex > 4) {
+      throw new IllegalArgumentException("Invalid endMinuteIndex value. It should be between 0 "
+          + "and 3. 4 is valid trying to fill the 11:45 to 11:59 range for the day.");
+    }
+
+    // Check if start time is after end time
+    if (startHourIndex > endHourIndex || (startHourIndex == endHourIndex
+        && startMinuteIndex >= endMinuteIndex)) {
+      throw new IllegalArgumentException(
+          "Invalid time range. The start time must be before the end time.");
+    }
+
+      if (endMinuteIndex == 4) {
+        if (set) { // if are marking the block as busy, iterate number up
+          timeSlots[23][3]++;
+        } else {
+          timeSlots[23][3]--; // if are marking the block as free, iterate number down
+        }
+      }
+      int startIndex = (startHourIndex * 4) + startMinuteIndex;
+      int endIndex = (endHourIndex * 4) + endMinuteIndex;
+
+      // Iterate over the time slots and set the specified range
+      for (int i = startIndex; i < endIndex; i++) {
+        int row = i / 4;
+        int col = i % 4;
+        if (set) { // if are marking the block as busy, iterate number up
+          timeSlots[row][col]++;
+        } else {
+          timeSlots[row][col]--; // if are marking the block as free, iterate number down
+        }
+      }
   }
 
 
+  /**
+   * gets the timeSlots array
+   * @return int[][] of timeSlots
+   */
   public int[][] getTimeSlots(){
     return this.timeSlots;
   }
@@ -170,4 +195,24 @@ public class Day {
     return this.tm;
   }
 
+
+  //  /**
+//   * Determines how long a time block is
+//   * @param window
+//   * @return
+//   */
+//  public int windowDuration(int[] window){
+//    if (window == null || window.length != 2) {
+//      throw new IllegalArgumentException("Window array should have exactly two elements");
+//    }
+//    if (window[0] < 0 || window[0] >= 1440 || window[1] < 0 || window[1] >= 1440 || window[1] - window[0] >= 0) {
+//      throw new IllegalArgumentException("Window values should be between 0 and 1439 (inclusive),"
+//          + " and the second value should be greater than the first");
+//    }
+//    int duration = window[1] - window[0];
+//    if (duration < 0) {
+//      duration += 1440;
+//    }
+//    return duration;
+//  }
 }

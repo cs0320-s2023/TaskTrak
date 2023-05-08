@@ -1,3 +1,4 @@
 calendarTests/testDay.class
-taskTests/testTask.class
 calendarTests/testTimeMethods.class
+taskTests/testTask.class
+taskTests/testTaskManager.class

@@ -35,27 +35,6 @@ public class Task implements CalendarItem{
 
 
 
-  /**
-   * Converts a Task Object into an Event object to be added to the calendar
-   * @return - the new Event object
-   */
-//  public Event taskToEvent(LocalDateTime startTime, Duration duration){
-//    String eventName = this.name;
-//    String eventNote = this.notes;
-//
-//    // Created defensive copies of startTime and duration
-//    LocalDateTime startTimeCopy = LocalDateTime.from(startTime);
-//    Duration durationCopy = Duration.ofMillis(duration.toMillis());
-//
-//    Event newEvent = new Event(eventName, eventNote, durationCopy, startTimeCopy);
-//
-//    return newEvent;
-//  }
-
-
-
-
-  //---------------------------------
 
   /*
   Setters and Getters
@@ -106,13 +85,9 @@ public class Task implements CalendarItem{
     this.timeToComplete = timeToComplete;
   }
 
-
   public Double getTimeToComplete() {
     return timeToComplete;
   }
-
-
-
 
   public void setPriority(Rating priority) {
     this.priority = priority;
@@ -152,5 +127,22 @@ public class Task implements CalendarItem{
   }
 
 
+
+  /**
+   * Converts a Task Object into an Event object to be added to the calendar
+   * @return - the new Event object
+   */
+//  public Event taskToEvent(LocalDateTime startTime, Duration duration){
+//    String eventName = this.name;
+//    String eventNote = this.notes;
+//
+//    // Created defensive copies of startTime and duration
+//    LocalDateTime startTimeCopy = LocalDateTime.from(startTime);
+//    Duration durationCopy = Duration.ofMillis(duration.toMillis());
+//
+//    Event newEvent = new Event(eventName, eventNote, durationCopy, startTimeCopy);
+//
+//    return newEvent;
+//  }
 
 }
