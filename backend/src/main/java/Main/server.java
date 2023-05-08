@@ -12,6 +12,7 @@ import handlers.taskHandler;
 import java.util.HashMap;
 import java.util.Map;
 import spark.Spark;
+import handlers.editTaskHandler;
 
 public class server {
 
@@ -43,9 +44,11 @@ public class server {
       deleteEventHandler deleteEvent = new deleteEventHandler(userCalendar,firestore);
       taskHandler TaskHandler = new taskHandler(userTaskManager, userCalendar,firestore);
       deleteTaskHandler deleteTask = new deleteTaskHandler(firestore);
+      editTaskHandler editTaskHandler = new editTaskHandler(userTaskManager, userCalendar, firestore);
 
       Spark.post("createEvent", EventHandler);
       Spark.post("createTask", TaskHandler);
+      Spark.post("editTask", editTaskHandler);
       Spark.delete("deleteEvent", deleteEvent);
       Spark.delete("deleteTask", deleteTask);
       Spark.init();
