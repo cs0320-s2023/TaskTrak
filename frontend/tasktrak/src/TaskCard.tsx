@@ -88,7 +88,7 @@ export const TaskMenu: React.FC<TaskMenuProps> = ({ tasks }) => {
             />
             <CardContent>
               <Typography variant="body2" color="text.secondary">
-                Duration: {task.duration} minutes
+                Duration: {task.duration} hours
               </Typography>
               <Grid container spacing={1} justifyContent="center">
                 {typeof task.timeSuggestions == "object" && task.timeSuggestions.slice(0, 4).map((timePair, idx) => (

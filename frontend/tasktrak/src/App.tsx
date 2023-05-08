@@ -35,9 +35,7 @@ import { TaskMenu } from "./TaskCard";
 import TaskList from "./TaskList";
 import React from "react";
 import ReactDOM from "react-dom";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./firebase/Login";
-import UserAccount from "./firebase/UserAccount";
+import { Link as RouterLink } from "react-router-dom";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -47,8 +45,6 @@ function App(): JSX.Element {
   function toggleViewMode() {
     setViewMode(viewMode === "month" ? "week" : "month");
   }
-
-  const [loginFormOpen, setLoginFormOpen] = useState(false);
 
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems);
 
@@ -89,10 +85,6 @@ function App(): JSX.Element {
     </Menu>,
   ];
 
-  function handleLogin() {
-    setLoginFormOpen(true);
-  }
-
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
@@ -105,7 +97,6 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    // <AuthProvider>
     <>
       {!user && <AuthProvider />}
       {user && (
@@ -116,14 +107,11 @@ function App(): JSX.Element {
           justifyContent="center"
           alignItems="center"
         >
-          <Grid item xs={12}>
-            <UserAccount></UserAccount>
-          </Grid>
           <Grid item xs={11}>
             <Button onClick={handleClick}>Accessibility Mode</Button>
           </Grid>
           <Grid item xs={1}>
-            <Button onClick={handleLogin}>Login</Button>
+            <Button component={RouterLink} to="/signin">Sign in</Button>
           </Grid>
           <Grid item xs={6}>
             {viewMode === "month" ? (

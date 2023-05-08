@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { auth } from "./config";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Grid, Box, Card, Paper } from "@mui/material";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,29 +29,47 @@ const Login = () => {
   };
 
   return (
+    // <Paper
+    //     elevation={3}
+    //     sx={{ width: '200%'}}
+    // >
     <>
       {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       {!successMessage && (
         <form onSubmit={handleLogin}>
-          <TextField
-            autoFocus
-            id="email"
-            type="email"
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            id="password"
-            type="password"
-            label="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button type="submit">Login</Button>
+            <Grid container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                spacing={2}
+            >
+                    <Grid item xs={12}>
+                        <TextField
+                            autoFocus
+                            id="email"
+                            type="email"
+                            label="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="password"
+                            type="password"
+                            label="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}> {/*not sure why this wont go in the center we'll figire it out*/}
+                        <Button type="submit">Login</Button>
+                    </Grid>
+            </Grid>
         </form>
       )}
+    {/*</Paper> */}
     </>
   );
 };
