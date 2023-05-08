@@ -34,13 +34,15 @@ export default function TaskList(props: TaskListProps) {
   const [dueDate, setDueDate] = useState<Date>(new Date());
   const [priority, setPriority] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [notes, setNotes] = useState("");
 
   function handleNewTaskButton() {
     setOpen(true);
   }
 
   async function handleSave() {
-    const startingAddedID = props.tasks.length == 0 ? 0 : props.tasks[props.tasks.length - 1].id + 1;
+    const startingAddedID =
+      props.tasks.length == 0 ? 0 : props.tasks[props.tasks.length - 1].id + 1;
     const newTask: Task = {
       // id:
       name: taskName,
@@ -49,9 +51,10 @@ export default function TaskList(props: TaskListProps) {
       duration: duration,
       // completion: 0, // Default completion value
       isComplete: false,
-      notes: "",
+      notes: notes,
       id: startingAddedID,
       timeSuggestions: [],
+      progress: 0,
     };
 
     try {
@@ -64,7 +67,7 @@ export default function TaskList(props: TaskListProps) {
           `duration=${duration}&` +
           `isComplete=${false}&` +
           `id=${startingAddedID}&` +
-          `notes=dfsjddkl&` +
+          `notes=${notes}&` +
           `tokenid=${userTokenID}`,
         {
           // mode: "no-cors",
@@ -140,12 +143,14 @@ export default function TaskList(props: TaskListProps) {
           <DialogContentText>Due Date</DialogContentText>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-                value={dueDate}
-                onChange={(newValue) => {
-                    if (newValue) { setDueDate(newValue); }
-                }}
-                renderInput={props => <TextField {...props}/>}
-                />
+              value={dueDate}
+              onChange={(newValue) => {
+                if (newValue) {
+                  setDueDate(newValue);
+                }
+              }}
+              renderInput={(props) => <TextField {...props} />}
+            />
           </LocalizationProvider>
           <DialogContentText>Priority</DialogContentText>
           <Slider
@@ -165,6 +170,18 @@ export default function TaskList(props: TaskListProps) {
             label="Hours"
             value={duration}
             onChange={(e) => setDuration(parseInt(e.target.value))}
+            fullWidth
+            variant="standard"
+          />
+          <DialogContentText></DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="notes"
+            type="string"
+            label="notes"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
             fullWidth
             variant="standard"
           />
@@ -213,7 +230,7 @@ export default function TaskList(props: TaskListProps) {
               <ListItemText primary={task.priority} />
             </ListItemButton>
             <ListItemButton>
-              <CircularProgress variant="determinate" value={50} />
+              <CircularProgress variant="determinate" value={0} />
             </ListItemButton>
           </ListItem>
         </List>

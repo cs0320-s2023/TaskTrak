@@ -31,6 +31,7 @@ export interface Task {
   isComplete: Boolean;
   id: number;
   timeSuggestions: string[][];
+  progress: number;
 }
 
 export const sampleTasks: Task[] = [
@@ -42,7 +43,8 @@ export const sampleTasks: Task[] = [
     dueDate: new Date(2023, 4, 10, 12, 0),
     isComplete: true,
     id: 3,
-    timeSuggestions: [["0, 3"]],
+    timeSuggestions: [["4:00 - 7:00"]],
+    progress: 0,
   },
   {
     name: "task1",
@@ -52,7 +54,8 @@ export const sampleTasks: Task[] = [
     dueDate: new Date(2023, 4, 8, 12, 0),
     isComplete: true,
     id: 0,
-    timeSuggestions: [["0, 3"]],
+    timeSuggestions: [["4:00 - 7:00"]],
+    progress: 25,
   },
   {
     name: "task2",
@@ -62,7 +65,8 @@ export const sampleTasks: Task[] = [
     dueDate: new Date(2023, 4, 7, 12, 0),
     isComplete: true,
     id: 1,
-    timeSuggestions: [["0, 3"]],
+    timeSuggestions: [["4:00 - 7:00"]],
+    progress: 5,
   },
   {
     name: "task3",
@@ -72,6 +76,7 @@ export const sampleTasks: Task[] = [
     dueDate: new Date(2023, 4, 10, 12, 0),
     isComplete: true,
     id: 2,
-    timeSuggestions: [["0, 3"]],
+    timeSuggestions: [["4:00 - 7:00"]],
+    progress: 39,
   },
 ];
