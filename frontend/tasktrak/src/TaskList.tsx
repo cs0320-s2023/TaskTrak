@@ -21,6 +21,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Task } from "./CalendarItem";
 import React, { useState } from "react";
 import { getAuth } from "firebase/auth";
+import { TaskMenu } from "./TaskCard";
 
 interface TaskListProps {
   tasks: Task[];
@@ -36,6 +37,7 @@ export default function TaskList(props: TaskListProps) {
   const [duration, setDuration] = useState(0);
   const [notes, setNotes] = useState("");
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [index, setEditIndex] = useState<number | null>(null);
 
   function handleNewTaskButton() {
     setOpen(true);
@@ -60,17 +62,30 @@ export default function TaskList(props: TaskListProps) {
         selectedTask.duration = duration;
         selectedTask.isComplete = false;
         selectedTask.notes = notes;
+
         const userTokenID = await getAuth().currentUser?.getIdToken(true);
+        const filteredTasks = props.tasks.filter(
+          (task) => task.id !== selectedTask.id
+        );
+
         const response = await fetch(
           `http://localhost:3030/editTask?` +
             `name=${taskName}&` +
             `dueDate=${dueDate.toISOString()}&` +
             `priority=${priority}&` +
-            `duration=${duration}&` +
+            `newDuration=${duration}&` +
             `isComplete=${false}&` +
             `id=${selectedTask.id}&` +
             `notes=${notes}&` +
             `tokenid=${userTokenID}`,
+          // String name = request.queryParams("name");
+          // String notes = request.queryParams("notes");
+          // String priority = request.queryParams("priority");
+          // String dueDate = request.queryParams("dueDate");
+          // String isComplete = request.queryParams("isComplete");
+          // String taskID = request.queryParams("id");
+          // String newDuration = request.queryParams("newDuration");
+          // String tokenID = request.queryParams("tokenID");
           {
             // mode: "no-cors",
             method: "POST",
@@ -79,6 +94,12 @@ export default function TaskList(props: TaskListProps) {
             // },
           }
         );
+        const taskTimeSuggestions = await response.json();
+
+        const success: string[][] = taskTimeSuggestions["cause"];
+        console.log("Response:", success);
+
+        selectedTask.timeSuggestions = success;
 
         // Update the task in the local state
         // const updatedTasks = props.tasks.map((task) =>
@@ -89,6 +110,11 @@ export default function TaskList(props: TaskListProps) {
         // props.setTasks(updatedTasks);
 
         // Close the dialog and reset the state
+        props.setTasks([...filteredTasks, selectedTask]);
+        setTaskName("");
+        setDueDate(new Date());
+        setPriority(0);
+        setDuration(0);
         handleClose();
         setSelectedTask(null);
       } catch (error) {
@@ -153,7 +179,6 @@ export default function TaskList(props: TaskListProps) {
       setDueDate(new Date());
       setPriority(0);
       setDuration(0);
-
       // Close the dialog
       handleClose();
     } catch (error) {
