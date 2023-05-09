@@ -15,14 +15,13 @@ public class deleteTaskHandler implements Route {
 
   // Need to get the object, and remove it from the Task map
   // Will not have impact on the calendar time
-  Firestore firestore;
-  TaskManager userTaskManager;
-  Calendar userCalendar;
+  private UserState userState;
+  private Firestore firestore;
 
-  public deleteTaskHandler(Firestore firestore, TaskManager userTaskManager, Calendar userCalendar ){
+
+  public deleteTaskHandler(UserState userState, Firestore firestore){
+    this.userState = userState;
     this.firestore = firestore;
-    this.userTaskManager = userTaskManager;
-    this.userCalendar = userCalendar;
   }
 
   @Override
@@ -30,14 +29,14 @@ public class deleteTaskHandler implements Route {
     String taskID = request.queryParams("id");
     String tokenID = request.queryParams("tokenID");
 
-
-    Integer decodedID = Integer.parseInt(taskID);
-
-
-
     try {
+      Integer decodedID = Integer.parseInt(taskID);
 
-      userTaskManager.removeTask(decodedID);
+      String userID = firestore.getUserId(tokenID);
+
+      TaskManager taskManager = this.userState.getUserTaskManager(userID);
+
+      taskManager.removeTask(decodedID);
       firestore.deleteFirebaseEvent(taskID,tokenID);
       return constructSuccessResponse("Event successfully deleted.");
 
