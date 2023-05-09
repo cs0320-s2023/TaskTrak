@@ -7,13 +7,19 @@ import Algorithim.TaskManager;
 import Items.Calendar;
 import Items.Day;
 import Items.Event;
+import Items.Task;
 import com.google.firebase.FirebaseException;
 import java.time.LocalDate;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -76,11 +82,23 @@ public class eventHandler implements Route {
       Calendar calendar = this.userState.getUserCalendar(userID);
       TaskManager taskManager = this.userState.getUserTaskManager(userID);
 
-      System.out.println(event.getName());
       calendar.blockOffTime(startTime, endTime, allDay, true, taskManager);
 
 
-      return constructSuccessResponse("Event successfully stored!");
+      Map<Integer, ArrayList<List<LocalTime>>> updatedTimeSuggestions = new HashMap<>();
+
+      for (Integer key : taskManager.getTaskMap().keySet()) {
+        ArrayList<List<LocalTime>> updatedTaskSuggestions = // updated task suggestions
+            taskManager.getTask(key).getTimeSuggestions();
+
+        // maps the task ID to the new time suggestions
+        updatedTimeSuggestions.put(key, updatedTaskSuggestions);
+      }
+
+
+
+
+      return constructSuccessResponse(updatedTimeSuggestions);
 
     } catch (DateTimeParseException e) {
       String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
