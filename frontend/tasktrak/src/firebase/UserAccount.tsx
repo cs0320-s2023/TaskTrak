@@ -7,24 +7,19 @@ export default function UserAccount(){
     
 
     return(
-        // <Paper
-        //     elevation={3}
-        //     sx={{ width: '25%' }}
-        // >
-            <Grid container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-                marginTop={10}
-            >
-                <h1>Login</h1>
-                <Grid item xs={6}>
-                    <Login/>
-                </Grid>
-                <Grid item xs={6}>
-                    <SignUp/>
-                </Grid>
+        <Grid container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            marginTop={10}
+        >
+            <h1>Login</h1>
+            <Grid item xs={6}>
+                <Login/>
             </Grid>
-        // </Paper>
+            <Grid item xs={6}>
+                <SignUp/>
+            </Grid>
+        </Grid>
     )
 }
