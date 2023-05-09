@@ -20,7 +20,7 @@ import {
   SelectOption,
 } from "@devexpress/dx-react-scheduler";
 import React from "react";
-import { CalendarItem } from "./CalendarItem";
+import { CalendarItem, Task } from "./CalendarItem";
 import "./MonthlyCalendar.css";
 import { useState } from "react";
 // import { getAuth } from "firebase/auth";
@@ -37,18 +37,24 @@ interface MonthlyCalendarProps {
 }
 
 export default function MonthlyCalendar(props: MonthlyCalendarProps) {
+  const [formOpen, setFormOpen] = useState(false);
+  const [formAppointment, setFormAppointment] = useState<CalendarItem | null>(
+    null
+  );
+
   function currentDateChange(currentDate: Date) {
     props.setCurrentDate(currentDate);
   }
   // const [customAttributeValue, setCustomAttributeValue] = useState<string | number>(0);
 
   const requestOptions = {
-    method: "POST"
+    method: "POST",
   };
 
   function commitChanges({ added, changed, deleted }: ChangeSet) {
     if (added) {
-      const startingAddedID =
+      console.log(props.calendarItems);
+      const startingAddedID = props.calendarItems.length == 0 ? 0 :
         props.calendarItems[props.calendarItems.length - 1].id + 1;
       props.setCalendarItems([
         ...props.calendarItems,
@@ -66,8 +72,8 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
       ]);
       let newEvent: CalendarItem =
         props.calendarItems[props.calendarItems.length - 1];
-      const userTokenID = auth
-        .currentUser?.getIdToken(true)
+      const userTokenID = auth.currentUser
+        ?.getIdToken(true)
         .then((userTokenID) =>
           fetch(
             `http://localhost:3030/createEvent?` +

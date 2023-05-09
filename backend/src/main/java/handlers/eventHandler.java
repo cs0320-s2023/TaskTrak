@@ -79,6 +79,7 @@ public class eventHandler implements Route {
       System.out.println(event.getName());
       calendar.blockOffTime(startTime, endTime, allDay, true, taskManager);
 
+
       return constructSuccessResponse("Event successfully stored!");
 
     } catch (DateTimeParseException e) {

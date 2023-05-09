@@ -44,7 +44,7 @@ export default function WeeklyCalendar(props: WeeklyCalendarProps) {
 
   function commitChanges({ added, changed, deleted }: ChangeSet) {
     if (added) {
-      const startingAddedID =
+      const startingAddedID = props.calendarItems.length == 0 ? 0 :
         props.calendarItems[props.calendarItems.length - 1].id + 1;
         props.setCalendarItems([...props.calendarItems, {
             id: startingAddedID,

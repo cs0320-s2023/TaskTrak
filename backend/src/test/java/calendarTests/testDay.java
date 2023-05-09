@@ -5,8 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import Algorithim.TaskManager;
+import Enums.Rating;
 import Items.Day;
+import Items.Task;
 import Items.timeMethods;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,7 +46,16 @@ public class testDay {
 
   @Test
   void timeSuggestion(){
-// need to do this once algorithim is finished
+    day.bookTimeRange(0,0,8,0, true);
+    day.bookTimeRange(12,0,18,0, true);
+    day.bookTimeRange(12,0,18,0, false);
+    Task task1 = new Task("Task 1", "Notes 1", Rating.HIGH, 1.5,
+        LocalDateTime.now().plusDays(1), false, 0);
+
+    ArrayList<int[]> freeTimes = day.findAvailableTimeRanges();
+    TaskManager.suggestionHelper(task1, freeTimes);
+
+    System.out.println(task1.getTimeSuggestions());
   }
 
 
