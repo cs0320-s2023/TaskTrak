@@ -14,6 +14,7 @@ import { Task } from "./CalendarItem";
 
 interface TaskMenuProps {
   tasks: Task[];
+  // createAppointmentFromTask: (task: Task) => void;
 }
 
 function getPriorityColor(priority: number): string {
@@ -41,8 +42,8 @@ function getPriorityLabel(priority: number): string {
   }
 }
 
-export const TaskMenu: React.FC<TaskMenuProps> = ({ tasks }) => {
-  const sortedTasks = tasks.sort((taskA, taskB) => {
+export const TaskMenu: React.FC<TaskMenuProps> = (props: TaskMenuProps) => {
+  const sortedTasks = props.tasks.sort((taskA, taskB) => {
     if (taskA.dueDate.getTime() === taskB.dueDate.getTime()) {
       return taskB.priority - taskA.priority;
     }
@@ -97,7 +98,12 @@ export const TaskMenu: React.FC<TaskMenuProps> = ({ tasks }) => {
                 {typeof task.timeSuggestions == "object" &&
                   task.timeSuggestions.slice(0, 4).map((timePair, idx) => (
                     <Grid item key={idx}>
-                      <Fab variant="extended" color="primary" size="small">
+                      <Fab
+                        variant="extended"
+                        color="primary"
+                        size="small"
+                        // onClick={() => props.createAppointmentFromTask(task)}
+                      >
                         {timePair[0]} - {timePair[1]}
                       </Fab>
                     </Grid>
