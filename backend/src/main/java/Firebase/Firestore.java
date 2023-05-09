@@ -25,6 +25,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -63,10 +66,9 @@ public class Firestore {
 
       Map<String, Object> docData = new HashMap<>();
       docData.put("title", event.getName());
-      docData.put("startTime", event.getStartTime().toLocalTime().toString());
-      docData.put("endTime", event.getEndTime().toLocalTime().toString());
+      docData.put("startDate", event.getStartTime().toString());
+      docData.put("endDate", event.getEndTime().toString());
       docData.put("dateSpan",new ArrayList<String>(List.of(startDate,endDate)));
-
       docData.put("notes", event.getNotes());
       docData.put("isAllDay", event.getIsAllDay());
       ApiFuture<WriteResult> test = eventRef.set(docData); //SET FAILING FOR SOME REASON
@@ -93,7 +95,7 @@ public class Firestore {
   }
 
   public ArrayList<List<Map<String,Object>>> retrieveCalendar(String userTokenID) throws FirebaseAuthException{
-    DocumentReference userRef = getUserRef(userTokenID);
+    DocumentReference userRef = db.collection("users").document("testUser2");//getUserRef(userTokenID);
     ApiFuture<QuerySnapshot> eventsQuery = userRef.collection("events").get();
     ApiFuture<QuerySnapshot> tasksQuery = userRef.collection("tasks").get();
 
@@ -113,27 +115,30 @@ public class Firestore {
 
   }
 
-  public ArrayList<List<String>> retrieveADayTimes(LocalDateTime dateTime,String userTokenID) throws FirebaseAuthException{
+  public ArrayList<List<LocalDateTime>> retrieveADayTimes(LocalDateTime dateTime,String userTokenID) throws FirebaseAuthException{
     DocumentReference userRef = getUserRef(userTokenID);
     CollectionReference events = userRef.collection("events");
+    ApiFuture<QuerySnapshot> queryStart = events.whereIn("dateSpan",List.of(dateTime)).whereEqualTo("allDay", false).get();
 
-
-    ApiFuture<QuerySnapshot> queryStart = events.whereIn("dateSpan",List.of(dateTime)).get();
     try {
-      ArrayList<List<String>> times = new ArrayList<>();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+          .withZone(ZoneOffset.UTC);
+      ArrayList<List<LocalDateTime>> times = new ArrayList<>();
+
       for (DocumentSnapshot doc : queryStart.get().getDocuments()) {
-        String startDate = doc.get("startDate").toString();
-        String endDate = doc.get("endDate").toString();
-        times.add(List.of(startDate,endDate));
+        LocalDateTime startDate = LocalDateTime.parse(doc.get("startDate").toString(), formatter);
+        LocalDateTime endDate = LocalDateTime.parse(doc.get("endDate").toString(), formatter);
+        times.add(List.of(startDate, endDate));
       }
       System.out.println(times);
       return times;
+    } catch (DateTimeParseException e) {
+      System.err.println("Invalid time parsed");
+      return new ArrayList<>();
     } catch (Exception e) {
       System.err.println("Document getting was interrupted");
       return new ArrayList<>();
     }
-//    events.whereIn()
-
   }
 
 

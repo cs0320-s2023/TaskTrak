@@ -6,9 +6,11 @@ import static Response.MapResponse.constructSuccessResponse;
 import Algorithim.TaskManager;
 import Firebase.Firestore;
 import Items.Calendar;
+import Items.Task;
 import com.google.firebase.auth.FirebaseAuthException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Map;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -43,6 +45,7 @@ public class deleteEventHandler implements Route {
       TaskManager taskManager = this.userState.getUserTaskManager(userID);
 
       calendar.blockOffTime(startTime,endTime,allDay,false,taskManager);
+
       return constructSuccessResponse("Event successfully deleted.");
 
     } catch (DateTimeParseException e) {

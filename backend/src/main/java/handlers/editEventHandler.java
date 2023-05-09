@@ -64,7 +64,7 @@ public class editEventHandler implements Route {
       Boolean oldAllDay = Boolean.parseBoolean(isAllDay);
 //      Boolean repeated = Boolean.parseBoolean(isRepeated);
 
-      this.calendar.blockOffTime(oldStartTime, oldEndTime, oldAllDay, false);
+//      this.calendar.blockOffTime(oldStartTime, oldEndTime, oldAllDay, false);
 
       // -------------------making new changes-------------------
 
@@ -81,7 +81,7 @@ public class editEventHandler implements Route {
 
       firestore.createEventFirebase(newEvent, tokenID);
 
-      this.calendar.blockOffTime(newStartDate, newEndDate, newAllDay, true);
+//      this.calendar.blockOffTime(newStartDate, newEndDate, newAllDay, true);
 
       return constructSuccessResponse("Event successfully edited!");
 
