@@ -47,10 +47,8 @@ function App(): JSX.Element {
     setViewMode(viewMode === "month" ? "week" : "month");
   }
 
-  function isLoggedIn(): boolean{
-    console.log(auth.currentUser)
-    if(auth.currentUser) { return true; }
-    else { return false; }
+  function handleLogout(){
+    auth.signOut();
   }
 
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems);
@@ -58,6 +56,7 @@ function App(): JSX.Element {
   const [tasks, setTasks] = useState(sampleTasks);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -93,7 +92,6 @@ function App(): JSX.Element {
   ];
 
   useEffect(() => {
-    // const auth = getAuth();
     const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
       setUser(user);
       console.log(`user set to ${user?.email}`)
@@ -107,8 +105,8 @@ function App(): JSX.Element {
 
   return (
     <>
-      {!user && <AuthProvider />}
-      {user && (
+      {/* {!user && <AuthProvider />} */}
+      {(
         <Grid
           container
           spacing={6}
@@ -120,7 +118,12 @@ function App(): JSX.Element {
             <Button onClick={handleClick}>Accessibility Mode</Button>
           </Grid>
           <Grid item xs={1}>
-            <Button component={RouterLink} to="/signin">{isLoggedIn() ? "Sign In" : "Log Out"}</Button>
+            {
+              auth.currentUser ?
+              <Button onClick={handleLogout} component={RouterLink} to="/calendar">Log Out</Button> :
+              <Button component={RouterLink} to="/signin">Sign In</Button>
+            }
+            {/* <Button component={RouterLink} to="/signin">{isLoggedIn() ? "Sign In" : "Log Out"}</Button> */}
           </Grid>
           <Grid item xs={6}>
             {viewMode === "month" ? (
