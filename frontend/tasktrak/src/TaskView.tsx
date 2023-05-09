@@ -4,8 +4,12 @@ import TaskList from "./TaskList";
 import { Task, sampleTasks } from "./CalendarItem";
 import { TaskMenu } from "./TaskCard";
 
-export default function TaskView(){
-    const [tasks, setTasks] = useState(sampleTasks);
+interface TaskViewProps{
+    tasks: Task[];
+    setTasks: (tasks: Task[]) => void;
+}
+
+export default function TaskView(props: TaskViewProps){
 
     return(
         <Grid
@@ -16,10 +20,10 @@ export default function TaskView(){
             alignItems="center"
         >
             <Grid item xs={8}>
-                <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
+                <TaskList tasks={props.tasks} setTasks={props.setTasks}></TaskList>
             </Grid>
             <Grid item xs={4}>
-                <TaskMenu tasks={tasks}></TaskMenu>
+                <TaskMenu tasks={props.tasks}></TaskMenu>
             </Grid>
         </Grid>
     )

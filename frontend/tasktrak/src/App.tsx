@@ -179,7 +179,7 @@ function App(): JSX.Element {
         </Grid>
       )}
       {pageView == "tasks" && (
-        <TaskView></TaskView>
+        <TaskView tasks={tasks} setTasks={setTasks}></TaskView>
       )}
     </>
   );

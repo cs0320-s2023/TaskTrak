@@ -48,7 +48,8 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
 
   function commitChanges({ added, changed, deleted }: ChangeSet) {
     if (added) {
-      const startingAddedID =
+      console.log(props.calendarItems);
+      const startingAddedID = props.calendarItems.length == 0 ? 0 :
         props.calendarItems[props.calendarItems.length - 1].id + 1;
       props.setCalendarItems([
         ...props.calendarItems,
