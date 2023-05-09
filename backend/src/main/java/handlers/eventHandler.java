@@ -3,10 +3,10 @@ package handlers;
 import static Response.MapResponse.constructErrorResponse;
 import static Response.MapResponse.constructSuccessResponse;
 
+import Algorithim.TaskManager;
 import Items.Calendar;
 import Items.Day;
 import Items.Event;
-import Items.timeMethods;
 import com.google.firebase.FirebaseException;
 import java.time.LocalDate;
 import java.io.UnsupportedEncodingException;
@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -24,12 +22,12 @@ import Firebase.Firestore;
 
 public class eventHandler implements Route {
 
-  private Calendar calendar;
+  private UserState userState;
   private Firestore firestore;
 
 
-  public eventHandler(Calendar calendar, Firestore firestore){
-    this.calendar = calendar;
+  public eventHandler(UserState userState, Firestore firestore){
+    this.userState = userState;
     this.firestore = firestore;
   }
 
@@ -73,8 +71,13 @@ public class eventHandler implements Route {
       Event event = new Event(decodedTitle, decodedNotes, startTime, endTime, id, allDay);
       firestore.createEventFirebase(event,tokenID);
 
+      String userID = firestore.getUserId(tokenID);
+
+      Calendar calendar = this.userState.getUserCalendar(userID);
+      TaskManager taskManager = this.userState.getUserTaskManager(userID);
+
       System.out.println(event.getName());
-      this.calendar.blockOffTime(startTime, endTime, allDay, true);
+      calendar.blockOffTime(startTime, endTime, allDay, true, taskManager);
 
       return constructSuccessResponse("Event successfully stored!");
 
@@ -97,6 +100,10 @@ public class eventHandler implements Route {
       return constructErrorResponse(response);
 
     } catch (FirebaseException e) {
+      response.status(500);
+      response.body(e.getMessage());
+      return constructErrorResponse(response);
+    } catch (NullPointerException e) {
       response.status(500);
       response.body(e.getMessage());
       return constructErrorResponse(response);

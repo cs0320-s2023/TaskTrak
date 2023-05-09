@@ -3,6 +3,7 @@ package handlers;
 import static Response.MapResponse.constructErrorResponse;
 import static Response.MapResponse.constructSuccessResponse;
 
+import Algorithim.TaskManager;
 import Firebase.Firestore;
 import Items.Calendar;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -13,11 +14,12 @@ import spark.Response;
 import spark.Route;
 
 public class deleteEventHandler implements Route {
-  Calendar calendar;
-  Firestore firestore;
+  private UserState userState;
+  private Firestore firestore;
 
-  public deleteEventHandler(Calendar calendar, Firestore firestore){
-    this.calendar = calendar;
+
+  public deleteEventHandler(UserState userState, Firestore firestore){
+    this.userState = userState;
     this.firestore = firestore;
   }
   @Override
@@ -35,7 +37,12 @@ public class deleteEventHandler implements Route {
       Boolean allDay = Boolean.parseBoolean(isAllDay);
 
       firestore.deleteFirebaseEvent(eventID, tokenID);
-      calendar.blockOffTime(startTime,endTime,allDay,false);
+      String userID = firestore.getUserId(tokenID);
+
+      Calendar calendar = this.userState.getUserCalendar(userID);
+      TaskManager taskManager = this.userState.getUserTaskManager(userID);
+
+      calendar.blockOffTime(startTime,endTime,allDay,false,taskManager);
       return constructSuccessResponse("Event successfully deleted.");
 
     } catch (DateTimeParseException e) {

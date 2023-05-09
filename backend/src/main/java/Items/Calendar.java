@@ -1,6 +1,7 @@
 package Items;
 
 
+import Algorithim.TaskManager;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class Calendar {
    * @param allDay
    */
   public void blockOffTime(LocalDateTime start, LocalDateTime end, boolean allDay,
-      boolean isAdding) {
+      boolean isAdding, TaskManager taskManager) {
 
 
 
@@ -83,6 +84,8 @@ public class Calendar {
         }
       }
     }
+
+    taskManager.timeSuggestionAlgorithim(this);
   }
 
 

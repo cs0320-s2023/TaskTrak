@@ -47,6 +47,8 @@ public class editEventHandler implements Route {
     String isRepeated = request.queryParams("isRepeated");
     String tokenID = request.queryParams("tokenID"); //Used for user identification, not needed
 //    at the moment
+    String newStartTime = request.queryParams("newStartDate");
+    String newEndTime = request.queryParams("newEndDate");
 
     // -------------------erasing old event-------------------
 
@@ -65,8 +67,6 @@ public class editEventHandler implements Route {
       this.calendar.blockOffTime(oldStartTime, oldEndTime, oldAllDay, false);
 
       // -------------------making new changes-------------------
-      String newStartTime = request.queryParams("newStartDate");
-      String newEndTime = request.queryParams("newEndDate");
 
       String newDecodedNotes = URLDecoder.decode(notes, "UTF-8");
       String newDecodedTitle = URLDecoder.decode(title, "UTF-8");

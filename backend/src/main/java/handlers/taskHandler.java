@@ -34,13 +34,12 @@ import com.google.gson.Gson;
 
 public class taskHandler implements Route {
 
-  private TaskManager userTaskManager;
-  private Calendar userCalendar;
+  private UserState userState;
   private Firestore firestore;
 
-  public taskHandler(TaskManager userTaskManager, Calendar userCalendar, Firestore firestore) {
-    this.userTaskManager = userTaskManager;
-    this.userCalendar = userCalendar;
+
+  public taskHandler(UserState userState, Firestore firestore){
+    this.userState = userState;
     this.firestore = firestore;
   }
 
@@ -76,47 +75,28 @@ public class taskHandler implements Route {
       Task task = new Task(decodedName, decodedNotes, decodedPriority, decodedDuration,
           decodedDueDate, decodedIsComplete, decodedID);
 
+      String userID = this.firestore.getUserId(tokenID);
+
+      TaskManager taskManager = this.userState.getUserTaskManager(userID);
+      Calendar calendar = this.userState.getUserCalendar(userID);
+
       // add Task to the task manager
-      this.userTaskManager.addTask(task);
+      taskManager.addTask(task);
 
       LocalDate todaysDate = LocalDate.now();
-      Day todaysSchedule = this.userCalendar.getSchedule(todaysDate); // Day object for the current
+      Day todaysSchedule = calendar.getSchedule(todaysDate); // Day object for the current
       // day
       ArrayList<int[]> todaysFreeTime = todaysSchedule.findAvailableTimeRanges();
       // this is the free slots on the calendar
 
-      this.userTaskManager.suggestionHelper(task, todaysFreeTime);
+      taskManager.suggestionHelper(task, todaysFreeTime);
 
       //the timeSuggestions for the just task that was added
       List<List<LocalTime>> taskTimeSuggestions = task.getTimeSuggestions();
 
-//      Moshi moshi = new Moshi.Builder()
-//          .add(new LocalTimeAdapter())
-//          .build();
-//
-//      // Define the type for ArrayList<LocalTime[]>
-//      Type listOfLocalTimeType = Types.newParameterizedType(List.class, LocalTime.class);
-//      Type listOfLocalTimeArraysType = Types.newParameterizedType(List.class, listOfLocalTimeType);
-//
-//      // Create JSON adapter for the type
-//      com.squareup.moshi.JsonAdapter<List<List<LocalTime>>> adapter =
-//          moshi.adapter(listOfLocalTimeArraysType);
-//
-//      // Convert taskTimeSuggestions to JSON
-//      System.out.println("DOES NOT WORK SO FAR");
-//      String jsonTaskTimeSuggestions = adapter.toJson(taskTimeSuggestions);
-//      System.out.println("WORKS SO FAR");
-//
-//      // Set the response type to JSON
-//      response.type("application/json");
-
-
-      firestore.createFirebaseTask(task,tokenID);
+      this.firestore.createFirebaseTask(task,tokenID);
 
       return constructSuccessResponse(taskTimeSuggestions);
-
-
-
 
     } catch (NumberFormatException e) {
       // handle error for invalid number format
@@ -132,6 +112,10 @@ public class taskHandler implements Route {
       // handle error for unsupported encoding
       response.status(500); // Internal Server Error
       response.body("Failed to decode input");
+      return constructErrorResponse(response);
+    } catch (NullPointerException e) {
+      response.status(500);
+      response.body(e.getMessage());
       return constructErrorResponse(response);
     } catch (Exception e) {
       // handle generic error

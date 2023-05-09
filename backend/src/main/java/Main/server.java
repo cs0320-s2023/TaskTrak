@@ -4,8 +4,10 @@ import static spark.Spark.after;
 
 import Algorithim.TaskManager;
 import Items.Calendar;
+import handlers.UserState;
 import handlers.deleteEventHandler;
 import handlers.deleteTaskHandler;
+import handlers.editEventHandler;
 import handlers.eventHandler;
 import Firebase.Firestore;
 import handlers.taskHandler;
@@ -36,21 +38,18 @@ public class server {
       //Remove when they sign out. The map will always exist, keys will be userIDs taken from
       //a firebase query (when a user signs up, generate a private key for just their data)
       //
-      Map<String,Calendar> calendarMap = new HashMap<>();
-      Calendar userCalendar = new Calendar();
-      TaskManager userTaskManager = new TaskManager();
 
-      eventHandler EventHandler = new eventHandler(userCalendar, firestore);
-      deleteEventHandler deleteEvent = new deleteEventHandler(userCalendar,firestore);
-      taskHandler TaskHandler = new taskHandler(userTaskManager, userCalendar,firestore);
-      deleteTaskHandler deleteTask = new deleteTaskHandler(firestore);
-      editTaskHandler editTaskHandler = new editTaskHandler(userTaskManager, userCalendar, firestore);
+//      Calendar userCalendar = new Calendar();
+//      TaskManager userTaskManager = new TaskManager();
+      UserState userState = new UserState(new HashMap<String,Calendar>(), new HashMap<String,TaskManager>());
 
-      Spark.post("createEvent", EventHandler);
-      Spark.post("createTask", TaskHandler);
-      Spark.post("editTask", editTaskHandler);
-      Spark.delete("deleteEvent", deleteEvent);
-      Spark.delete("deleteTask", deleteTask);
+
+      Spark.post("createEvent", new eventHandler(userState, firestore));
+      Spark.post("createTask", new taskHandler(userState,firestore));
+//      Spark.post("editTask", new editTaskHandler(userState, firestore));
+//      Spark.post("editEvent", new editEventHandler(userState, firestore));
+      Spark.delete("deleteEvent", new deleteEventHandler(userState,firestore));
+      Spark.delete("deleteTask", new deleteTaskHandler(userState,firestore));
       Spark.init();
       Spark.awaitInitialization();
       System.out.println("Server started.");
