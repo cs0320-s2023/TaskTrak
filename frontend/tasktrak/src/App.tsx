@@ -19,6 +19,8 @@ import {
   Grid,
   Menu,
   MenuItem,
+  Tab,
+  Tabs,
 } from "@mui/material";
 // import SignUp from "./firebase/signUp";
 import MonthlyCalendar from "./MonthlyCalendar";
@@ -35,7 +37,7 @@ import { TaskMenu } from "./TaskCard";
 import TaskList from "./TaskList";
 import React from "react";
 import ReactDOM from "react-dom";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { auth } from "./firebase/config";
 
 function App(): JSX.Element {
@@ -53,7 +55,7 @@ function App(): JSX.Element {
 
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems);
 
-  const [tasks, setTasks] = useState(sampleTasks);
+  // const [tasks, setTasks] = useState(sampleTasks);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -115,15 +117,18 @@ function App(): JSX.Element {
           alignItems="center"
         >
           <Grid item xs={11}>
-            <Button onClick={handleClick}>Accessibility Mode</Button>
+            {/* <Button onClick={handleClick}>Accessibility Mode</Button> */}
+            <Tabs value='calendar'>
+                <Tab value='calendar' label='Calendar' to='/calendar' component={Link}></Tab>
+                <Tab value='tasks' label='Tasks' to='/tasks' component={Link}></Tab>
+              </Tabs>
           </Grid>
           <Grid item xs={1}>
             {
               auth.currentUser ?
-              <Button onClick={handleLogout} component={RouterLink} to="/calendar">Log Out</Button> :
-              <Button component={RouterLink} to="/signin">Sign In</Button>
+              <Button onClick={handleLogout} component={Link} to="/calendar">Log Out</Button> :
+              <Button component={Link} to="/signin">Sign In</Button>
             }
-            {/* <Button component={RouterLink} to="/signin">{isLoggedIn() ? "Sign In" : "Log Out"}</Button> */}
           </Grid>
           <Grid item xs={6}>
             {viewMode === "month" ? (
@@ -151,12 +156,12 @@ function App(): JSX.Element {
               setCalendarItems={setCalendarItems}
             />
           </Grid>
-          <Grid item xs={6} md={7}>
+          {/* <Grid item xs={6} md={7}>
             <TaskList tasks={tasks} setTasks={setTasks}></TaskList>
           </Grid>
           <Grid item xs={12} md={5}>
             <TaskMenu tasks={tasks} />
-          </Grid>
+          </Grid> */}
         </Grid>
       )}
     </>

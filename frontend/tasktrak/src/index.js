@@ -9,6 +9,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./firebase/Login";
 import SignUp from "./firebase/signUp";
 import UserAccount from "./firebase/UserAccount";
+import TaskView from "./TaskView";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/signin",
     element: <UserAccount/>
+  },
+  {
+    path: "/tasks",
+    element: <TaskView/>
   }
 ])
 
