@@ -57,7 +57,7 @@ public class testTask {
     for (int i = 0; i < timeList.size(); i++) {
       List<LocalTime> expectedInterval = timeList.get(i);
       List<LocalTime> actualInterval = taskTimeSuggestions.get(i);
-
+// Get time to return the millisecond
 //      assertEquals(expectedInterval.size(), actualInterval.size());
 //      assertTrue(expectedInterval.get(i)..equals(actualInterval.get(i)));
       // This works, the values are the same but they are just not comparing properly
@@ -76,6 +76,7 @@ public class testTask {
     assertEquals(task1, tm.getTaskMap().get(0));
     assertEquals(task2, tm.getTaskMap().get(1));
   }
+
 
   @Test
   void testRemoveTask() {
@@ -114,12 +115,6 @@ public class testTask {
   }
 
 
-//  @Test
-//  public void testRemoveTask_NullName() {
-//    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-//        () -> tm.removeTask(4));
-//    assertEquals("Name cannot be null", exception.getMessage());
-//  }
 
 
   @Test
@@ -130,12 +125,6 @@ public class testTask {
   }
 
 
-//  @Test
-//  public void testGetTask_NullName() {
-//    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-//        () -> tm.getTask());
-//    assertEquals("Name cannot be null", exception.getMessage());
-//  }
 
   @Test
   public void testGetTask_NonExistingTask() {

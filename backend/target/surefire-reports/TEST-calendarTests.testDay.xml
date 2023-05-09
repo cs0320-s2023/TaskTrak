@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="calendarTests.testDay" time="0.026" tests="12" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="calendarTests.testDay" time="0.028" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk@17/17.0.6/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire/surefirebooter-20230508163401952_3.jar /Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire 2023-05-08T16-34-01_847-jvmRun1 surefire-20230508163401952_1tmp surefire_0-20230508163401952_2tmp"/>
+    <property name="sun.java.command" value="/Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire/surefirebooter-20230508184550587_3.jar /Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire 2023-05-08T18-45-50_466-jvmRun1 surefire-20230508184550587_1tmp surefire_0-20230508184550587_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="testDay"/>
@@ -29,7 +29,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire/surefirebooter-20230508163401952_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire/surefirebooter-20230508184550587_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="17.0.6+0"/>
@@ -56,15 +56,15 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testInvalidStartHourIndex" classname="calendarTests.testDay" time="0.01"/>
-  <testcase name="testInvalidTimeRange" classname="calendarTests.testDay" time="0.001"/>
+  <testcase name="testInvalidStartHourIndex" classname="calendarTests.testDay" time="0.009"/>
+  <testcase name="testInvalidTimeRange" classname="calendarTests.testDay" time="0"/>
   <testcase name="testInvalidStartMinuteIndex" classname="calendarTests.testDay" time="0"/>
-  <testcase name="testFindAvailableTimeRangesMultipleRanges" classname="calendarTests.testDay" time="0.001"/>
+  <testcase name="testFindAvailableTimeRangesMultipleRanges" classname="calendarTests.testDay" time="0"/>
   <testcase name="testInvalidEndMinuteIndex" classname="calendarTests.testDay" time="0"/>
   <testcase name="timeSuggestion" classname="calendarTests.testDay" time="0"/>
-  <testcase name="testInvalidEndHourIndex" classname="calendarTests.testDay" time="0"/>
-  <testcase name="testSingleSlot" classname="calendarTests.testDay" time="0.001"/>
-  <testcase name="testFindAvailableTimeRangesAllBooked" classname="calendarTests.testDay" time="0"/>
+  <testcase name="testInvalidEndHourIndex" classname="calendarTests.testDay" time="0.001"/>
+  <testcase name="testSingleSlot" classname="calendarTests.testDay" time="0"/>
+  <testcase name="testFindAvailableTimeRangesAllBooked" classname="calendarTests.testDay" time="0.001"/>
   <testcase name="testBookTimeRange" classname="calendarTests.testDay" time="0"/>
   <testcase name="testEmptyAvailability" classname="calendarTests.testDay" time="0.001"/>
   <testcase name="testSizeOfDay" classname="calendarTests.testDay" time="0.002"/>
