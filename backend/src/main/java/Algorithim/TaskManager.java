@@ -107,6 +107,7 @@ public class TaskManager {
     }
   }
 
+
   /**
    * Sorts the time windows in descending order based on the duration of the window
    * @param list

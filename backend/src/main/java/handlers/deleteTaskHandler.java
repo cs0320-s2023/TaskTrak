@@ -3,6 +3,7 @@ package handlers;
 import static Response.MapResponse.constructErrorResponse;
 import static Response.MapResponse.constructSuccessResponse;
 
+import Algorithim.TaskManager;
 import Firebase.Firestore;
 import Items.Calendar;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -15,9 +16,13 @@ public class deleteTaskHandler implements Route {
   // Need to get the object, and remove it from the Task map
   // Will not have impact on the calendar time
   Firestore firestore;
+  TaskManager userTaskManager;
+  Calendar userCalendar;
 
-  public deleteTaskHandler(Firestore firestore){
+  public deleteTaskHandler(Firestore firestore, TaskManager userTaskManager, Calendar userCalendar ){
     this.firestore = firestore;
+    this.userTaskManager = userTaskManager;
+    this.userCalendar = userCalendar;
   }
 
   @Override
@@ -26,8 +31,13 @@ public class deleteTaskHandler implements Route {
     String tokenID = request.queryParams("tokenID");
 
 
+    Integer decodedID = Integer.parseInt(taskID);
+
+
 
     try {
+
+      userTaskManager.removeTask(decodedID);
       firestore.deleteFirebaseEvent(taskID,tokenID);
       return constructSuccessResponse("Event successfully deleted.");
 

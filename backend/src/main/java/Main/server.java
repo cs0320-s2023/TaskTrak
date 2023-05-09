@@ -43,7 +43,7 @@ public class server {
       eventHandler EventHandler = new eventHandler(userCalendar, firestore);
       deleteEventHandler deleteEvent = new deleteEventHandler(userCalendar,firestore);
       taskHandler TaskHandler = new taskHandler(userTaskManager, userCalendar,firestore);
-      deleteTaskHandler deleteTask = new deleteTaskHandler(firestore);
+      deleteTaskHandler deleteTask = new deleteTaskHandler(firestore, userTaskManager, userCalendar);
       editTaskHandler editTaskHandler = new editTaskHandler(userTaskManager, userCalendar, firestore);
 
       Spark.post("createEvent", EventHandler);
