@@ -10,6 +10,7 @@ import handlers.deleteTaskHandler;
 import handlers.editEventHandler;
 import handlers.eventHandler;
 import Firebase.Firestore;
+import handlers.loginHandler;
 import handlers.taskHandler;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,7 @@ public class server {
       Spark.post("editEvent", new editEventHandler(userState, firestore));
       Spark.delete("deleteEvent", new deleteEventHandler(userState,firestore));
       Spark.delete("deleteTask", new deleteTaskHandler(userState,firestore));
+      Spark.get("login", new loginHandler(userState,firestore));
       Spark.init();
       Spark.awaitInitialization();
       System.out.println("Server started.");

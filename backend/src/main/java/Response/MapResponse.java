@@ -8,6 +8,7 @@ import com.squareup.moshi.Types;
 import java.lang.reflect.Type;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import spark.Response;
 
@@ -43,6 +44,20 @@ public class MapResponse {
     Map<String, Object> successResponse = new HashMap();
     successResponse.put("result", "success");
     successResponse.put("cause", result);
+
+    Type mapOfStringObjectType = Types.newParameterizedType(Map.class, String.class, Object.class);
+    JsonAdapter<Map<String,Object>> adapter = moshi.adapter(mapOfStringObjectType);
+    return adapter.toJson(successResponse);
+  }
+
+  public static String constructSuccessResponse(List events, List tasks, List timeSuggestions) {
+    Moshi moshi = new Moshi.Builder().add(new LocalTimeAdapter()).build();
+
+    Map<String, Object> successResponse = new HashMap();
+    successResponse.put("result", "success");
+    successResponse.put("events", events);
+    successResponse.put("tasks", tasks);
+    successResponse.put("timeSuggestions", timeSuggestions);
 
     Type mapOfStringObjectType = Types.newParameterizedType(Map.class, String.class, Object.class);
     JsonAdapter<Map<String,Object>> adapter = moshi.adapter(mapOfStringObjectType);
