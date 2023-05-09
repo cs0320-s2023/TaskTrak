@@ -53,7 +53,6 @@ public class eventManager {
 
   /**
    * Returns the specific event you are searching for by name
-   *
    * @param name
    * @return
    */
@@ -81,28 +80,5 @@ public class eventManager {
   }
 
 
-  /**
-   * For loop for looping through the event list -- to be modified later
-   */
-  public void eventLoop() {
-    Map<String, Event> events = this.getEventMap();
-    for (Map.Entry<String, Event> entry : events.entrySet()) {
-      String eventName = entry.getKey();
-      Event event = entry.getValue();
-      // do something with the event
-    }
-  }
-
-  /**
-   * Converts hours and time blocks into minutes of the day
-   * @param hour - hour of the day
-   * @param block - 15 minute block within the hour
-   * @return - integer representing the number
-   */
-//  public int getMinuteOfDay(int hour, int block) {
-//    return hour * 60 + block * 15;
-//  }
-//
-//  }
 
 }
