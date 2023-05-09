@@ -9,7 +9,11 @@ import Items.Calendar;
 import Items.Task;
 import com.google.firebase.auth.FirebaseAuthException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import spark.Request;
 import spark.Response;
@@ -32,6 +36,8 @@ public class deleteEventHandler implements Route {
     String endDate = request.queryParams("endDate");
     String isAllDay = request.queryParams("isAllDay");
     String tokenID = request.queryParams("tokenID");
+
+
     try {
       LocalDateTime startTime = LocalDateTime.parse(startDate);
       LocalDateTime endTime = LocalDateTime.parse(endDate);
@@ -44,9 +50,19 @@ public class deleteEventHandler implements Route {
       Calendar calendar = this.userState.getUserCalendar(userID);
       TaskManager taskManager = this.userState.getUserTaskManager(userID);
 
-      calendar.blockOffTime(startTime,endTime,allDay,false,taskManager);
+      calendar.blockOffTime(startTime,endTime,allDay,false, taskManager);
 
-      return constructSuccessResponse("Event successfully deleted.");
+      Map<Integer, ArrayList<List<LocalTime>>> updatedTimeSuggestions = new HashMap<>();
+
+      for (Integer key : taskManager.getTaskMap().keySet()) {
+        ArrayList<List<LocalTime>> updatedTaskSuggestions = // updated task suggestions
+            taskManager.getTask(key).getTimeSuggestions();
+
+        // maps the task ID to the new time suggestions
+        updatedTimeSuggestions.put(key, updatedTaskSuggestions);
+      }
+
+      return constructSuccessResponse(updatedTimeSuggestions);
 
     } catch (DateTimeParseException e) {
       response.status(400);

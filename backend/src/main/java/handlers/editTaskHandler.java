@@ -25,13 +25,12 @@ import spark.Route;
 
 public class editTaskHandler implements Route{
 
-  private TaskManager userTaskManager;
-  private Calendar userCalendar;
+  private UserState userState;
   private Firestore firestore;
 
-  public editTaskHandler(TaskManager userTaskManager, Calendar userCalendar, Firestore firestore) {
-    this.userTaskManager = userTaskManager;
-    this.userCalendar = userCalendar;
+
+  public editTaskHandler(UserState userState, Firestore firestore){
+    this.userState = userState;
     this.firestore = firestore;
   }
 
@@ -64,19 +63,25 @@ public class editTaskHandler implements Route{
       LocalDateTime decodedDueDate = LocalDateTime.parse(dueDate, formatter);
 
       List<List<LocalTime>> taskTimeSuggestions = new ArrayList<>();
-      Task oldTask = this.userTaskManager.getTask(decodedID);
+
+      String userID = firestore.getUserId(tokenID);
+
+      Calendar calendar = this.userState.getUserCalendar(userID);
+      TaskManager taskManager = this.userState.getUserTaskManager(userID);
+
+      Task oldTask = taskManager.getTask(decodedID);
 
       if (decodedNewDuration != oldTask.getTimeToComplete()) {
         //The DANGER is that not all the task information in this map will be up-to-date
         oldTask.setTimeToComplete(decodedNewDuration);
 
         LocalDate todaysDate = LocalDate.now();
-        Day todaysSchedule = this.userCalendar.getSchedule(
+        Day todaysSchedule = calendar.getSchedule(
             todaysDate); // Day object for the current
         ArrayList<int[]> todaysFreeTime = todaysSchedule.findAvailableTimeRanges();
         // this is the free slots on the calendar
 
-        this.userTaskManager.suggestionHelper(oldTask, todaysFreeTime);
+        taskManager.suggestionHelper(oldTask, todaysFreeTime);
 
         //the timeSuggestions for the just task that was added
         taskTimeSuggestions = oldTask.getTimeSuggestions();
@@ -88,7 +93,10 @@ public class editTaskHandler implements Route{
 
       firestore.createFirebaseTask(newTask,tokenID);
 
+
       return constructSuccessResponse(taskTimeSuggestions);
+
+
 
     } catch (NumberFormatException e) {
       // handle error for invalid number format

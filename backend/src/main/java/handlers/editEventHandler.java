@@ -3,6 +3,7 @@ package handlers;
 import static Response.MapResponse.constructErrorResponse;
 import static Response.MapResponse.constructSuccessResponse;
 
+import Algorithim.TaskManager;
 import Firebase.Firestore;
 import Items.Calendar;
 import Items.Event;
@@ -11,20 +12,25 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class editEventHandler implements Route {
 
-  private Calendar calendar;
+  private UserState userState;
   private Firestore firestore;
 
-  public editEventHandler(Calendar calendar, Firestore firestore) {
-    this.calendar = calendar;
+  public editEventHandler(UserState userState, Firestore firestore){
+    this.userState = userState;
     this.firestore = firestore;
   }
 
@@ -64,7 +70,12 @@ public class editEventHandler implements Route {
       Boolean oldAllDay = Boolean.parseBoolean(isAllDay);
 //      Boolean repeated = Boolean.parseBoolean(isRepeated);
 
-//      this.calendar.blockOffTime(oldStartTime, oldEndTime, oldAllDay, false);
+      String userID = firestore.getUserId(tokenID);
+      Calendar calendar = this.userState.getUserCalendar(userID);
+      TaskManager taskManager = this.userState.getUserTaskManager(userID);
+
+
+      calendar.blockOffTime(oldStartTime, oldEndTime, oldAllDay, false, taskManager);
 
       // -------------------making new changes-------------------
 
@@ -81,9 +92,20 @@ public class editEventHandler implements Route {
 
       firestore.createEventFirebase(newEvent, tokenID);
 
-//      this.calendar.blockOffTime(newStartDate, newEndDate, newAllDay, true);
+      calendar.blockOffTime(newStartDate, newEndDate, newAllDay, true, taskManager);
 
-      return constructSuccessResponse("Event successfully edited!");
+
+      Map<Integer, ArrayList<List<LocalTime>>> updatedTimeSuggestions = new HashMap<>();
+
+      for (Integer key : taskManager.getTaskMap().keySet()) {
+        ArrayList<List<LocalTime>> updatedTaskSuggestions = // updated task suggestions
+            taskManager.getTask(key).getTimeSuggestions();
+
+        // maps the task ID to the new time suggestions
+        updatedTimeSuggestions.put(key, updatedTaskSuggestions);
+      }
+
+      return constructSuccessResponse(updatedTimeSuggestions);
 
     } catch (DateTimeParseException e) {
       String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

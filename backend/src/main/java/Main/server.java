@@ -47,8 +47,8 @@ public class server {
 
       Spark.post("createEvent", new eventHandler(userState, firestore));
       Spark.post("createTask", new taskHandler(userState,firestore));
-//      Spark.post("editTask", new editTaskHandler(userState, firestore));
-//      Spark.post("editEvent", new editEventHandler(userState, firestore));
+      Spark.post("editTask", new editTaskHandler(userState, firestore));
+      Spark.post("editEvent", new editEventHandler(userState, firestore));
       Spark.delete("deleteEvent", new deleteEventHandler(userState,firestore));
       Spark.delete("deleteTask", new deleteTaskHandler(userState,firestore));
       Spark.get("login", new loginHandler(userState,firestore));

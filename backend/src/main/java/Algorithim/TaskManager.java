@@ -5,20 +5,14 @@ import static Items.timeMethods.windowDuration;
 import Items.Calendar;
 import Items.Day;
 import Items.Task;
-import java.sql.Time;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import Items.timeMethods;
 public class TaskManager {
   private Map<Integer, Task> taskMap;
 
