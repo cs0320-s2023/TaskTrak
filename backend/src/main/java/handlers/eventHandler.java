@@ -76,6 +76,7 @@ public class eventHandler implements Route {
       System.out.println(event.getName());
       this.calendar.blockOffTime(startTime, endTime, allDay, true);
 
+
       return constructSuccessResponse("Event successfully stored!");
 
     } catch (DateTimeParseException e) {
