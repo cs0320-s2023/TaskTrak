@@ -95,7 +95,7 @@ public class Firestore {
   }
 
   public ArrayList<List<Map<String,Object>>> retrieveCalendar(String userTokenID) throws FirebaseAuthException{
-    DocumentReference userRef = db.collection("users").document("testUser2");//getUserRef(userTokenID);
+    DocumentReference userRef = getUserRef(userTokenID);
     ApiFuture<QuerySnapshot> eventsQuery = userRef.collection("events").get();
     ApiFuture<QuerySnapshot> tasksQuery = userRef.collection("tasks").get();
 
