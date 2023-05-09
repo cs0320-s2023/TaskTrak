@@ -39,11 +39,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import { auth } from "./firebase/config";
+import TaskView from "./TaskView";
 
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<"month" | "week">("month");
   const [user, setUser] = useState<User | null>(null);
+  const [pageView, setPageView] = useState<"calendar" | "tasks">("calendar");
 
   function toggleViewMode() {
     setViewMode(viewMode === "month" ? "week" : "month");
@@ -55,7 +57,7 @@ function App(): JSX.Element {
 
   const [calendarItems, setCalendarItems] = useState(sampleCalendarItems);
 
-  // const [tasks, setTasks] = useState(sampleTasks);
+  const [tasks, setTasks] = useState(sampleTasks);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -77,20 +79,20 @@ function App(): JSX.Element {
       onClick={toggleViewMode}
     >
       {viewMode === "month" ? "Switch to Week View" : "Switch to Month View"}
-    </Button>,
-    <Menu
-      id="basic-menu"
-      anchorEl={anchorEl}
-      open={open}
-      onClose={handleClose}
-      MenuListProps={{
-        "aria-labelledby": "basic-button",
-      }}
-    >
-      <MenuItem onClick={handleClose}>Month View</MenuItem>
-      <MenuItem onClick={handleClose}>Week View</MenuItem>
-      <MenuItem onClick={handleClose}>Accessibility View</MenuItem>
-    </Menu>,
+    </Button>
+    // <Menu
+    //   id="basic-menu"
+    //   anchorEl={anchorEl}
+    //   open={open}
+    //   onClose={handleClose}
+    //   MenuListProps={{
+    //     "aria-labelledby": "basic-button",
+    //   }}
+    // >
+    //   <MenuItem onClick={handleClose}>Month View</MenuItem>
+    //   <MenuItem onClick={handleClose}>Week View</MenuItem>
+    //   <MenuItem onClick={handleClose}>Accessibility View</MenuItem>
+    // </Menu>,
   ];
 
   useEffect(() => {
@@ -105,23 +107,26 @@ function App(): JSX.Element {
     };
   }, []);
 
+  const viewOptions = ["calendar", "tasks"];
+
   return (
     <>
-      {/* {!user && <AuthProvider />} */}
-      {(
-        <Grid
-          container
-          spacing={6}
-          className="calendars"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Grid item xs={11}>
+      <Grid
+        container
+        spacing={6}
+        className="calendars"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item xs={11}>
             {/* <Button onClick={handleClick}>Accessibility Mode</Button> */}
-            <Tabs value='calendar'>
-                <Tab value='calendar' label='Calendar' to='/calendar' component={Link}></Tab>
-                <Tab value='tasks' label='Tasks' to='/tasks' component={Link}></Tab>
-              </Tabs>
+            <Tabs value={pageView} onChange={(event, value) => setPageView(value)}>
+              {viewOptions.map((item) => (
+                <Tab value={item} label={item}></Tab>
+              ))}
+                {/* <Tab value='calendar' label='Calendar' onChange={setPageView}></Tab>
+                <Tab value='tasks' label='Tasks'></Tab> */}
+            </Tabs>
           </Grid>
           <Grid item xs={1}>
             {
@@ -130,6 +135,15 @@ function App(): JSX.Element {
               <Button component={Link} to="/signin">Sign In</Button>
             }
           </Grid>
+      </Grid>
+      {pageView == "calendar" && (
+        <Grid
+          container
+          spacing={6}
+          className="calendars"
+          justifyContent="center"
+          alignItems="center"
+        >
           <Grid item xs={6}>
             {viewMode === "month" ? (
               <MonthlyCalendar
@@ -163,6 +177,9 @@ function App(): JSX.Element {
             <TaskMenu tasks={tasks} />
           </Grid> */}
         </Grid>
+      )}
+      {pageView == "tasks" && (
+        <TaskView></TaskView>
       )}
     </>
   );
