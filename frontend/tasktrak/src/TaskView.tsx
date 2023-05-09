@@ -7,10 +7,10 @@ import { TaskMenu } from "./TaskCard";
 interface TaskViewProps{
     tasks: Task[];
     setTasks: (tasks: Task[]) => void;
+    // createAppointmentFromTask: (task: Task) => void;
 }
 
 export default function TaskView(props: TaskViewProps){
-export default function TaskView() {
   const [tasks, setTasks] = useState(sampleTasks);
 
     return(
@@ -29,20 +29,4 @@ export default function TaskView() {
             </Grid>
         </Grid>
     )
-  return (
-    <Grid
-      container
-      spacing={6}
-      className="tasks"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Grid item xs={8}>
-        <TaskList tasks={tasks}></TaskList>
-      </Grid>
-      <Grid item xs={4}>
-        <TaskMenu tasks={tasks} createAppointmentFromTask={}></TaskMenu>
-      </Grid>
-    </Grid>
-  );
 }

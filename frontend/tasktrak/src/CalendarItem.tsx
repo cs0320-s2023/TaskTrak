@@ -5,7 +5,7 @@ export interface CalendarItem {
   endDate: Date;
   repeat: string | undefined;
   id: number;
-  priority: 0 | 1 | 2;
+  priority: number;
   notes: string;
 }
 
