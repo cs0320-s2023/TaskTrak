@@ -4,6 +4,7 @@ import static Response.MapResponse.constructErrorResponse;
 import static Response.MapResponse.constructSuccessResponse;
 
 import Firebase.Firestore;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.squareup.moshi.FromJson;
 import com.squareup.moshi.Moshi;
 
@@ -117,6 +118,10 @@ public class taskHandler implements Route {
       response.body("Failed to decode input");
       return constructErrorResponse(response);
     } catch (NullPointerException e) {
+      response.status(500);
+      response.body(e.getMessage());
+      return constructErrorResponse(response);
+    } catch (FirebaseAuthException e) {
       response.status(500);
       response.body(e.getMessage());
       return constructErrorResponse(response);
