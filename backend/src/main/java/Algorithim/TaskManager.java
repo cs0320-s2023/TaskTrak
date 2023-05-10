@@ -40,6 +40,19 @@ public class TaskManager {
     }
   }
 
+  public Map<Integer, ArrayList<List<LocalTime>>> getAllTimeSuggestions() {
+    Map<Integer, ArrayList<List<LocalTime>>> updatedTimeSuggestions = new HashMap<>();
+
+    for (Integer key : this.getTaskMap().keySet()) {
+      ArrayList<List<LocalTime>> updatedTaskSuggestions = // updated task suggestions
+          this.getTask(key).getTimeSuggestions();
+
+      // maps the task ID to the new time suggestions
+      updatedTimeSuggestions.put(key, updatedTaskSuggestions);
+    }
+    return updatedTimeSuggestions;
+  }
+
 
   /**
    * Algorithim helper method that performs the time suggestions for a single Task

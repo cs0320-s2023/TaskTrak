@@ -84,21 +84,7 @@ public class eventHandler implements Route {
 
       calendar.blockOffTime(startTime, endTime, allDay, true, taskManager);
 
-
-      Map<Integer, ArrayList<List<LocalTime>>> updatedTimeSuggestions = new HashMap<>();
-
-      for (Integer key : taskManager.getTaskMap().keySet()) {
-        ArrayList<List<LocalTime>> updatedTaskSuggestions = // updated task suggestions
-            taskManager.getTask(key).getTimeSuggestions();
-
-        // maps the task ID to the new time suggestions
-        updatedTimeSuggestions.put(key, updatedTaskSuggestions);
-      }
-
-
-
-
-      return constructSuccessResponse(updatedTimeSuggestions);
+      return constructSuccessResponse(taskManager.getAllTimeSuggestions());
 
     } catch (DateTimeParseException e) {
       String errorMessage = "Invalid date format. Expected format is 'yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
