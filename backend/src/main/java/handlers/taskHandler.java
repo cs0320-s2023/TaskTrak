@@ -93,11 +93,13 @@ public class taskHandler implements Route {
 
       //the timeSuggestions for the just task that was added
 
+      this.firestore.createFirebaseTask(task, tokenID);
+
+
       List<List<LocalTime>> taskTimeSuggestions = task.getTimeSuggestions();
 
 
 
-      this.firestore.createFirebaseTask(task,tokenID);
 
       return constructSuccessResponse(taskTimeSuggestions);
 
