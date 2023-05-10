@@ -97,29 +97,34 @@ public class Firestore {
       }
   }
 
-  public ArrayList<List<Map<String,Object>>> retrieveCalendar(String userTokenID) throws FirebaseAuthException{
-    DocumentReference userRef = getUserRef(userTokenID);
-    ApiFuture<QuerySnapshot> eventsQuery = userRef.collection("events").get();
-    ApiFuture<QuerySnapshot> tasksQuery = userRef.collection("tasks").get();
-
-    List<Map<String, Object>> events = new ArrayList<>();
-    List<Map<String, Object>> tasks = new ArrayList<>();
+  public ArrayList<List<Map<String,Object>>> retrieveCalendar(String userTokenID) throws FirebaseException{
     try {
+      DocumentReference userRef = getUserRef(userTokenID);
+      ApiFuture<QuerySnapshot> eventsQuery = userRef.collection("events").get();
+      ApiFuture<QuerySnapshot> tasksQuery = userRef.collection("tasks").get();
+
+      List<Map<String, Object>> events = new ArrayList<>();
+      List<Map<String, Object>> tasks = new ArrayList<>();
+
       for (DocumentSnapshot doc : eventsQuery.get().getDocuments()) {
         Map<String,Object> eventData = doc.getData();
-        eventData.put("eventID", doc.getId());
+        eventData.put("eventID", Integer.parseInt(doc.getId()));
         events.add(eventData);
       }
       for (DocumentSnapshot doc : tasksQuery.get().getDocuments()) {
         Map<String,Object> taskData = doc.getData();
-        taskData.put("taskID", doc.getId());
+        taskData.put("taskID", Integer.parseInt(doc.getId()));
         tasks.add(taskData);
       }
+      return new ArrayList(List.of(events,tasks));
+    } catch (FirebaseAuthException e) {
+      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Invalid user token ID.",
+          e.getCause());
+    } catch (NumberFormatException e) {
+      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Task or event ID unable to be parsed to integer.", e.getCause());
     } catch (Exception e) {
-      System.err.println("Getting data failed for unknown reason: " + e);
+      throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Getting data failed for some reason", e.getCause());
     }
-    return new ArrayList(List.of(events,tasks));
-
   }
 
   public ArrayList<List<LocalDateTime>> retrieveADayTimes(LocalDateTime dateTime,String userTokenID) throws FirebaseAuthException{
