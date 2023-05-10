@@ -50,7 +50,7 @@ public class MapResponse {
     return adapter.toJson(successResponse);
   }
 
-  public static String constructSuccessResponse(List events, List tasks, List timeSuggestions) {
+  public static String constructSuccessResponse(List events, List tasks, Object timeSuggestions) {
     Moshi moshi = new Moshi.Builder().add(new LocalTimeAdapter()).build();
 
     Map<String, Object> successResponse = new HashMap();

@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -63,11 +64,13 @@ public class Firestore {
 
       String startDate = event.getStartTime().toLocalDate().toString();
       String endDate = event.getEndTime().toLocalDate().toString();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+          .withZone(ZoneOffset.UTC);
 
       Map<String, Object> docData = new HashMap<>();
       docData.put("title", event.getName());
-      docData.put("startDate", event.getStartTime().toString());
-      docData.put("endDate", event.getEndTime().toString());
+      docData.put("startDate", event.getStartTime().format(formatter));
+      docData.put("endDate", event.getEndTime().format(formatter));
       docData.put("dateSpan",new ArrayList<String>(List.of(startDate,endDate)));
       docData.put("notes", event.getNotes());
       docData.put("isAllDay", event.getIsAllDay());
@@ -95,7 +98,7 @@ public class Firestore {
   }
 
   public ArrayList<List<Map<String,Object>>> retrieveCalendar(String userTokenID) throws FirebaseAuthException{
-    DocumentReference userRef = db.collection("users").document("testUser2");//getUserRef(userTokenID);
+    DocumentReference userRef = getUserRef(userTokenID);
     ApiFuture<QuerySnapshot> eventsQuery = userRef.collection("events").get();
     ApiFuture<QuerySnapshot> tasksQuery = userRef.collection("tasks").get();
 
@@ -103,10 +106,14 @@ public class Firestore {
     List<Map<String, Object>> tasks = new ArrayList<>();
     try {
       for (DocumentSnapshot doc : eventsQuery.get().getDocuments()) {
-        events.add(doc.getData());
+        Map<String,Object> eventData = doc.getData();
+        eventData.put("eventID", doc.getId());
+        events.add(eventData);
       }
       for (DocumentSnapshot doc : tasksQuery.get().getDocuments()) {
-        tasks.add(doc.getData());
+        Map<String,Object> taskData = doc.getData();
+        taskData.put("taskID", doc.getId());
+        tasks.add(taskData);
       }
     } catch (Exception e) {
       System.err.println("Getting data failed for unknown reason: " + e);
@@ -118,8 +125,11 @@ public class Firestore {
   public ArrayList<List<LocalDateTime>> retrieveADayTimes(LocalDateTime dateTime,String userTokenID) throws FirebaseAuthException{
     DocumentReference userRef = getUserRef(userTokenID);
     CollectionReference events = userRef.collection("events");
-    ApiFuture<QuerySnapshot> queryStart = events.whereIn("dateSpan",List.of(dateTime)).whereEqualTo("allDay", false).get();
+//    System.out.println("Gets here");
+    LocalDate currentDate = dateTime.toLocalDate();
+    ApiFuture<QuerySnapshot> queryStart = events.whereArrayContains("dateSpan",currentDate.toString()).whereEqualTo("allDay", false).get();
 
+//    System.err.println("TEST: " + queryStart);
     try {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
           .withZone(ZoneOffset.UTC);
@@ -159,10 +169,12 @@ public class Firestore {
       DocumentReference userRef = getUserRef(tokenID);
       DocumentReference taskRef =
           userRef.collection("tasks").document(task.getTaskID().toString());
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+          .withZone(ZoneOffset.UTC);
 
       Map<String, Object> docData = new HashMap<>();
       docData.put("title", task.getName());
-      docData.put("dueDate", task.getDueDate().toString());
+      docData.put("dueDate", task.getDueDate().format(formatter));
       docData.put("notes", task.getNotes());
       docData.put("duration", task.getTimeToComplete());
       docData.put("priority", task.getPriority().getValue());

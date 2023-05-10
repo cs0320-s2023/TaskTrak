@@ -3,15 +3,16 @@ import React, { useState } from "react";
 import TaskList from "./TaskList";
 import { Task, sampleTasks } from "./CalendarItem";
 import { TaskMenu } from "./TaskCard";
+import {CalendarItem} from './CalendarItem'
 
 interface TaskViewProps{
     tasks: Task[];
     setTasks: (tasks: Task[]) => void;
-    // createAppointmentFromTask: (task: Task) => void;
+    calendarItems: CalendarItem[];
+    setCalendarItems: (calendarItems: CalendarItem[]) => void;
 }
 
 export default function TaskView(props: TaskViewProps){
-  const [tasks, setTasks] = useState(sampleTasks);
 
     return(
         <Grid
@@ -21,12 +22,14 @@ export default function TaskView(props: TaskViewProps){
             justifyContent="center"
             alignItems="center"
         >
-            <Grid item xs={8}>
+            <Grid item xs={2}></Grid>
+            <Grid item xs={6}>
                 <TaskList tasks={props.tasks} setTasks={props.setTasks}></TaskList>
             </Grid>
-            <Grid item xs={4}>
-                <TaskMenu tasks={props.tasks}></TaskMenu>
+            <Grid item xs={2}>
+                <TaskMenu tasks={props.tasks} calendarItems={props.calendarItems} setCalendarItems={props.setCalendarItems}></TaskMenu>
             </Grid>
+            <Grid item xs={2}></Grid>
         </Grid>
     )
 }

@@ -78,20 +78,8 @@ export default function TaskList(props: TaskListProps) {
             `id=${selectedTask.id}&` +
             `notes=${notes}&` +
             `tokenid=${userTokenID}`,
-          // String name = request.queryParams("name");
-          // String notes = request.queryParams("notes");
-          // String priority = request.queryParams("priority");
-          // String dueDate = request.queryParams("dueDate");
-          // String isComplete = request.queryParams("isComplete");
-          // String taskID = request.queryParams("id");
-          // String newDuration = request.queryParams("newDuration");
-          // String tokenID = request.queryParams("tokenID");
           {
-            // mode: "no-cors",
             method: "POST",
-            // headers: {
-            //   "Content-Type": "application/json",
-            // },
           }
         );
         const taskTimeSuggestions = await response.json();
@@ -101,15 +89,6 @@ export default function TaskList(props: TaskListProps) {
 
         selectedTask.timeSuggestions = success;
 
-        // Update the task in the local state
-        // const updatedTasks = props.tasks.map((task) =>
-        //   task.id === selectedTask.id
-        //     ? { ...task, name: taskName, dueDate, priority, duration, notes }
-        //     : task
-        // );
-        // props.setTasks(updatedTasks);
-
-        // Close the dialog and reset the state
         props.setTasks([...filteredTasks, selectedTask]);
         setTaskName("");
         setDueDate(new Date());
@@ -151,7 +130,7 @@ export default function TaskList(props: TaskListProps) {
           `isComplete=${false}&` +
           `id=${startingAddedID}&` +
           `notes=${notes}&` +
-          `tokenid=${userTokenID}`,
+          `tokenID=${userTokenID}`,
         {
           // mode: "no-cors",
           method: "POST",

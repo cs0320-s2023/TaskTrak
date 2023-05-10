@@ -52,17 +52,7 @@ public class deleteEventHandler implements Route {
 
       calendar.blockOffTime(startTime,endTime,allDay,false, taskManager);
 
-      Map<Integer, ArrayList<List<LocalTime>>> updatedTimeSuggestions = new HashMap<>();
-
-      for (Integer key : taskManager.getTaskMap().keySet()) {
-        ArrayList<List<LocalTime>> updatedTaskSuggestions = // updated task suggestions
-            taskManager.getTask(key).getTimeSuggestions();
-
-        // maps the task ID to the new time suggestions
-        updatedTimeSuggestions.put(key, updatedTaskSuggestions);
-      }
-
-      return constructSuccessResponse(updatedTimeSuggestions);
+      return constructSuccessResponse(taskManager.getAllTimeSuggestions());
 
     } catch (DateTimeParseException e) {
       response.status(400);

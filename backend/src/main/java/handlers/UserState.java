@@ -29,4 +29,11 @@ public class UserState {
     }
   }
 
+  public void addUserCalendar(Calendar calendar, String userID) {
+    this.calendarMap.put(userID, calendar);
+  }
+
+  public void addUserTaskManager(TaskManager taskManager, String userID) {
+    this.taskManagerMap.put(userID, taskManager);
+  }
 }
