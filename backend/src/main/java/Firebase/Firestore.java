@@ -64,11 +64,13 @@ public class Firestore {
 
       String startDate = event.getStartTime().toLocalDate().toString();
       String endDate = event.getEndTime().toLocalDate().toString();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+          .withZone(ZoneOffset.UTC);
 
       Map<String, Object> docData = new HashMap<>();
       docData.put("title", event.getName());
-      docData.put("startDate", event.getStartTime().toString());
-      docData.put("endDate", event.getEndTime().toString());
+      docData.put("startDate", event.getStartTime().format(formatter));
+      docData.put("endDate", event.getEndTime().format(formatter));
       docData.put("dateSpan",new ArrayList<String>(List.of(startDate,endDate)));
       docData.put("notes", event.getNotes());
       docData.put("isAllDay", event.getIsAllDay());
@@ -167,10 +169,12 @@ public class Firestore {
       DocumentReference userRef = getUserRef(tokenID);
       DocumentReference taskRef =
           userRef.collection("tasks").document(task.getTaskID().toString());
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+          .withZone(ZoneOffset.UTC);
 
       Map<String, Object> docData = new HashMap<>();
       docData.put("title", task.getName());
-      docData.put("dueDate", task.getDueDate().toString());
+      docData.put("dueDate", task.getDueDate().format(formatter));
       docData.put("notes", task.getNotes());
       docData.put("duration", task.getTimeToComplete());
       docData.put("priority", task.getPriority().getValue());
