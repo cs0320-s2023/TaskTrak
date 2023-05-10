@@ -18,9 +18,14 @@ public class Day {
   public Day() {
     this.tm = new TaskManager();
     this.timeSlots = new int[24][4]; // 24 rows down, 4 columns across
-    for (int i = 0; i < 24; i++) {
+    for (int i = 7; i < 24; i++) {
       for (int j = 0; j < 4; j++) {
-        timeSlots[i][j] = 0; // false means the slot is not busy
+        timeSlots[i][j] = 0; // false means the slot is not busy (for working hours)
+      }
+    }
+    for (int i = 0; i < 7; i++) {
+      for (int j = 0; j < 4; j++) {
+        timeSlots[i][j] = 1;
       }
     }
   }
