@@ -66,7 +66,7 @@ function App(): JSX.Element {
           else { throw new Error('API response failed!') } // good ?
         })
         .then((data) => {
-          // console.log(data);
+          console.log(data);
         })
       // setCalendarItems()
     })
