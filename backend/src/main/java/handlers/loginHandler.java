@@ -49,11 +49,16 @@ public class loginHandler implements Route {
       ArrayList<List<LocalDateTime>> timesList = this.firestore.retrieveADayTimes(currentTime,tokenID);
 
       System.err.println("test1");
-      //Block off times in calendar
+      //Create new user objects and add to map
       String userID = this.firestore.getUserId(tokenID);
-      Calendar calendar = this.userState.getUserCalendar(userID);
-      TaskManager taskManager = this.userState.getUserTaskManager(userID);
+      Calendar calendar = new Calendar();
+      this.userState.addUserCalendar(calendar,userID);
+      TaskManager taskManager = new TaskManager();
+      this.userState.addUserTaskManager(taskManager,userID);
+
       System.err.println("test2");
+
+      //Block off time from user calendar
       for (List<LocalDateTime> times : timesList) {
         calendar.blockOffTime(times.get(0),times.get(1),false, true, taskManager);
       }
