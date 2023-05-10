@@ -67,11 +67,11 @@ public class loginHandler implements Route {
       for (Map<String,Object> taskData : tasks) {
         String name = taskData.get("title").toString();
         String notes = taskData.get("notes").toString();
-        Rating priority = Rating.fromValue((int) taskData.get("priority"));
+        Rating priority = Rating.fromValue((int) ((long)taskData.get("priority")));
         double duration = (double) taskData.get("duration");
         LocalDateTime dueDate = LocalDateTime.parse(taskData.get("dueDate").toString(),formatter);
         boolean isComplete = (boolean) taskData.get("isComplete");
-        int taskID = (int) taskData.get("taskID");
+        int taskID = (int) ((long) taskData.get("taskID"));
 
         Task loadedTask = new Task(name, notes,priority, duration, dueDate, isComplete, taskID);
         taskManager.addTask(loadedTask);
