@@ -40,7 +40,7 @@ public class loginHandler implements Route {
       ArrayList<List<Map<String,Object>>> eventTaskList = this.firestore.retrieveCalendar(tokenID);
       List<Map<String,Object>> events = eventTaskList.get(0);
       List<Map<String,Object>> tasks = eventTaskList.get(1);
-      System.err.println("test");
+
       //Get time suggestions and setup task manager
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
           .withZone(ZoneOffset.UTC);
@@ -48,22 +48,18 @@ public class loginHandler implements Route {
       System.err.println(currentTime);
       ArrayList<List<LocalDateTime>> timesList = this.firestore.retrieveADayTimes(currentTime,tokenID);
 
-      System.err.println("test1");
       //Create new user objects and add to map
       String userID = this.firestore.getUserId(tokenID);
       Calendar calendar = new Calendar();
-      this.userState.addUserCalendar(calendar,userID);
       TaskManager taskManager = new TaskManager();
-      this.userState.addUserTaskManager(taskManager,userID);
-
-      System.err.println("test2");
+      this.userState.addUser(calendar, new TaskManager(), userID);
 
       //Block off time from user calendar
       for (List<LocalDateTime> times : timesList) {
         calendar.blockOffTime(times.get(0),times.get(1),false, true, taskManager);
       }
+
       //Add tasks to task manager
-      System.err.println("test3");
       for (Map<String,Object> taskData : tasks) {
         String name = taskData.get("title").toString();
         String notes = taskData.get("notes").toString();
@@ -78,8 +74,6 @@ public class loginHandler implements Route {
       }
 
       //Retrieve time suggestions
-      System.err.println("test4");
-
       return constructSuccessResponse(events, tasks, taskManager.getAllTimeSuggestions());
     } catch (FirebaseAuthException e) {
       response.status(400);

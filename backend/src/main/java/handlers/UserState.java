@@ -29,11 +29,15 @@ public class UserState {
     }
   }
 
-  public void addUserCalendar(Calendar calendar, String userID) {
+  public void addUser(Calendar calendar, TaskManager taskManager, String userID) {
     this.calendarMap.put(userID, calendar);
+    this.taskManagerMap.put(userID, taskManager);
   }
 
-  public void addUserTaskManager(TaskManager taskManager, String userID) {
-    this.taskManagerMap.put(userID, taskManager);
+  public boolean removeUser(String userID) {
+    if (this.calendarMap.remove(userID) == null || this.taskManagerMap.remove(userID) == null) {
+      return false;
+    }
+    return true;
   }
 }
