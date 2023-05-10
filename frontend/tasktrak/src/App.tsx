@@ -165,7 +165,7 @@ function App(): JSX.Element {
         </Grid>
       )}
       {pageView == "tasks" && (
-        <TaskView tasks={tasks} setTasks={setTasks} calendarItems={calendarItems}></TaskView>
+        <TaskView tasks={tasks} setTasks={setTasks} calendarItems={calendarItems} setCalendarItems={setCalendarItems}></TaskView>
       )}
     </>
   );

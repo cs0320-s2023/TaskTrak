@@ -52,15 +52,17 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
   };
 
   function commitChanges({ added, changed, deleted }: ChangeSet) {
+    console.log(`COMMITCHANGES FUNCTION BEING RAN; added: ${added}, changed: ${changed}, deleted:${deleted}`);
     if (added) {
-      console.log(props.calendarItems);
+      // console.log(props.calendarItems);
+      console.log(added);
       const startingAddedID = props.calendarItems.length == 0 ? 0 :
         props.calendarItems[props.calendarItems.length - 1].id + 1;
       props.setCalendarItems([
         ...props.calendarItems,
         {
           id: startingAddedID,
-          title: added.summary,
+          title: added.title,
           startDate: added.startDate,
           endDate: added.endDate,
           priority: added.priority,
@@ -72,6 +74,7 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
       ]);
       let newEvent: CalendarItem =
         props.calendarItems[props.calendarItems.length - 1];
+      console.log(props.calendarItems);
       const userTokenID = auth.currentUser
         ?.getIdToken(true)
         .then((userTokenID) =>

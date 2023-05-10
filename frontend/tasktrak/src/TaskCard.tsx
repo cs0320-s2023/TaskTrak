@@ -33,6 +33,7 @@ import {CalendarItem} from './CalendarItem'
 interface TaskMenuProps {
   tasks: Task[];
   calendarItems: CalendarItem[];
+  setCalendarItems: (calendarItems: CalendarItem[]) => void;
   // createAppointmentFromTask: (task: Task) => void;
 }
 
@@ -121,6 +122,17 @@ export const TaskMenu: React.FC<TaskMenuProps> = (props: TaskMenuProps) => {
 
     const startingAddedID = props.calendarItems.length == 0 ? 0 :
         props.calendarItems[props.calendarItems.length - 1].id + 1;
+    const newCalendarItem: CalendarItem = {
+      title: selectedTask.name,
+      allDay: false,
+      startDate: startDate,
+      endDate: finishDate,
+      repeat: "false",
+      id: startingAddedID,
+      priority: selectedTask.priority,
+      notes: selectedTask.notes
+    }
+    props.setCalendarItems([... props.calendarItems, newCalendarItem]);
 
     const userTokenID = auth.currentUser
     ?.getIdToken(true)
