@@ -56,7 +56,7 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
     if (added) {
       // console.log(props.calendarItems);
       console.log(added);
-      const startingAddedID = props.calendarItems.length == 0 ? 0 :
+      const startingAddedID = props.calendarItems.length == 1 ? 0 :
         props.calendarItems[props.calendarItems.length - 1].id + 1;
       props.setCalendarItems([
         ...props.calendarItems,
