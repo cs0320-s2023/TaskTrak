@@ -2,6 +2,7 @@ import { Paper, Input, Button, Menu, MenuItem } from "@mui/material";
 import {
   Scheduler,
   MonthView,
+  WeekView,
   Appointments,
   AppointmentForm,
   Toolbar,
@@ -17,7 +18,7 @@ import {
   EditingState,
   ChangeSet,
   IntegratedEditing,
-  SelectOption,
+  SelectOption
 } from "@devexpress/dx-react-scheduler";
 import React from "react";
 import { CalendarItem, Task } from "./CalendarItem";
@@ -33,14 +34,13 @@ interface MonthlyCalendarProps {
   calendarItems: CalendarItem[];
   setCalendarItems: (calendarItems: CalendarItem[]) => void;
 
-  calendarViewMenu: React.ReactNode[];
+  // calendarViewMenu: React.ReactNode[];
 }
 
 export default function MonthlyCalendar(props: MonthlyCalendarProps) {
   const [formOpen, setFormOpen] = useState(false);
-  const [formAppointment, setFormAppointment] = useState<CalendarItem | null>(
-    null
-  );
+  const [formAppointment, setFormAppointment] = useState<CalendarItem | null>(null);
+  const [viewMode, setViewMode] = useState<"month" | "week">("month");
 
   function currentDateChange(currentDate: Date) {
     props.setCurrentDate(currentDate);
@@ -167,27 +167,36 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
     { id: 2, text: "High" },
   ];
 
+  function toggleViewMode() {
+    setViewMode(viewMode === "month" ? "week" : "month");
+  }
+
+  const calendarViewMenu: React.ReactNode[] = [
+    <Button
+      id="basic-button"
+      aria-controls="button"
+      aria-haspopup="false"
+      onClick={toggleViewMode}
+    >
+      {viewMode === "month" ? "Switch to Week View" : "Switch to Month View"}
+    </Button>
+  ];
+
   return (
     <Paper className="month-view">
-      <Scheduler data={props.calendarItems}>
+      <Scheduler data={props.calendarItems} height={690}>
         <ViewState
           currentDate={props.currentDate}
           onCurrentDateChange={currentDateChange}
         />
         <EditingState onCommitChanges={commitChanges} />
-        <EditRecurrenceMenu
-        // overlayComponent={({visible, ...ol_props}) => (
-        //     <EditRecurrenceMenu.Overlay
-        //         {...ol_props}
-        //         visible={}
-        //     />
-        // )}
-        />
-        <MonthView />
+        <EditRecurrenceMenu/>
+          {viewMode === "month" ? <MonthView /> : <WeekView/>}
+        <AllDayPanel/>
         <Toolbar
           rootComponent={(tb_props) => (
             <Toolbar.Root
-              children={[tb_props.children, props.calendarViewMenu]}
+              children={[tb_props.children, calendarViewMenu]}
             />
           )}
         />

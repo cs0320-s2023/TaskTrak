@@ -9,6 +9,7 @@ interface TaskViewProps{
     tasks: Task[];
     setTasks: (tasks: Task[]) => void;
     calendarItems: CalendarItem[];
+    setCalendarItems: (calendarItems: CalendarItem[]) => void;
 }
 
 export default function TaskView(props: TaskViewProps){
@@ -26,7 +27,7 @@ export default function TaskView(props: TaskViewProps){
                 <TaskList tasks={props.tasks} setTasks={props.setTasks}></TaskList>
             </Grid>
             <Grid item xs={2}>
-                <TaskMenu tasks={props.tasks} calendarItems={props.calendarItems}></TaskMenu>
+                <TaskMenu tasks={props.tasks} calendarItems={props.calendarItems} setCalendarItems={props.setCalendarItems}></TaskMenu>
             </Grid>
             <Grid item xs={2}></Grid>
         </Grid>
