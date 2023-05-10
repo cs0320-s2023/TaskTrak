@@ -88,24 +88,61 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
             requestOptions
           )
         );
+      console.log(userTokenID);
       console.log(props.calendarItems);
     }
 
     if (changed) {
-      props.setCalendarItems(
-        props.calendarItems.map((appointment) =>
-          changed[appointment.id]
-            ? { ...appointment, ...changed[appointment.id] }
-            : appointment
-        )
-      );
+      let changedEvent = (props.calendarItems.filter((item) => item.id == changed.id))[0] //since IDs are unique, the array will only have one element
+      const oldStartDate = changedEvent.startDate; 
+      const oldEndDate = changedEvent.endDate;
+      const userTokenID = auth.currentUser
+        ?.getIdToken(true)
+        .then((userTokenID) =>
+          fetch(
+            `http://localhost:3030/editEvent?` +
+              `title=${changedEvent.title}&` +
+              `oldStartDate=${oldStartDate}` +
+              `startDate=${changedEvent.startDate.toISOString()}&` +
+              `oldEndDate=${oldEndDate}` +
+              `endDate=${changedEvent.endDate.toISOString()}&` +
+              `id=${changedEvent.id}&` +
+              `notes=${changedEvent.notes}&` +
+              `isAllDay=${changedEvent.allDay}&` +
+              `isRepeated=${changedEvent.repeat}&` +
+              `tokenID=${userTokenID}`,
+            requestOptions
+          )
+        );
+        console.log(userTokenID);
+        props.setCalendarItems(
+          props.calendarItems.map((appointment) =>
+            changed[appointment.id]
+              ? { ...appointment, ...changed[appointment.id] }
+              : appointment
+          )
+        );
       console.log(props.calendarItems);
     }
 
     if (deleted) {
-      props.setCalendarItems(
-        props.calendarItems.filter((appointment) => appointment.id !== deleted)
-      );
+      let deletedEvent = props.calendarItems.filter((appointment) => appointment.id == deleted)[0]
+      const userTokenID = auth.currentUser
+        ?.getIdToken(true)
+        .then((userTokenID) =>
+          fetch(
+            `http://localhost:3030/deleteEvent?` +
+              `startDate=${deletedEvent.startDate.toISOString()}&` +
+              `endDate=${deletedEvent.endDate.toISOString()}&` +
+              `id=${deletedEvent.id}&` +
+              `isAllDay=${deletedEvent.allDay}&` +
+              `tokenID=${userTokenID}`,
+            requestOptions
+          )
+        );
+        props.setCalendarItems(
+          props.calendarItems.filter((appointment) => appointment.id !== deleted)
+        );
       console.log(props.calendarItems);
     }
   }

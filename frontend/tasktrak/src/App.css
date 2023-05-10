@@ -7,20 +7,13 @@
   background-color: #282c34;
 }
 
-/* .month-view{
-  width: 50%;
-  display: inline-block;
-  margin-left: 10vh;
-  margin-top: auto;
+.tasks{
+  background-color: #282c34;
 }
 
-.day-view{
-  width: 30%;
-  height: 100vh;
-  display: inline-block;
-  margin: 15vh;
-  margin-top: 5vh;
-} */
+.task-card{
+  background-color: #282c34;
+}
 
 .App-logo {
   height: 40vmin;

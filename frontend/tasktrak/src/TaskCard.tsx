@@ -1,19 +1,38 @@
 // TaskMenu.tsx
-import React from "react";
+import React, {useState} from "react";
 import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Grid,
   Typography,
-  Button,
   Fab,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Select,
+  Slider,
+  TextField,
+  CircularProgress,
+  Divider,
+  Button,
+  TextFieldProps,
+  DialogContentText,
 } from "@mui/material";
 import { Task } from "./CalendarItem";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { auth } from "./firebase/config";
+import {CalendarItem} from './CalendarItem'
 
 interface TaskMenuProps {
   tasks: Task[];
+  calendarItems: CalendarItem[];
   // createAppointmentFromTask: (task: Task) => void;
 }
 
@@ -49,8 +68,102 @@ export const TaskMenu: React.FC<TaskMenuProps> = (props: TaskMenuProps) => {
     }
     return taskA.dueDate.getTime() - taskB.dueDate.getTime();
   });
+  const [open, setOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [timePair1, setTimePair1] = useState("");
+  const [timePair2, setTimePair2] = useState("");
+
+  function handleOpen(){
+    setOpen(true);
+  }
+
+  function handleClose(){
+    setOpen(false);
+  }
+
+  const requestOptions = {
+    method: "POST",
+  };
+  function handleCalClick(){
+    addTaskToCalendar();
+    handleClose();
+  }
+
+  async function addTaskToCalendar(){
+
+    if (selectedTask !== null){
+      console.log(timePair1);
+      console.log(timePair2);
+    let sHourString = timePair1.slice(0, 3);
+    console.log(timePair1)
+    let sMinString = timePair1.slice(3, 5);
+    let fHourString = timePair2.slice(0, 3);
+    let fMinString = timePair2.slice(3, 5);
+
+    console.log(sHourString)
+    console.log(sMinString)
+    console.log(fHourString)
+    console.log(fMinString)
+
+    let sHour = parseInt(sHourString);
+    let sMin = parseInt(sMinString);
+    let fHour = parseInt(fHourString);
+    let fMin = parseInt(fMinString);
+    // new Date(2023, 3, 23, 15, 15);
+    let d = selectedTask.dueDate
+
+
+    let startDate: Date = new Date(d.getFullYear(), d.getMonth(), d.getDay(), sHour, sMin);
+    let finishDate: Date = new Date(d.getFullYear(), d.getMonth(), d.getDay(), fHour, fMin);
+
+    console.log(startDate);
+    console.log(finishDate);
+
+    const startingAddedID = props.calendarItems.length == 0 ? 0 :
+        props.calendarItems[props.calendarItems.length - 1].id + 1;
+
+    const userTokenID = auth.currentUser
+    ?.getIdToken(true)
+    .then((userTokenID) =>
+      fetch(
+        `http://localhost:3030/createEvent?` +
+          `title=${selectedTask.name}&` +
+          `startDate=${startDate.toISOString()}&` +
+          `endDate=${finishDate.toISOString()}&` +
+          `id=${startingAddedID}&` +
+          `notes=${selectedTask.notes}&` +
+          `isAllDay=${false}&` +
+          `isRepeated=${false}&` +
+          `tokenID=${userTokenID}`,
+        requestOptions
+      )
+      
+    );
+    setSelectedTask(null);
+    setTimePair1("");
+    setTimePair2("");
+  }
+}
+
+  const marks = [
+    {
+      value: 0,
+      label: "Low",
+    },
+    {
+      value: 1,
+      label: "Medium",
+    },
+    {
+      value: 2,
+      label: "High",
+    },
+  ];
 
   return (
+
+    
+    
     <Grid
       container
       spacing={2}
@@ -102,10 +215,80 @@ export const TaskMenu: React.FC<TaskMenuProps> = (props: TaskMenuProps) => {
                         variant="extended"
                         color="primary"
                         size="small"
-                        // onClick={() => props.createAppointmentFromTask(task)}
+                        onClick={() => {
+                          handleOpen(); 
+                          setSelectedTask(task);
+                          setTimePair1(timePair[0]);
+                          setTimePair2(timePair[1]);
+                        }
+                      }
                       >
                         {timePair[0]} - {timePair[1]}
                       </Fab>
+                      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add Task to Calendar</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Task Name"
+            value={task.name}
+            // onChange={(e) => setTaskName(e.target.value)}
+            fullWidth
+            variant="standard"
+          />
+
+          <DialogContentText>Due Date</DialogContentText>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              value={task.dueDate}
+              onChange={(newValue) => {
+                if (newValue) {
+                  new Date();
+                }
+              }}
+              renderInput={(props) => <TextField {...props} />}
+            />
+          </LocalizationProvider>
+          <DialogContentText>Priority</DialogContentText>
+          <Slider
+            min={0}
+            max={2}
+            step={1}
+            value={task.priority}
+            // onChange={(_, value) => setPriority(value as 0 | 1 | 2)}
+            marks={marks}
+          />
+          <DialogContentText>Duration</DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            type="number"
+            label="Hours"
+            value={task.duration}
+            // onChange={(e) => setDuration(parseInt(e.target.value))}
+            fullWidth
+            variant="standard"
+          />
+          <DialogContentText></DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="notes"
+            type="string"
+            label="notes"
+            value={task.notes}
+            // onChange={(e) => setNotes(e.target.value)}
+            fullWidth
+            variant="standard"
+          />
+          <Button onClick={() => handleCalClick()}>
+            Add Task
+          </Button>
+        </DialogContent>
+      </Dialog>
                     </Grid>
                   ))}
               </Grid>
