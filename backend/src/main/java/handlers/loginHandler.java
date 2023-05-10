@@ -71,7 +71,7 @@ public class loginHandler implements Route {
         double duration = (double) taskData.get("duration");
         LocalDateTime dueDate = LocalDateTime.parse(taskData.get("dueDate").toString(),formatter);
         boolean isComplete = (boolean) taskData.get("isComplete");
-        int taskID = (int) ((long) taskData.get("taskID"));
+        int taskID = Integer.parseInt(taskData.get("taskID").toString());
 
         Task loadedTask = new Task(name, notes,priority, duration, dueDate, isComplete, taskID);
         taskManager.addTask(loadedTask);
@@ -96,6 +96,10 @@ public class loginHandler implements Route {
     } catch (ClassCastException e) {
       response.status(500);
       response.body("Error parsing task data from database: " + e);
+      return constructErrorResponse(response);
+    } catch (NumberFormatException e) {
+      response.status(500);
+      response.body("TaskID stored in database was not a number " + e);
       return constructErrorResponse(response);
     } catch(Exception e) {
       response.status(500);
