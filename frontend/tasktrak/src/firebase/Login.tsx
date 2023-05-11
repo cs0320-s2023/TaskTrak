@@ -52,6 +52,8 @@ const Login = () => {
                             id="email"
                             type="email"
                             label="Email"
+                            variant="filled"
+                            sx={{ bgcolor: 'white' }}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -61,6 +63,8 @@ const Login = () => {
                             id="password"
                             type="password"
                             label="Password"
+                            variant="filled"
+                            sx={{ bgcolor: 'white' }}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
