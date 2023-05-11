@@ -17,5 +17,6 @@
 /Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/src/main/java/records/calendarRecords.java
 /Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/src/main/java/Response/MapResponse.java
 /Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/src/main/java/handlers/editEventHandler.java
+/Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/src/main/java/handlers/UserState.java
 /Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/src/main/java/handlers/editTaskHandler.java
 /Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/src/main/java/handlers/deleteEventHandler.java

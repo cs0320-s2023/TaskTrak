@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="calendarTests.testDay" time="0.029" tests="12" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="calendarTests.testDay" time="0.033" tests="13" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -13,7 +13,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk@17/17.0.6/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire/surefirebooter-20230509170043989_3.jar /Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire 2023-05-09T17-00-43_895-jvmRun1 surefire-20230509170043989_1tmp surefire_0-20230509170043989_2tmp"/>
+    <property name="sun.java.command" value="/Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire/surefirebooter-20230510192353877_3.jar /Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire 2023-05-10T19-23-53_760-jvmRun1 surefire-20230510192353877_1tmp surefire_0-20230510192353877_2tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="testDay"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire/surefirebooter-20230509170043989_3.jar"/>
+    <property name="surefire.real.class.path" value="/Users/zachleontiou/Desktop/CS_320/TaskTrak/backend/target/surefire/surefirebooter-20230510192353877_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="17.0.6+0"/>
@@ -57,19 +57,32 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testInvalidStartHourIndex" classname="calendarTests.testDay" time="0.007"/>
+  <testcase name="testInvalidStartHourIndex" classname="calendarTests.testDay" time="0.006"/>
   <testcase name="testInvalidTimeRange" classname="calendarTests.testDay" time="0.001"/>
   <testcase name="testInvalidStartMinuteIndex" classname="calendarTests.testDay" time="0.001"/>
-  <testcase name="testFindAvailableTimeRangesMultipleRanges" classname="calendarTests.testDay" time="0.002"/>
-  <testcase name="testInvalidEndMinuteIndex" classname="calendarTests.testDay" time="0"/>
-  <testcase name="timeSuggestion" classname="calendarTests.testDay" time="0.006">
-    <system-out><![CDATA[[[08:00, 09:30], [09:30, 11:00], [11:00, 12:30], [12:30, 14:00], [14:00, 15:30], [15:30, 17:00], [17:00, 18:30], [18:30, 20:00], [20:00, 21:30], [21:30, 23:00]]
+  <testcase name="testFindAvailableTimeRangesMultipleRanges" classname="calendarTests.testDay" time="0.001"/>
+  <testcase name="testInvalidEndMinuteIndex" classname="calendarTests.testDay" time="0.001"/>
+  <testcase name="timeSuggestion" classname="calendarTests.testDay" time="0.013">
+    <system-out><![CDATA[[I@78047b92
+taskminutes = 120
+block duration = 240
+taskminutes = 120
+block duration = 359
+[[08:00, 10:00], [10:00, 12:00], [18:00, 20:00], [20:00, 22:00]]
 ]]></system-out>
   </testcase>
-  <testcase name="testInvalidEndHourIndex" classname="calendarTests.testDay" time="0"/>
+  <testcase name="testInvalidEndHourIndex" classname="calendarTests.testDay" time="0.001"/>
+  <testcase name="timeSuggestion2" classname="calendarTests.testDay" time="0.001">
+    <system-out><![CDATA[taskminutes = 252
+block duration = 240
+taskminutes = 252
+block duration = 359
+[[18:00, 22:12]]
+]]></system-out>
+  </testcase>
   <testcase name="testSingleSlot" classname="calendarTests.testDay" time="0"/>
   <testcase name="testFindAvailableTimeRangesAllBooked" classname="calendarTests.testDay" time="0.001"/>
   <testcase name="testBookTimeRange" classname="calendarTests.testDay" time="0"/>
-  <testcase name="testEmptyAvailability" classname="calendarTests.testDay" time="0"/>
-  <testcase name="testSizeOfDay" classname="calendarTests.testDay" time="0.002"/>
+  <testcase name="testEmptyAvailability" classname="calendarTests.testDay" time="0.001"/>
+  <testcase name="testSizeOfDay" classname="calendarTests.testDay" time="0"/>
 </testsuite>

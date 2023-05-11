@@ -119,8 +119,8 @@ public class Firestore {
       System.err.println("Getting data failed for unknown reason: " + e);
     }
     return new ArrayList(List.of(events,tasks));
-
   }
+
 
   public ArrayList<List<LocalDateTime>> retrieveADayTimes(LocalDateTime dateTime,String userTokenID) throws FirebaseAuthException{
     DocumentReference userRef = getUserRef(userTokenID);

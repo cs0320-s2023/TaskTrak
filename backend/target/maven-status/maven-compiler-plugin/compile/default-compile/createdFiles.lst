@@ -14,6 +14,7 @@ Items/Task.class
 Items/Calendar.class
 records/calendarRecords$Date.class
 handlers/eventHandler.class
+handlers/UserState.class
 Main/server$Server.class
 handlers/taskHandler.class
 handlers/editEventHandler.class

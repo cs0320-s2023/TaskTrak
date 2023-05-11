@@ -76,23 +76,26 @@ public class TaskManager {
     for (int[] freeBlock : freeList) { // iterate the free windows
       int blockDuration = windowDuration(freeBlock); // length of the time block
 
+      int timeDifference = taskMinutes - blockDuration;
       // if there is a time block of greater or equal length than the task
-      if (taskMinutes - blockDuration <= -15) {
+      if (timeDifference <= 30) {
+
+        System.out.println("taskminutes = " + taskMinutes);
+        System.out.println("block duration = " + blockDuration);
         tempList.add(freeBlock); // adds the reasonable time blocks to the temp list
       }
+
     }
 
     if (tempList.size() < 1) { // if there are no time suggestions found
 
       // this will sort all the free time blocks from longest to shortest
       ArrayList<int[]> sortedFreeTime = sortArrayList(freeList);
-
       ArrayList<List<LocalTime>> finalTimeList = new ArrayList<>();
 
       for (int[] window : sortedFreeTime) {
 
         finalTimeList.add(convertToTime(window)); // converts the minutes to Time
-
         task.setTimeSuggestion(finalTimeList); //sets the task windows
       }
 
@@ -144,14 +147,16 @@ public class TaskManager {
     for (int[] arr : list) {
       int start = arr[0];
       int end = arr[1];
+      int range = arr[1] - arr[0];
       int rangeCount = (end - start) / length;
       for (int i = 0; i < rangeCount; i++) {
         int rangeStart = start + i * length;
         int rangeEnd = rangeStart + length;
         ranges.add(new int[]{rangeStart, rangeEnd});
       }
-    }
-    return ranges;
+
+      }
+      return ranges;
   }
 
 
