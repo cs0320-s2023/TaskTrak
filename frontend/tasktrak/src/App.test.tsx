@@ -1,28 +1,85 @@
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
-import App from "./App";
 import React from "react";
-import MonthlyCalendar from "./MonthlyCalendar";
-import { sampleCalendarItems, CalendarItem } from "./CalendarItem";
-import { auth } from "./firebase/config";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-import ReactDOM from "react-dom";
-import { describe, it, expect } from "vitest";
-import { propTypes } from "react-bootstrap/esm/Image";
+import App from "./App";
+import { auth } from "./firebase/config";
+import MonthlyCalendar from "./MonthlyCalendar";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { sampleCalendarItems } from "./CalendarItem";
 
-it("renders without crashing", () => {
-  const div = document.createElement("div");
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+jest.mock("./firebase/config", () => ({
+  auth: {
+    onAuthStateChanged: jest.fn(),
+    signOut: jest.fn(),
+    currentUser: null,
+  },
+}));
+const setCurrentDate = jest.fn();
+const setCalendarItems = jest.fn();
+
+describe("App", () => {
+  beforeEach(() => {
+    render(
+      <Router>
+        <App />
+        <MonthlyCalendar
+          currentDate={new Date()}
+          setCurrentDate={setCurrentDate}
+          calendarItems={sampleCalendarItems}
+          setCalendarItems={setCalendarItems}
+        />
+      </Router>
+    );
+  });
+
+  test("renders App component and child components", () => {
+    expect(screen.getByText("calendar")).toBeInTheDocument();
+    expect(screen.getByText("tasks")).toBeInTheDocument();
+    expect(screen.getByText("Sign In")).toBeInTheDocument();
+  });
+
+  test("switches between Calendar and Task views", () => {
+    fireEvent.click(screen.getByText("tasks"));
+    expect(screen.queryByText("Log Out")).toBeNull();
+
+    fireEvent.click(screen.getByText("calendar"));
+    expect(screen.queryByText("Log Out")).toBeNull();
+  });
+
+  test("calls onAuthStateChanged on component mount", () => {
+    expect(auth.onAuthStateChanged).toHaveBeenCalledTimes(1);
+  });
 });
+
+// test("handles Log In and Log Out buttons", async () => {
+//   (auth.currentUser as any) = { uid: "123" };
+//   fireEvent.click(screen.getByText("Sign In"));
+
+//   await waitFor(() => {
+//     expect(screen.getByText("Log Out")).toBeInTheDocument();
+//   });
+
+//   fireEvent.click(screen.getByText("Log Out"));
+
+//   await waitFor(() => {
+//     expect(screen.getByText("Sign In")).toBeInTheDocument();
+//   });
+// });
 // it("renders without crashing", () => {
 //   const div = document.createElement("div");
-//   ReactDOM.render(<MonthlyCalendar
-//     currentDate={new Date()}
-//     setCurrentDate={(currentDate: Date) => new Date()}
-//     calendarViewMenu={}
-//     calendarItems={sampleCalendarItems}
-//     setCalendarItems={(calendarItem: CalendarItem) => [...sampleCalendarItems, calendarItem]}
-//   />, div);
+//   const mockOnChange = jest.fn();
+//   const mockViewMenu = jest.fn();
+//   ReactDOM.render(
+//     <MonthlyCalendar
+//       currentDate={new Date()}
+//       setCurrentDate={(currentDate: Date) => new Date()}
+//       calendarItems={sampleCalendarItems}
+//       setCalendarItems={mockOnChange}
+//     />,
+//     div
+//   );
 //   ReactDOM.unmountComponentAtNode(div);
 // });
 
