@@ -111,7 +111,7 @@ function App(): JSX.Element {
         <Grid item xs={11}>
             <Tabs value={pageView} onChange={(event, value) => setPageView(value)}>
               {viewOptions.map((item) => (
-                <Tab value={item} label={item}></Tab>
+                <Tab value={item} label={item} ></Tab>
               ))}
             </Tabs>
           </Grid>
