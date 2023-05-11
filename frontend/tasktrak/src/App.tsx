@@ -5,6 +5,7 @@ import {
   Grid,
   Tab,
   Tabs,
+  Typography,
 } from "@mui/material";
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
@@ -42,7 +43,7 @@ function App(): JSX.Element {
           else { throw new Error('API response failed!') } // good ?
         })
         .then((data) => {
-          const reviver = (key: string, value: any): any => {
+          const reviver = (key: string, value: any): any => { 
             if ((key == "startDate" || key == "endDate" || key == "dueDate") && typeof value === 'string') {
               const dateRegex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z$/;
               if (dateRegex.test(value)) {
@@ -76,13 +77,15 @@ function App(): JSX.Element {
           console.log("that was jsontasksdata");
 
           setCalendarItems(calendarItems.concat(jsonEventsData));
-          // setCalendarItems(calendarItems.filter((item, index) => {
-          //   return calendarItems.indexOf(item) === index;
-          // }))
+          // let eventSet = new Set(calendarItems);
+          // setCalendarItems([...eventSet]);
+
           setTasks(tasks.concat(jsonTasksData));
-          // setTasks(tasks.filter((item, index) => {
-          //   return tasks.indexOf(item) == index;
-          // }))
+          // let taskSet = new Set(tasks);
+          // setTasks([...taskSet]);
+          // console.log(taskSet)
+          // console.log(tasks)
+
           console.log("events")
           console.log(calendarItems);
           console.log("tasks")
@@ -91,37 +94,88 @@ function App(): JSX.Element {
         .catch((error) => {
           console.error("ERROR!", error);
         })
+        // .then(() => {
+        //   // let eventIdSet = new Set(calendarItems.map((item) => {
+        //   //   return item.id;
+        //   // }));
+
+        //   // console.log(eventIdSet);
+
+        //   // const filteredEvents = calendarItems.filter((item) => {
+        //   //   if(eventIdSet.has(item.id)) {
+        //   //     eventIdSet.delete(item.id);
+        //   //     return item;
+        //   //   }
+        //   //   else if(!eventIdSet.has(item.id)) {
+        //   //     console.log(`duplicate item found!`);
+        //   //     console.log(item);
+        //   //   }
+        //   // })
+
+        //   // // console.log(filteredEvents);
+
+        //   // setCalendarItems(filteredEvents);
+        // })
       // setCalendarItems([userEvents, ...calendarItems])
     })
 
     // setTasks(tasks.map())
   }, [])
 
+  useEffect(() => {
+    let eventIdSet = new Set(calendarItems.map((item) => {
+      return item.id;
+    }));
+
+    console.log(eventIdSet); 
+
+    const filteredEvents = calendarItems.filter((item) => {
+      if(eventIdSet.has(item.id)) {
+        eventIdSet.delete(item.id);
+        return item;
+      }
+      else if(!eventIdSet.has(item.id)) {
+        console.log(`duplicate item found!`);
+        console.log(item);
+      }
+    })
+
+    // console.log(filteredEvents);
+
+    setCalendarItems(filteredEvents); 
+  }, calendarItems)
+
   const viewOptions = ["calendar", "tasks"];
 
   return (
     <>
+    <Typography variant="h3" fontFamily='sans-serif' textAlign='center' color='whitesmoke'>
+      <strong>TaskTrak</strong>
+    </Typography>
       <Grid
         container
-        spacing={6}
+        spacing={8}
         className="calendars"
         justifyContent="center"
         alignItems="center"
       >
-        <Grid item xs={11}>
-            <Tabs value={pageView} onChange={(event, value) => setPageView(value)}>
-              {viewOptions.map((item) => (
-                <Tab value={item} label={item} ></Tab>
-              ))}
-            </Tabs>
-          </Grid>
-          <Grid item xs={1}>
-            {
-              auth.currentUser ?
-              <Button onClick={handleLogout} component={Link} to="/calendar">Log Out</Button> :
-              <Button component={Link} to="/signin">Sign In</Button>
-            }
-          </Grid>
+        <Grid item xs={9}>
+          <Tabs value={pageView} onChange={(event, value) => setPageView(value)} sx={{ bgcolor: 'white' }}>
+            {viewOptions.map((item) => (
+              <Tab value={item} label={item} ></Tab>
+            ))}
+          </Tabs>
+        </Grid>
+        {/* <Grid item xs={2}>
+          
+        </Grid> */}
+        <Grid item xs={1}>
+          {
+            auth.currentUser ?
+            <Button onClick={handleLogout} component={Link} to="/calendar">Log Out</Button> :
+            <Button component={Link} to="/signin">Sign In</Button>
+          }
+        </Grid>
       </Grid>
       {pageView == "calendar" && (
         <Grid

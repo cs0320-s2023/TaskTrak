@@ -114,8 +114,8 @@ export const TaskMenu: React.FC<TaskMenuProps> = (props: TaskMenuProps) => {
     let d = selectedTask.dueDate
 
 
-    let startDate: Date = new Date(d.getFullYear(), d.getMonth(), d.getDay(), sHour, sMin);
-    let finishDate: Date = new Date(d.getFullYear(), d.getMonth(), d.getDay(), fHour, fMin);
+    let startDate: Date = new Date(d.getFullYear(), d.getMonth(), d.getDate(), sHour, sMin);
+    let finishDate: Date = new Date(d.getFullYear(), d.getMonth(), d.getDate(), fHour, fMin);
 
     console.log(startDate);
     console.log(finishDate);
@@ -221,7 +221,7 @@ export const TaskMenu: React.FC<TaskMenuProps> = (props: TaskMenuProps) => {
               </Typography>
               <Grid container spacing={1} justifyContent="center">
                 {typeof task.timeSuggestions == "object" &&
-                  task.timeSuggestions.slice(0, 4).map((timePair, idx) => (
+                  task.timeSuggestions.slice(0, 6).map((timePair, idx) => (
                     <Grid item key={idx}>
                       <Fab
                         variant="extended"
