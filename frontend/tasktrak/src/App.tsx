@@ -145,6 +145,27 @@ function App(): JSX.Element {
     setCalendarItems(filteredEvents); 
   }, calendarItems)
 
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'c') {
+        // if(pageView == 'calendar') { setPageView('tasks'); }
+        // else { setPageView('calendar'); }
+        setPageView('calendar');
+      }
+      else if (event.key === 't') {
+        // if(pageView == 'calendar') { setPageView('tasks'); }
+        // else { setPageView('calendar'); }
+        setPageView('tasks');
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      // document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
+
   const viewOptions = ["calendar", "tasks"];
 
   return (

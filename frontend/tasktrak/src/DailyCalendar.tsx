@@ -72,7 +72,7 @@ export default function DailyCalendar(props: DailyCalendarProps) {
         <EditingState onCommitChanges={commitChanges} />
         <EditRecurrenceMenu />
         <DayView
-          startDayHour={8}
+          startDayHour={6}
           endDayHour={24}
           cellDuration={60}
           // layoutComponent={({setScrollingStrategy, ...layout_props}) => (
