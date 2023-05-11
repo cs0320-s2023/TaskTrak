@@ -1,41 +1,17 @@
-import Paper from "@mui/material/Paper";
-import {
-  Scheduler,
-  DayView,
-  MonthView,
-  Appointments,
-  Toolbar,
-  DateNavigator,
-  TodayButton,
-  WeekView,
-} from "@devexpress/dx-react-scheduler-material-ui";
-import { ViewState } from "@devexpress/dx-react-scheduler";
 import { useEffect, useState } from "react";
 import "./App.css";
 import {
   Button,
-  ButtonTypeMap,
-  ExtendButtonBase,
   Grid,
-  Menu,
-  MenuItem,
   Tab,
   Tabs,
 } from "@mui/material";
-// import SignUp from "./firebase/signUp";
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import { Task, sampleCalendarItems, sampleTasks } from "./CalendarItem";
 import { CalendarItem } from "./CalendarItem";
-import { onAuthStateChanged, User } from "firebase/auth";
-import firebase from "firebase/compat/app";
-import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
-import { AuthProvider } from "./firebase/provider/AuthProvider";
-import { TaskMenu } from "./TaskCard";
-import TaskList from "./TaskList";
 import React from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import { auth } from "./firebase/config";
 import TaskView from "./TaskView";
@@ -66,14 +42,6 @@ function App(): JSX.Element {
           else { throw new Error('API response failed!') } // good ?
         })
         .then((data) => {
-          // console.log(data);
-          // if(data.events)
-          const convertToDate = (key: string, value: string | number) => {
-            if((key == "startDate" || key == "endDate" || key == "dueDate") && typeof value == "string"){
-              return new Date().setTime(Date.parse(value));
-            }
-          }
-
           const reviver = (key: string, value: any): any => {
             if ((key == "startDate" || key == "endDate" || key == "dueDate") && typeof value === 'string') {
               const dateRegex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z$/;
@@ -94,22 +62,6 @@ function App(): JSX.Element {
             }
             return value;
           };
-          
-
-          // const transformedData = {
-          //   ...data,
-          //   events: data.events.map((event) => {
-          //     startDate: newDate(event.startDate),
-          //     data.events[0]
-          //     ...event
-          //   })
-          // };
-
-          // const parsedEvents = JSON.parse(data, convertToDate);
-          // const parsedTasks = JSON.parse(data.tasks, convertToDate);
-
-          // console.log(parsedEvents);
-          // console.log(parsedTasks);
 
           let jsonData = JSON.parse(data);
           let jsonEventsString = JSON.stringify(jsonData.events);
@@ -124,7 +76,13 @@ function App(): JSX.Element {
           console.log("that was jsontasksdata");
 
           setCalendarItems(calendarItems.concat(jsonEventsData));
+          // setCalendarItems(calendarItems.filter((item, index) => {
+          //   return calendarItems.indexOf(item) === index;
+          // }))
           setTasks(tasks.concat(jsonTasksData));
+          // setTasks(tasks.filter((item, index) => {
+          //   return tasks.indexOf(item) == index;
+          // }))
           console.log("events")
           console.log(calendarItems);
           console.log("tasks")
@@ -179,7 +137,6 @@ function App(): JSX.Element {
                 setCurrentDate={setCurrentDate}
                 calendarItems={calendarItems}
                 setCalendarItems={setCalendarItems}
-                // calendarViewMenu={calendarViewMenu}
               />
           </Grid>
           <Grid item xs={4}>

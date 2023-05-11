@@ -108,7 +108,7 @@ public class Firestore {
 
       for (DocumentSnapshot doc : eventsQuery.get().getDocuments()) {
         Map<String,Object> eventData = doc.getData();
-        eventData.put("eventID", Integer.parseInt(doc.getId()));
+        eventData.put("id", Integer.parseInt(doc.getId()));
         events.add(eventData);
       }
       for (DocumentSnapshot doc : tasksQuery.get().getDocuments()) {

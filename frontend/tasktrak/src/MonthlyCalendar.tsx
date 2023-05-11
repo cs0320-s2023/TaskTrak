@@ -38,14 +38,11 @@ interface MonthlyCalendarProps {
 }
 
 export default function MonthlyCalendar(props: MonthlyCalendarProps) {
-  const [formOpen, setFormOpen] = useState(false);
-  const [formAppointment, setFormAppointment] = useState<CalendarItem | null>(null);
   const [viewMode, setViewMode] = useState<"month" | "week">("month");
 
   function currentDateChange(currentDate: Date) {
     props.setCurrentDate(currentDate);
   }
-  // const [customAttributeValue, setCustomAttributeValue] = useState<string | number>(0);
 
   const requestOptions = {
     method: "POST",
@@ -53,10 +50,11 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
 
   function commitChanges({ added, changed, deleted }: ChangeSet) {
     console.log(`COMMITCHANGES FUNCTION BEING RAN; added: ${added}, changed: ${changed}, deleted:${deleted}`);
+    console.log(props.calendarItems);
     if (added) {
       // console.log(props.calendarItems);
       console.log(added);
-      const startingAddedID = props.calendarItems.length == 1 ? 0 :
+      const startingAddedID = props.calendarItems.length == 0 ? 0 :
         props.calendarItems[props.calendarItems.length - 1].id + 1;
       props.setCalendarItems([
         ...props.calendarItems,
@@ -150,17 +148,6 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
     }
   }
 
-  // function onAddEvent(addedAppointment: object){
-  //     const addedEvent: CalendarItem = {
-  //         title: addedAppointment.title,
-
-  //     }
-  // }
-
-  // function onValueChange(nextValue: string | number){
-  //     setCustomAttributeValue(nextValue);
-  // }
-
   const priorityOptions: SelectOption[] = [
     { id: 0, text: "Low" },
     { id: 1, text: "Moderate" },
@@ -227,13 +214,6 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
               />
             </AppointmentForm.BasicLayout>
           )}
-          // booleanEditorComponent={({onValueChange, ...allDay_props}) => (
-          //     <AppointmentForm.BooleanEditor
-          //     {...props}
-          //     value={allDay_props.value}
-          //     onValueChange={onValueChange}
-          //     />
-          // )}
         />
       </Scheduler>
     </Paper>
