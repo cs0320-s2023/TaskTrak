@@ -20,7 +20,7 @@ export default function TaskView(props: TaskViewProps){
             spacing={6}
             className="tasks"
             justifyContent="center"
-            alignItems="center"
+            alignItems="flex-start"
         >
             <Grid item xs={2}></Grid>
             <Grid item xs={6}>

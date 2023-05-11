@@ -178,7 +178,7 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
         />
         <EditingState onCommitChanges={commitChanges} />
         <EditRecurrenceMenu/>
-          {viewMode === "month" ? <MonthView /> : <WeekView/>}
+          {viewMode === "month" ? <MonthView /> : <WeekView />}
         <AllDayPanel/>
         <Toolbar
           rootComponent={(tb_props) => (
@@ -192,28 +192,28 @@ export default function MonthlyCalendar(props: MonthlyCalendarProps) {
         <ConfirmationDialog />
         <Appointments />
         <AppointmentForm
-          basicLayoutComponent={({
-            onFieldChange,
-            appointmentData,
-            ...bl_props
-          }) => (
-            <AppointmentForm.BasicLayout
-              {...bl_props}
-              appointmentData={appointmentData}
-              onFieldChange={onFieldChange}
-            >
-              <AppointmentForm.Select
-                {...props}
-                value={appointmentData.priority}
-                onValueChange={(nextValue: string | number) => {
-                  onFieldChange({ priority: nextValue });
-                }}
-                availableOptions={priorityOptions}
-                type="outlinedSelect"
-                label="Custom Attribute"
-              />
-            </AppointmentForm.BasicLayout>
-          )}
+          // basicLayoutComponent={({
+          //   onFieldChange,
+          //   appointmentData,
+          //   ...bl_props
+          // }) => (
+          //   <AppointmentForm.BasicLayout
+          //     {...bl_props}
+          //     appointmentData={appointmentData}
+          //     onFieldChange={onFieldChange}
+          //   >
+          //     <AppointmentForm.Select
+          //       {...props}
+          //       value={appointmentData.priority}
+          //       onValueChange={(nextValue: string | number) => {
+          //         onFieldChange({ priority: nextValue });
+          //       }}
+          //       availableOptions={priorityOptions}
+          //       type="outlinedSelect"
+          //       label="Custom Attribute"
+          //     />
+          //   </AppointmentForm.BasicLayout>
+          // )}
         />
       </Scheduler>
     </Paper>

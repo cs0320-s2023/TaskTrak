@@ -61,20 +61,29 @@ public class loginHandler implements Route {
 
       //Add tasks to task manager
       for (Map<String,Object> taskData : tasks) {
-        String name = taskData.get("title").toString();
+        String name = taskData.get("name").toString();
         String notes = taskData.get("notes").toString();
         Rating priority = Rating.fromValue((int) ((long)taskData.get("priority")));
         double duration = (double) taskData.get("duration");
         LocalDateTime dueDate = LocalDateTime.parse(taskData.get("dueDate").toString(),formatter);
         boolean isComplete = (boolean) taskData.get("isComplete");
-        int taskID = Integer.parseInt(taskData.get("taskID").toString());
+        int taskID = Integer.parseInt(taskData.get("id").toString());
 
         Task loadedTask = new Task(name, notes,priority, duration, dueDate, isComplete, taskID);
         taskManager.addTask(loadedTask);
       }
 
+      taskManager.timeSuggestionAlgorithim(calendar);
+      for (Map<String,Object> taskData : tasks) {
+        Task task = taskManager.getTask(Integer.parseInt(taskData.get("id").toString()));
+        taskData.put("timeSuggestions",task.getTimeSuggestions());
+      }
+
+
+
+
       //Retrieve time suggestions
-      return constructSuccessResponse(events, tasks, taskManager.getAllTimeSuggestions());
+      return constructSuccessResponse(events, tasks);
     } catch (FirebaseAuthException e) {
       response.status(400);
       response.body("Invalid tokenID.");

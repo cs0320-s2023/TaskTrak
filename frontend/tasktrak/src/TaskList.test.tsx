@@ -11,12 +11,6 @@ jest.mock("firebase/auth", () => ({
   })),
 }));
 
-// global.fetch = jest.fn(() =>
-//   Promise.resolve({
-//     json: () => Promise.resolve({ cause: [] }),
-//   })
-// );
-
 describe("TaskList", () => {
   it("renders without crashing", () => {
     render(<TaskList tasks={[]} setTasks={jest.fn()} />);

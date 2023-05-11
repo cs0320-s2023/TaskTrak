@@ -50,14 +50,13 @@ public class MapResponse {
     return adapter.toJson(successResponse);
   }
 
-  public static String constructSuccessResponse(List events, List tasks, Object timeSuggestions) {
+  public static String constructSuccessResponse(List events, List tasks) {
     Moshi moshi = new Moshi.Builder().add(new LocalTimeAdapter()).build();
 
     Map<String, Object> successResponse = new HashMap();
     successResponse.put("result", "success");
     successResponse.put("events", events);
     successResponse.put("tasks", tasks);
-    successResponse.put("timeSuggestions", timeSuggestions);
 
     Type mapOfStringObjectType = Types.newParameterizedType(Map.class, String.class, Object.class);
     JsonAdapter<Map<String,Object>> adapter = moshi.adapter(mapOfStringObjectType);

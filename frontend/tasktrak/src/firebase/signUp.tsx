@@ -40,6 +40,7 @@ const SignUp = () => {
                         id="email sign-up"
                         type="email"
                         label="Email"
+                        sx={{ bgcolor: 'white' }}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -50,6 +51,8 @@ const SignUp = () => {
                         id="password sign-up"
                         type="password"
                         label="Password"
+                        variant="filled"
+                        sx={{ bgcolor: 'white' }}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
@@ -60,6 +63,8 @@ const SignUp = () => {
                         id="confirm-password"
                         type="password"
                         label="Confirm Password"
+                        variant="filled"
+                        sx={{ bgcolor: 'white' }}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />

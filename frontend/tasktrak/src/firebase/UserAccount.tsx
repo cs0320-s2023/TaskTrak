@@ -1,4 +1,4 @@
-import { Box, Button, Card, Grid, Paper } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import React from "react";
 import SignUp from './signUp';
 import Login from './Login';
@@ -16,7 +16,8 @@ export default function UserAccount(){
                     alignItems="center"
                     marginTop={10}
                 >
-                    <h1>Login</h1>
+                    <Typography variant='h4' color='white'>Login</Typography>
+                    <br/>
                     <Grid item xs={6}>
                         <Login/>
                     </Grid>
