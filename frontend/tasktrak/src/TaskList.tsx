@@ -116,6 +116,7 @@ export default function TaskList(props: TaskListProps) {
       notes: notes,
       id: startingAddedID,
       timeSuggestions: [],
+      
       progress: 0,
     };
 
@@ -126,7 +127,7 @@ export default function TaskList(props: TaskListProps) {
           `name=${taskName}&` +
           `dueDate=${dueDate.toISOString()}&` +
           `priority=${priority}&` +
-          `duration=${duration}&` +
+          `duration=${duration}.0&` +
           `isComplete=${false}&` +
           `id=${startingAddedID}&` +
           `notes=${notes}&` +
@@ -157,7 +158,7 @@ export default function TaskList(props: TaskListProps) {
       setTaskName("");
       setDueDate(new Date());
       setPriority(0);
-      setDuration(0);
+      setDuration(0.0);
       // Close the dialog
       handleClose();
     } catch (error) {
