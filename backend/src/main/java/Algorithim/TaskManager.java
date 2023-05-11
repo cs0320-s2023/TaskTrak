@@ -102,6 +102,7 @@ public class TaskManager {
     } else { // we have > 1 time slots that work
 
       // creates windows of the correct length
+
       ArrayList<int[]> suggestedWindows = produceSuggestions(tempList,
           (int) (task.getTimeToComplete() * 60));
 
@@ -111,7 +112,6 @@ public class TaskManager {
         finalTimeList.add(convertToTime(window)); // converts the minutes to Time
 
         task.setTimeSuggestion(finalTimeList); // sets the time windows
-
 
       }
     }

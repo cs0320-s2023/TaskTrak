@@ -80,7 +80,7 @@ public class testDay {
   void timeSuggestion2(){
     day.bookTimeRange(0,0,8,0, true);
     day.bookTimeRange(12,0,18,0, true);
-    Task task1 = new Task("Task 1", "Notes 1", Rating.HIGH, 4.2,
+    Task task1 = new Task("Task 1", "Notes 1", Rating.HIGH, 4.0,
         LocalDateTime.now().plusDays(1), false, 0);
 
     ArrayList<int[]> freeTimes = day.findAvailableTimeRanges();
@@ -88,14 +88,12 @@ public class testDay {
 
     ArrayList<List<LocalTime>> timeIntervals = new ArrayList<>();
 
-    // Add the time intervals to the ArrayList
-//    timeIntervals.add(List.of(LocalTime.of(8, 0), LocalTime.of(10, 0)));
-//    timeIntervals.add(List.of(LocalTime.of(10, 0), LocalTime.of(12, 0)));
-//    timeIntervals.add(List.of(LocalTime.of(18, 0), LocalTime.of(20, 0)));
-//    timeIntervals.add(List.of(LocalTime.of(20, 0), LocalTime.of(22, 0)));
+     // Add the time intervals to the ArrayList
+    timeIntervals.add(List.of(LocalTime.of(8, 0), LocalTime.of(12, 0)));
+    timeIntervals.add(List.of(LocalTime.of(18, 0), LocalTime.of(22, 0)));
 
     System.out.println(task1.getTimeSuggestions());
-    //assertEquals(timeIntervals, task1.getTimeSuggestions());
+    assertEquals(timeIntervals, task1.getTimeSuggestions());
   }
 
 

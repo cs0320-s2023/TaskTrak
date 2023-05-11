@@ -117,6 +117,7 @@ public class Firestore {
         tasks.add(taskData);
       }
       return new ArrayList(List.of(events,tasks));
+
     } catch (FirebaseAuthException e) {
       throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Invalid user token ID.",
           e.getCause());
@@ -126,7 +127,7 @@ public class Firestore {
       throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Getting data failed for some reason", e.getCause());
     }
 
-    return new ArrayList(List.of(events,tasks));
+    //return new ArrayList(List.of(events,tasks));
   }
 
 

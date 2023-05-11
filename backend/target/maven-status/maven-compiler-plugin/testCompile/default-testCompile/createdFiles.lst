@@ -1,4 +1,4 @@
 calendarTests/testDay.class
 calendarTests/testTimeMethods.class
+testFirestore.class
 taskTests/testTask.class
-taskTests/testTaskManager.class

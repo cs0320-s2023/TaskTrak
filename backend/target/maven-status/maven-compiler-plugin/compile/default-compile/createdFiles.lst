@@ -7,6 +7,7 @@ handlers/loginHandler.class
 Response/LocalTimeAdapter.class
 Algorithim/TaskManager$1.class
 Algorithim/eventManager.class
+handlers/logoutHandler.class
 handlers/deleteEventHandler.class
 records/calendarRecords.class
 handlers/deleteTaskHandler.class
