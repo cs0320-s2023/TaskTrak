@@ -67,7 +67,7 @@ public class loginHandler implements Route {
         double duration = (double) taskData.get("duration");
         LocalDateTime dueDate = LocalDateTime.parse(taskData.get("dueDate").toString(),formatter);
         boolean isComplete = (boolean) taskData.get("isComplete");
-        int taskID = Integer.parseInt(taskData.get("taskID").toString());
+        int taskID = Integer.parseInt(taskData.get("id").toString());
 
         Task loadedTask = new Task(name, notes,priority, duration, dueDate, isComplete, taskID);
         taskManager.addTask(loadedTask);
