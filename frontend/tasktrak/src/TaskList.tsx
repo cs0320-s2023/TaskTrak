@@ -116,7 +116,7 @@ export default function TaskList(props: TaskListProps) {
       notes: notes,
       id: startingAddedID,
       timeSuggestions: [],
-      
+
       progress: 0,
     };
 
