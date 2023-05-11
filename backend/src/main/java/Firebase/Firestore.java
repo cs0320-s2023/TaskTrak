@@ -73,7 +73,7 @@ public class Firestore {
       docData.put("endDate", event.getEndTime().format(formatter));
       docData.put("dateSpan",new ArrayList<String>(List.of(startDate,endDate)));
       docData.put("notes", event.getNotes());
-      docData.put("isAllDay", event.getIsAllDay());
+      docData.put("allDay", event.getIsAllDay());
       ApiFuture<WriteResult> test = eventRef.set(docData); //SET FAILING FOR SOME REASON
     } catch (FirebaseAuthException e) {
       throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Invalid user token ID.",e.getCause());
@@ -126,7 +126,7 @@ public class Firestore {
       throw new FirebaseException(ErrorCode.INVALID_ARGUMENT, "Firebase: Getting data failed for some reason", e.getCause());
     }
 
-    return new ArrayList(List.of(events,tasks));
+//    return new ArrayList(List.of(events,tasks));
   }
 
 
@@ -181,7 +181,7 @@ public class Firestore {
           .withZone(ZoneOffset.UTC);
 
       Map<String, Object> docData = new HashMap<>();
-      docData.put("title", task.getName());
+      docData.put("name", task.getName());
       docData.put("dueDate", task.getDueDate().format(formatter));
       docData.put("notes", task.getNotes());
       docData.put("duration", task.getTimeToComplete());

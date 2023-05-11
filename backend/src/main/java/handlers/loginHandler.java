@@ -61,7 +61,7 @@ public class loginHandler implements Route {
 
       //Add tasks to task manager
       for (Map<String,Object> taskData : tasks) {
-        String name = taskData.get("title").toString();
+        String name = taskData.get("name").toString();
         String notes = taskData.get("notes").toString();
         Rating priority = Rating.fromValue((int) ((long)taskData.get("priority")));
         double duration = (double) taskData.get("duration");
