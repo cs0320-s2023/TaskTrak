@@ -7,7 +7,9 @@ import { auth } from "./firebase/config";
 import MonthlyCalendar from "./MonthlyCalendar";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { sampleCalendarItems } from "./CalendarItem";
+import { sampleCalendarItems, Task } from "./CalendarItem";
+import TaskView from "./TaskView";
+import "@testing-library/jest-dom/extend-expect";
 
 jest.mock("./firebase/config", () => ({
   auth: {
@@ -18,6 +20,8 @@ jest.mock("./firebase/config", () => ({
 }));
 const setCurrentDate = jest.fn();
 const setCalendarItems = jest.fn();
+const tasks: Task[] = [];
+const setTasks = jest.fn();
 
 describe("App", () => {
   beforeEach(() => {
@@ -30,8 +34,30 @@ describe("App", () => {
           calendarItems={sampleCalendarItems}
           setCalendarItems={setCalendarItems}
         />
+        <TaskView
+          tasks={tasks}
+          setTasks={setTasks}
+          calendarItems={sampleCalendarItems}
+          setCalendarItems={setCalendarItems}
+        />
       </Router>
     );
+  });
+  describe("TabComponent in App", () => {
+    test("renders the correct content when a tab is clicked", () => {
+      render(<App />);
+
+      // Check if the initial content is rendered
+      expect(screen.getByTestId("calendars")).toBeInTheDocument();
+      expect(screen.queryByTestId("tasks")).not.toBeInTheDocument();
+
+      // Clickwhatever tab you want
+      fireEvent.click(screen.getByText("Tasks")); // this can be whatever your tab is supposed to say
+
+      // Check if the content has switched to the second tab's content
+      expect(screen.queryByTestId("calendars")).not.toBeInTheDocument();
+      expect(screen.getByTestId("tasks")).toBeInTheDocument();
+    });
   });
 
   test("renders App component and child components", () => {

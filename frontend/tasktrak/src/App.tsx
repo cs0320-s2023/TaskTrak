@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import {
-  Button,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Tab, Tabs, Typography } from "@mui/material";
 import MonthlyCalendar from "./MonthlyCalendar";
 import DailyCalendar from "./DailyCalendar";
 import { Task, sampleCalendarItems, sampleTasks } from "./CalendarItem";
@@ -20,10 +14,11 @@ import TaskView from "./TaskView";
 function App(): JSX.Element {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [pageView, setPageView] = useState<"calendar" | "tasks">("calendar");
-  const [calendarItems, setCalendarItems] = useState<CalendarItem[]>(sampleCalendarItems);
+  const [calendarItems, setCalendarItems] =
+    useState<CalendarItem[]>(sampleCalendarItems);
   const [tasks, setTasks] = useState<Task[]>(sampleTasks);
 
-  function handleLogout(){
+  function handleLogout() {
     auth.signOut();
     setCalendarItems([]);
     setTasks([]);
@@ -34,20 +29,34 @@ function App(): JSX.Element {
       const userEvents = auth.currentUser
         ?.getIdToken(true)
         .then((userTokenID) =>
-          fetch(
-            `http://localhost:3030/login?tokenID=${userTokenID}`
-          )
+          fetch(`http://localhost:3030/login?tokenID=${userTokenID}`)
         )
         .then((response) => {
-          if(response.ok){ return response.text() }
-          else { throw new Error('API response failed!') } // good ?
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error("API response failed!");
+          } // good ?
         })
         .then((data) => {
-          const reviver = (key: string, value: any): any => { 
-            if ((key == "startDate" || key == "endDate" || key == "dueDate") && typeof value === 'string') {
-              const dateRegex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z$/;
+          const reviver = (key: string, value: any): any => {
+            if (
+              (key == "startDate" || key == "endDate" || key == "dueDate") &&
+              typeof value === "string"
+            ) {
+              const dateRegex =
+                /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})\.(\d{3})Z$/;
               if (dateRegex.test(value)) {
-                const [, year, month, day, hours, minutes, seconds, milliseconds] = dateRegex.exec(value)!;
+                const [
+                  ,
+                  year,
+                  month,
+                  day,
+                  hours,
+                  minutes,
+                  seconds,
+                  milliseconds,
+                ] = dateRegex.exec(value)!;
                 return new Date(
                   Date.UTC(
                     parseInt(year, 10),
@@ -86,80 +95,80 @@ function App(): JSX.Element {
           // console.log(taskSet)
           // console.log(tasks)
 
-          console.log("events")
+          console.log("events");
           console.log(calendarItems);
-          console.log("tasks")
+          console.log("tasks");
           console.log(tasks);
         })
         .catch((error) => {
           console.error("ERROR!", error);
-        })
-        // .then(() => {
-        //   // let eventIdSet = new Set(calendarItems.map((item) => {
-        //   //   return item.id;
-        //   // }));
+        });
+      // .then(() => {
+      //   // let eventIdSet = new Set(calendarItems.map((item) => {
+      //   //   return item.id;
+      //   // }));
 
-        //   // console.log(eventIdSet);
+      //   // console.log(eventIdSet);
 
-        //   // const filteredEvents = calendarItems.filter((item) => {
-        //   //   if(eventIdSet.has(item.id)) {
-        //   //     eventIdSet.delete(item.id);
-        //   //     return item;
-        //   //   }
-        //   //   else if(!eventIdSet.has(item.id)) {
-        //   //     console.log(`duplicate item found!`);
-        //   //     console.log(item);
-        //   //   }
-        //   // })
+      //   // const filteredEvents = calendarItems.filter((item) => {
+      //   //   if(eventIdSet.has(item.id)) {
+      //   //     eventIdSet.delete(item.id);
+      //   //     return item;
+      //   //   }
+      //   //   else if(!eventIdSet.has(item.id)) {
+      //   //     console.log(`duplicate item found!`);
+      //   //     console.log(item);
+      //   //   }
+      //   // })
 
-        //   // // console.log(filteredEvents);
+      //   // // console.log(filteredEvents);
 
-        //   // setCalendarItems(filteredEvents);
-        // })
+      //   // setCalendarItems(filteredEvents);
+      // })
       // setCalendarItems([userEvents, ...calendarItems])
-    })
+    });
 
     // setTasks(tasks.map())
-  }, [])
+  }, []);
 
   useEffect(() => {
-    let eventIdSet = new Set(calendarItems.map((item) => {
-      return item.id;
-    }));
+    let eventIdSet = new Set(
+      calendarItems.map((item) => {
+        return item.id;
+      })
+    );
 
-    console.log(eventIdSet); 
+    console.log(eventIdSet);
 
     const filteredEvents = calendarItems.filter((item) => {
-      if(eventIdSet.has(item.id)) {
+      if (eventIdSet.has(item.id)) {
         eventIdSet.delete(item.id);
         return item;
-      }
-      else if(!eventIdSet.has(item.id)) {
+      } else if (!eventIdSet.has(item.id)) {
         console.log(`duplicate item found!`);
         console.log(item);
       }
-    })
+    });
 
     // console.log(filteredEvents);
 
-    setCalendarItems(filteredEvents); 
-  }, calendarItems)
+    setCalendarItems(filteredEvents);
+  }, calendarItems);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === 'c') {
+      if (event.key === "c") {
         // if(pageView == 'calendar') { setPageView('tasks'); }
         // else { setPageView('calendar'); }
-        setPageView('calendar');
-      }
-      else if (event.key === 't') {
+        setPageView("calendar");
+      } else if (event.key === "t") {
         // if(pageView == 'calendar') { setPageView('tasks'); }
         // else { setPageView('calendar'); }
-        setPageView('tasks');
+        setPageView("tasks");
       }
     };
 
-    document.addEventListener('keydown', handleKeyPress);
+    document.addEventListener("keydown", handleKeyPress);
 
     return () => {
       // document.removeEventListener('keydown', handleKeyPress);
@@ -170,9 +179,14 @@ function App(): JSX.Element {
 
   return (
     <>
-    <Typography variant="h3" fontFamily='sans-serif' textAlign='center' color='whitesmoke'>
-      <strong>TaskTrak</strong>
-    </Typography>
+      <Typography
+        variant="h3"
+        fontFamily="sans-serif"
+        textAlign="center"
+        color="whitesmoke"
+      >
+        <strong>TaskTrak</strong>
+      </Typography>
       <Grid
         container
         spacing={8}
@@ -181,9 +195,14 @@ function App(): JSX.Element {
         alignItems="center"
       >
         <Grid item xs={9}>
-          <Tabs value={pageView} onChange={(event, value) => setPageView(value)} sx={{ bgcolor: 'white' }}>
+          <Tabs
+            data-testid="tab"
+            value={pageView}
+            onChange={(event, value) => setPageView(value)}
+            sx={{ bgcolor: "white" }}
+          >
             {viewOptions.map((item) => (
-              <Tab value={item} label={item} ></Tab>
+              <Tab value={item} label={item}></Tab>
             ))}
           </Tabs>
         </Grid>
@@ -191,11 +210,15 @@ function App(): JSX.Element {
           
         </Grid> */}
         <Grid item xs={1}>
-          {
-            auth.currentUser ?
-            <Button onClick={handleLogout} component={Link} to="/calendar">Log Out</Button> :
-            <Button component={Link} to="/signin">Sign In</Button>
-          }
+          {auth.currentUser ? (
+            <Button onClick={handleLogout} component={Link} to="/calendar">
+              Log Out
+            </Button>
+          ) : (
+            <Button component={Link} to="/signin">
+              Sign In
+            </Button>
+          )}
         </Grid>
       </Grid>
       {pageView == "calendar" && (
@@ -203,16 +226,17 @@ function App(): JSX.Element {
           container
           spacing={6}
           className="calendars"
+          data-testid="calendars"
           justifyContent="center"
           alignItems="center"
         >
           <Grid item xs={6}>
             <MonthlyCalendar
-                currentDate={currentDate}
-                setCurrentDate={setCurrentDate}
-                calendarItems={calendarItems}
-                setCalendarItems={setCalendarItems}
-              />
+              currentDate={currentDate}
+              setCurrentDate={setCurrentDate}
+              calendarItems={calendarItems}
+              setCalendarItems={setCalendarItems}
+            />
           </Grid>
           <Grid item xs={4}>
             <DailyCalendar
@@ -224,7 +248,13 @@ function App(): JSX.Element {
         </Grid>
       )}
       {pageView == "tasks" && (
-        <TaskView tasks={tasks} setTasks={setTasks} calendarItems={calendarItems} setCalendarItems={setCalendarItems}></TaskView>
+        <TaskView
+          tasks={tasks}
+          data-testid="tasks"
+          setTasks={setTasks}
+          calendarItems={calendarItems}
+          setCalendarItems={setCalendarItems}
+        ></TaskView>
       )}
     </>
   );
