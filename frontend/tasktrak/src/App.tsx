@@ -190,19 +190,18 @@ function App(): JSX.Element {
       <Grid
         container
         spacing={8}
-        className="calendars"
+        className="calendarsView"
         justifyContent="center"
         alignItems="center"
       >
         <Grid item xs={9}>
           <Tabs
-            data-testid="tab"
             value={pageView}
             onChange={(event, value) => setPageView(value)}
             sx={{ bgcolor: "white" }}
           >
             {viewOptions.map((item) => (
-              <Tab value={item} label={item}></Tab>
+              <Tab data-testid={`${item}-tab`} value={item} label={item}></Tab>
             ))}
           </Tabs>
         </Grid>
@@ -226,7 +225,7 @@ function App(): JSX.Element {
           container
           spacing={6}
           className="calendars"
-          data-testid="calendars"
+          data-testid="calendar-view"
           justifyContent="center"
           alignItems="center"
         >
@@ -248,13 +247,20 @@ function App(): JSX.Element {
         </Grid>
       )}
       {pageView == "tasks" && (
-        <TaskView
-          tasks={tasks}
+        <Grid
+          container
+          style={{ marginTop: "50px" }}
+          spacing={6}
+          className="tasks"
           data-testid="tasks"
-          setTasks={setTasks}
-          calendarItems={calendarItems}
-          setCalendarItems={setCalendarItems}
-        ></TaskView>
+        >
+          <TaskView
+            tasks={tasks}
+            setTasks={setTasks}
+            calendarItems={calendarItems}
+            setCalendarItems={setCalendarItems}
+          ></TaskView>
+        </Grid>
       )}
     </>
   );

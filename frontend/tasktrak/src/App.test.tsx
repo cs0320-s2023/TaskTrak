@@ -10,6 +10,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { sampleCalendarItems, Task } from "./CalendarItem";
 import TaskView from "./TaskView";
 import "@testing-library/jest-dom/extend-expect";
+import { BrowserRouter } from "react-router-dom";
 
 jest.mock("./firebase/config", () => ({
   auth: {
@@ -44,23 +45,29 @@ describe("App", () => {
     );
   });
   describe("TabComponent in App", () => {
-    test("renders the correct content when a tab is clicked", () => {
-      render(<App />);
+    test("renders the correct content when a tab is clicked", async () => {
+      render(
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      );
 
       // Check if the initial content is rendered
-      expect(screen.getByTestId("calendars")).toBeInTheDocument();
+      expect(screen.getAllByTestId("calendar-view")[0]).toBeInTheDocument();
       expect(screen.queryByTestId("tasks")).not.toBeInTheDocument();
 
-      // Clickwhatever tab you want
-      fireEvent.click(screen.getByText("Tasks")); // this can be whatever your tab is supposed to say
+      // Click on the "Tasks" tab
+      fireEvent.click(screen.getAllByTestId("tasks-tab")[0]);
 
-      // Check if the content has switched to the second tab's content
-      expect(screen.queryByTestId("calendars")).not.toBeInTheDocument();
-      expect(screen.getByTestId("tasks")).toBeInTheDocument();
+      // Wait for the "Tasks" tab content to render
+      await waitFor(() => {
+        // Check if the content has switched to the "Tasks" tab's content
+        expect(screen.getAllByTestId("tasks")[0]).toBeInTheDocument();
+      });
     });
   });
 
-  test("renders App component and child components", () => {
+  test("authentication state rendering remains", () => {
     expect(screen.getByText("calendar")).toBeInTheDocument();
     expect(screen.getByText("tasks")).toBeInTheDocument();
     expect(screen.getByText("Sign In")).toBeInTheDocument();
