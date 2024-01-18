@@ -10,8 +10,13 @@ Ricky Ornelas (rornela)
 ## GitHub Repository:
 https://github.com/cs0320-s2023/TaskTrak
 
-## Usage instructions:
+## Demo Video:
 
+[![TaskTrak Demo](https://github.com/cs0320-s2023/TaskTrak/assets/90580552/726d1a5f-433a-4a2f-b708-c4bd25edead9)](https://youtu.be/QSsfYRu87Mc?si=jx2ekvcz9i7yqYCQ)
+
+Click the image to view the TaskTrak demo video!
+
+## Usage instructions:
 Clone the repo: https://github.com/cs0320-s2023/TaskTrak
 
 After cloning the repository, we utilized IntelliJ to initialize our backend server. This was accomplished by accessing the pom.xml file situated within the 'backend' folder of the primary TaskTrak Folder.
