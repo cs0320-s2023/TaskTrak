@@ -1,16 +1,16 @@
 # TaskTrak
 
-##Collaborators:
+## Collaborators:
 
 Joel Kim (jkim631)
 Zach Leontiou (zleontio)
 Rayhan Meghji (rmeghji)
 Ricky Ornelas (rornela)
 
-##GitHub Repository:
+## GitHub Repository:
 https://github.com/cs0320-s2023/TaskTrak
 
-##Usage instructions:
+## Usage instructions:
 
 Clone the repo: https://github.com/cs0320-s2023/TaskTrak
 
@@ -28,7 +28,7 @@ A 'task' tab is located at the top for you to add non-time-specific tasks or com
 
 When you select one of these time suggestions, a prompt will appear for you to create an event based on the suggested date and time. Doing so will automatically update your main calendar, ensuring your tasks and commitments are consistently and accurately tracked.
 
-##Description:
+## Description:
 
 TaskTrak is a program that combines a task manager and interactive calendar, allowing users to
 integrate their time management needs into one digital location. The user can create both events
@@ -36,19 +36,19 @@ and tasks, each of which contain parameters that the user can input (name, notes
 start time, prioriy, etc.) Tasks are assigned an estimated time of completion by the user, and the
 program generates scheduling suggestions for each task based on the free time available during the current day.
 
-##External Tools:
+## External Tools:
 
 User data is stored within a FireBase database. This if for retrieval of user information
 relating to the task manager/calendar. Each user has a user token ID which is used for retrieval
 and organization of data.
 
-##Privacy:
+## Privacy:
 
 No personal user data is collected other than an email and password (inputted when the user
 first logs into the program). These are stored within the firebase database. Users are not intended
 to have access to any other user data.
 
-##User interface
+## User interface
 
 Getting Started
 Sign Up: To get started, new users must sign up for an account. This process will require providing
@@ -93,7 +93,7 @@ calendar. The newly created event will be displayed in the appropriate view
 Feel free to create as many events as you need to organize your schedule effectively
 and keep track of your commitments.
 
-##Task Creation
+## Task Creation
 In addition to managing events, our application provides a dedicated Task feature to help you stay
 on top of your to-do list and accomplish your goals efficiently. To access the Task page,
 simply navigate to the top of the screen and click on the "Tasks" tab.
@@ -119,7 +119,7 @@ This helps in planning and scheduling your day effectively.
 Once you have entered all the necessary information, click the "Save" button to add the
 task to your list. Your newly created task will be saved and displayed.
 
-##Testing
+## Testing
 
 Unit tests/ integration test:
 
@@ -131,7 +131,7 @@ the suggestions and objects will work (both seperately and integrated)
 
 The frontend components are tested using jest and React testing libraries as well as mocks to ensure that the components are rendering correctly and with the correct functionality logic based on a wide variety of user input. While a lot of our functionality utilizes backend, by utiilizing mock state change functions, we were able to write tests for our App.tsx, TaskList, and MonthlyCalendar components, which are the core of our user-facing web app functionality.
 
-##Improvements for future development
+## Improvements for future development
 
 Suggestions for Future Development
 
